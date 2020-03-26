@@ -23,6 +23,18 @@ declare module "../highcharts" {
         url: string;
     }
     interface Chart {
+                /**
+         * Export-data module required. Returns the current chart data as a CSV
+         * string.
+         *
+         * @param useLocalDecimalPoint
+         *        Whether to use the local decimal point as detected from the
+         *        browser. This makes it easier to export data to Excel in the
+         *        same locale as the user is.
+         *
+         * @return CSV representation of the data
+         */
+        downloadCSV(useLocalDecimalPoint?: boolean): string;
         /**
          * Export-data module required. Returns the current chart data as a CSV
          * string.
