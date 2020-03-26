@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -36,13 +36,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var correctFloat = U.correctFloat,
-            defined = U.defined,
-            merge = U.merge,
-            seriesType = U.seriesType;
-        var noop = H.noop,
-            SMA = H.seriesTypes.sma,
-            EMA = H.seriesTypes.ema;
+        var correctFloat = U.correctFloat, defined = U.defined, merge = U.merge, seriesType = U.seriesType;
+        var noop = H.noop, SMA = H.seriesTypes.sma, EMA = H.seriesTypes.ema;
         /**
          * The MACD series type.
          *
@@ -223,19 +218,11 @@
             },
             drawPoints: H.seriesTypes.column.prototype.drawPoints,
             drawGraph: function () {
-                var indicator = this,
-                    mainLinePoints = indicator.points,
-                    pointsLength = mainLinePoints.length,
-                    mainLineOptions = indicator.options,
-                    histogramZones = indicator.zones,
-                    gappedExtend = {
-                        options: {
-                            gapSize: mainLineOptions.gapSize
-                        }
-                    },
-                    otherSignals = [[],
-                    []],
-                    point;
+                var indicator = this, mainLinePoints = indicator.points, pointsLength = mainLinePoints.length, mainLineOptions = indicator.options, histogramZones = indicator.zones, gappedExtend = {
+                    options: {
+                        gapSize: mainLineOptions.gapSize
+                    }
+                }, otherSignals = [[], []], point;
                 // Generate points for top and bottom lines:
                 while (pointsLength--) {
                     point = mainLinePoints[pointsLength];
@@ -274,9 +261,7 @@
                 // indicator.graph = null;
             },
             getZonesGraphs: function (props) {
-                var allZones = SMA.prototype.getZonesGraphs.call(this,
-                    props),
-                    currentZones = allZones;
+                var allZones = SMA.prototype.getZonesGraphs.call(this, props), currentZones = allZones;
                 if (this.currentLineZone) {
                     currentZones = allZones.splice(this[this.currentLineZone].startIndex + 1);
                     if (!currentZones.length) {
@@ -304,14 +289,7 @@
                 this.zones = histogramZones;
             },
             getValues: function (series, params) {
-                var j = 0,
-                    MACD = [],
-                    xMACD = [],
-                    yMACD = [],
-                    signalLine = [],
-                    shortEMA,
-                    longEMA,
-                    i;
+                var j = 0, MACD = [], xMACD = [], yMACD = [], signalLine = [], shortEMA, longEMA, i;
                 if (series.xData.length <
                     params.longPeriod + params.signalPeriod) {
                     return;

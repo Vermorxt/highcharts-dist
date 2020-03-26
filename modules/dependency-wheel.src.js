@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * Dependency wheel module
  *
@@ -40,8 +40,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var animObject = U.animObject,
-            seriesType = U.seriesType;
+        var animObject = U.animObject, seriesType = U.seriesType;
         var base = H.seriesTypes.sankey.prototype;
         /**
          * @private
@@ -105,8 +104,7 @@
                 return this.options.nodePadding / Math.PI;
             },
             createNode: function (id) {
-                var node = base.createNode.call(this,
-                    id);
+                var node = base.createNode.call(this, id);
                 node.index = this.nodes.length - 1;
                 /**
                  * Return the sum of incoming and outgoing links.
@@ -124,10 +122,7 @@
                  * @private
                  */
                 node.offset = function (point) {
-                    var offset = 0,
-                        i,
-                        links = node.linksFrom.concat(node.linksTo),
-                        sliced;
+                    var offset = 0, i, links = node.linksFrom.concat(node.linksTo), sliced;
                     /**
                      * @private
                      */
@@ -167,23 +162,14 @@
              * functions instead of the whole translate function.
              */
             translate: function () {
-                var options = this.options,
-                    factor = 2 * Math.PI /
-                        (this.chart.plotHeight + this.getNodePadding()),
-                    center = this.getCenter(),
-                    startAngle = (options.startAngle - 90) * H.deg2rad;
+                var options = this.options, factor = 2 * Math.PI /
+                    (this.chart.plotHeight + this.getNodePadding()), center = this.getCenter(), startAngle = (options.startAngle - 90) * H.deg2rad;
                 base.translate.call(this);
                 this.nodeColumns[0].forEach(function (node) {
                     // Don't render the nodes if sum is 0 #12453
                     if (node.sum) {
-                        var shapeArgs = node.shapeArgs,
-                            centerX = center[0],
-                            centerY = center[1],
-                            r = center[2] / 2,
-                            innerR = r - options.nodeWidth,
-                            start = startAngle + factor * shapeArgs.y,
-                            end = startAngle +
-                                factor * (shapeArgs.y + shapeArgs.height);
+                        var shapeArgs = node.shapeArgs, centerX = center[0], centerY = center[1], r = center[2] / 2, innerR = r - options.nodeWidth, start = startAngle + factor * shapeArgs.y, end = startAngle +
+                            factor * (shapeArgs.y + shapeArgs.height);
                         // Middle angle
                         node.angle = start + (end - start) / 2;
                         node.shapeType = 'arc';
@@ -205,12 +191,8 @@
                         node.linksFrom.forEach(function (point) {
                             if (point.linkBase) {
                                 var distance;
-                                var corners = point.linkBase.map(function (top,
-                                    i) {
-                                        var angle = factor * top,
-                                    x = Math.cos(startAngle + angle) * (innerR + 1),
-                                    y = Math.sin(startAngle + angle) * (innerR + 1),
-                                    curveFactor = options.curveFactor;
+                                var corners = point.linkBase.map(function (top, i) {
+                                    var angle = factor * top, x = Math.cos(startAngle + angle) * (innerR + 1), y = Math.sin(startAngle + angle) * (innerR + 1), curveFactor = options.curveFactor;
                                     // The distance between the from and to node
                                     // along the perimeter. This affect how curved
                                     // the link is, so that links between neighbours
@@ -263,8 +245,7 @@
             },
             animate: function (init) {
                 if (!init) {
-                    var duration = animObject(this.options.animation).duration,
-                        step = (duration / 2) / this.nodes.length;
+                    var duration = animObject(this.options.animation).duration, step = (duration / 2) / this.nodes.length;
                     this.nodes.forEach(function (point, i) {
                         var graphic = point.graphic;
                         if (graphic) {
@@ -296,11 +277,7 @@
              * @private
              */
             getDataLabelPath: function (label) {
-                var renderer = this.series.chart.renderer,
-                    shapeArgs = this.shapeArgs,
-                    upperHalf = this.angle < 0 || this.angle > Math.PI,
-                    start = shapeArgs.start,
-                    end = shapeArgs.end;
+                var renderer = this.series.chart.renderer, shapeArgs = this.shapeArgs, upperHalf = this.angle < 0 || this.angle > Math.PI, start = shapeArgs.start, end = shapeArgs.end;
                 if (!this.dataLabelPath) {
                     this.dataLabelPath = renderer
                         .arc({ open: true })

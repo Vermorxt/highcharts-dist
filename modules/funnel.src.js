@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * Highcharts funnel module
  *
@@ -28,7 +28,7 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'modules/funnel.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js'], _modules['parts/Globals.js']], function (Highcharts, U, H) {
+    _registerModule(_modules, 'modules/funnel.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (Highcharts, U) {
         /* *
          *
          *  Highcharts funnel module
@@ -41,13 +41,9 @@
          *
          * */
         /* eslint indent: 0 */
-        var pick = U.pick;
+        var isArray = U.isArray, pick = U.pick;
         // create shortcuts
-        var seriesType = Highcharts.seriesType,
-            seriesTypes = Highcharts.seriesTypes,
-            fireEvent = Highcharts.fireEvent,
-            addEvent = Highcharts.addEvent,
-            noop = Highcharts.noop;
+        var seriesType = Highcharts.seriesType, seriesTypes = Highcharts.seriesTypes, fireEvent = Highcharts.fireEvent, addEvent = Highcharts.addEvent, noop = Highcharts.noop;
         /**
          * @private
          * @class
@@ -174,43 +170,10 @@
             animate: noop,
             // Overrides the pie translate method
             translate: function () {
-                var sum = 0,
-                    series = this,
-                    chart = series.chart,
-                    options = series.options,
-                    reversed = options.reversed,
-                    ignoreHiddenPoint = options.ignoreHiddenPoint,
-                    plotWidth = chart.plotWidth,
-                    plotHeight = chart.plotHeight,
-                    cumulative = 0, // start at top
-                    center = options.center,
-                    centerX = getLength(center[0],
-                    plotWidth),
-                    centerY = getLength(center[1],
-                    plotHeight),
-                    width = getLength(options.width,
-                    plotWidth),
-                    tempWidth,
-                    height = getLength(options.height,
-                    plotHeight),
-                    neckWidth = getLength(options.neckWidth,
-                    plotWidth),
-                    neckHeight = getLength(options.neckHeight,
-                    plotHeight),
-                    neckY = (centerY - height / 2) + height - neckHeight,
-                    data = series.data,
-                    path,
-                    fraction,
-                    half = (options.dataLabels.position === 'left' ?
-                        1 :
-                        0),
-                    x1,
-                    y1,
-                    x2,
-                    x3,
-                    y3,
-                    x4,
-                    y5;
+                var sum = 0, series = this, chart = series.chart, options = series.options, reversed = options.reversed, ignoreHiddenPoint = options.ignoreHiddenPoint, plotWidth = chart.plotWidth, plotHeight = chart.plotHeight, cumulative = 0, // start at top
+                center = options.center, centerX = getLength(center[0], plotWidth), centerY = getLength(center[1], plotHeight), width = getLength(options.width, plotWidth), tempWidth, height = getLength(options.height, plotHeight), neckWidth = getLength(options.neckWidth, plotWidth), neckHeight = getLength(options.neckHeight, plotHeight), neckY = (centerY - height / 2) + height - neckHeight, data = series.data, path, fraction, half = (options.dataLabels.position === 'left' ?
+                    1 :
+                    0), x1, y1, x2, x3, y3, x4, y5;
                 /**
                  * Get positions - either an integer or a percentage string must be
                  * given.
@@ -349,15 +312,7 @@
             },
             // Extend the pie data label method
             drawDataLabels: function () {
-                var series = this,
-                    data = series.data,
-                    labelDistance = series.options.dataLabels.distance,
-                    leftSide,
-                    sign,
-                    point,
-                    i = data.length,
-                    x,
-                    y;
+                var series = this, data = series.data, labelDistance = series.options.dataLabels.distance, leftSide, sign, point, i = data.length, x, y;
                 // In the original pie label anticollision logic, the slots are
                 // distributed from one labelDistance above to one labelDistance
                 // below the pie. In funnels we don't want this.
@@ -404,23 +359,12 @@
                 seriesTypes[series.options.dataLabels.inside ? 'column' : 'pie'].prototype.drawDataLabels.call(this);
             },
             alignDataLabel: function (point, dataLabel, options, alignTo, isNew) {
-                var series = point.series,
-                    reversed = series.options.reversed,
-                    dlBox = point.dlBox || point.shapeArgs,
-                    align = options.align,
-                    verticalAlign = options.verticalAlign,
-                    inside = ((series.options || {}).dataLabels || {}).inside,
-                    centerY = series.center[1],
-                    pointPlotY = (reversed ?
-                        2 * centerY - point.plotY :
-                        point.plotY),
-                    widthAtLabel = series.getWidthAt(pointPlotY - dlBox.height / 2 +
-                        dataLabel.height),
-                    offset = verticalAlign === 'middle' ?
-                        (dlBox.topWidth - dlBox.bottomWidth) / 4 :
-                        (widthAtLabel - dlBox.bottomWidth) / 2,
-                    y = dlBox.y,
-                    x = dlBox.x;
+                var series = point.series, reversed = series.options.reversed, dlBox = point.dlBox || point.shapeArgs, align = options.align, verticalAlign = options.verticalAlign, inside = ((series.options || {}).dataLabels || {}).inside, centerY = series.center[1], pointPlotY = (reversed ?
+                    2 * centerY - point.plotY :
+                    point.plotY), widthAtLabel = series.getWidthAt(pointPlotY - dlBox.height / 2 +
+                    dataLabel.height), offset = verticalAlign === 'middle' ?
+                    (dlBox.topWidth - dlBox.bottomWidth) / 4 :
+                    (widthAtLabel - dlBox.bottomWidth) / 2, y = dlBox.y, x = dlBox.x;
                 if (verticalAlign === 'middle') {
                     y = dlBox.y - dlBox.height / 2 + dataLabel.height / 2;
                 }
@@ -467,7 +411,7 @@
         addEvent(Highcharts.Chart, 'afterHideAllOverlappingLabels', function () {
             this.series.forEach(function (series) {
                 var dataLabelsOptions = series.options && series.options.dataLabels;
-                if (H.isArray(dataLabelsOptions)) {
+                if (isArray(dataLabelsOptions)) {
                     dataLabelsOptions = dataLabelsOptions[0];
                 }
                 if (series.is('pie') &&

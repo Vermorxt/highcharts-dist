@@ -1,5 +1,5 @@
 /**
- * @license Highcharts Gantt JS v8.0.4 (2020-03-10)
+ * @license Highcharts Gantt JS v8.0.4 (2020-03-26)
  *
  * StaticScale
  *
@@ -38,10 +38,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var addEvent = U.addEvent,
-            defined = U.defined,
-            isNumber = U.isNumber,
-            pick = U.pick;
+        var addEvent = U.addEvent, defined = U.defined, isNumber = U.isNumber, pick = U.pick;
         var Chart = H.Chart;
         /* eslint-disable no-invalid-this */
         /**
@@ -73,12 +70,8 @@
         Chart.prototype.adjustHeight = function () {
             if (this.redrawTrigger !== 'adjustHeight') {
                 (this.axes || []).forEach(function (axis) {
-                    var chart = axis.chart,
-                        animate = !!chart.initiatedScale &&
-                            chart.options.animation,
-                        staticScale = axis.options.staticScale,
-                        height,
-                        diff;
+                    var chart = axis.chart, animate = !!chart.initiatedScale &&
+                        chart.options.animation, staticScale = axis.options.staticScale, height, diff;
                     if (axis.staticScale && defined(axis.min)) {
                         height = pick(axis.unitLength, axis.max + axis.tickInterval - axis.min) * staticScale;
                         // Minimum height is 1 x staticScale.
@@ -93,7 +86,7 @@
                         // animation.
                         axis.series.forEach(function (series) {
                             var clipRect = series.sharedClipKey &&
-                                    chart[series.sharedClipKey];
+                                chart[series.sharedClipKey];
                             if (clipRect) {
                                 clipRect.attr({
                                     height: chart.plotHeight

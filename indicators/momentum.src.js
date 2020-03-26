@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -36,12 +36,10 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isArray = U.isArray,
-            seriesType = U.seriesType;
+        var isArray = U.isArray, seriesType = U.seriesType;
         /* eslint-disable require-jsdoc */
         function populateAverage(points, xVal, yVal, i, period) {
-            var mmY = yVal[i - 1][3] - yVal[i - period - 1][3],
-                mmX = xVal[i - 1];
+            var mmY = yVal[i - 1][3] - yVal[i - period - 1][3], mmX = xVal[i - 1];
             points.shift(); // remove point until range < period
             return [mmX, mmY];
         }
@@ -80,19 +78,7 @@
         {
             nameBase: 'Momentum',
             getValues: function (series, params) {
-                var period = params.period,
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    xValue = xVal[0],
-                    yValue = yVal[0],
-                    MM = [],
-                    xData = [],
-                    yData = [],
-                    index,
-                    i,
-                    points,
-                    MMPoint;
+                var period = params.period, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, xValue = xVal[0], yValue = yVal[0], MM = [], xData = [], yData = [], index, i, points, MMPoint;
                 if (xVal.length <= period) {
                     return;
                 }

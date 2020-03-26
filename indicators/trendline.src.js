@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -36,8 +36,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isArray = U.isArray,
-            seriesType = U.seriesType;
+        var isArray = U.isArray, seriesType = U.seriesType;
         /**
          * The Trend line series type.
          *
@@ -85,22 +84,7 @@
             nameBase: 'Trendline',
             nameComponents: false,
             getValues: function (series, params) {
-                var xVal = series.xData,
-                    yVal = series.yData,
-                    LR = [],
-                    xData = [],
-                    yData = [],
-                    sumX = 0,
-                    sumY = 0,
-                    sumXY = 0,
-                    sumX2 = 0,
-                    xValLength = xVal.length,
-                    index = params.index,
-                    alpha,
-                    beta,
-                    i,
-                    x,
-                    y;
+                var xVal = series.xData, yVal = series.yData, LR = [], xData = [], yData = [], sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, xValLength = xVal.length, index = params.index, alpha, beta, i, x, y;
                 // Get sums:
                 for (i = 0; i < xValLength; i++) {
                     x = xVal[i];

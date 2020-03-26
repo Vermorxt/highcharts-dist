@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Advanced Highstock tools
  *
@@ -41,16 +41,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var correctFloat = U.correctFloat,
-            defined = U.defined,
-            extend = U.extend,
-            isNumber = U.isNumber,
-            merge = U.merge,
-            pick = U.pick,
-            uniqueKey = U.uniqueKey;
-        var fireEvent = H.fireEvent,
-            bindingsUtils = H.NavigationBindings.prototype.utils,
-            PREFIX = 'highcharts-';
+        var correctFloat = U.correctFloat, defined = U.defined, extend = U.extend, fireEvent = U.fireEvent, isNumber = U.isNumber, merge = U.merge, pick = U.pick, uniqueKey = U.uniqueKey;
+        var bindingsUtils = H.NavigationBindings.prototype.utils, PREFIX = 'highcharts-';
         /* eslint-disable no-invalid-this, valid-jsdoc */
         /**
          * Generates function which will add a flag series using modal in GUI.
@@ -71,26 +63,18 @@
          */
         bindingsUtils.addFlagFromForm = function (type) {
             return function (e) {
-                var navigation = this,
-                    chart = navigation.chart,
-                    toolbar = chart.stockTools,
-                    getFieldType = bindingsUtils.getFieldType,
-                    point = bindingsUtils.attractToPoint(e,
-                    chart),
-                    pointConfig = {
-                        x: point.x,
-                        y: point.y
-                    },
-                    seriesOptions = {
-                        type: 'flags',
-                        onSeries: point.series.id,
-                        shape: type,
-                        data: [pointConfig],
-                        point: {
-                            events: {
-                                click: function () {
-                                    var point = this,
-                    options = point.options;
+                var navigation = this, chart = navigation.chart, toolbar = chart.stockTools, getFieldType = bindingsUtils.getFieldType, point = bindingsUtils.attractToPoint(e, chart), pointConfig = {
+                    x: point.x,
+                    y: point.y
+                }, seriesOptions = {
+                    type: 'flags',
+                    onSeries: point.series.id,
+                    shape: type,
+                    data: [pointConfig],
+                    point: {
+                        events: {
+                            click: function () {
+                                var point = this, options = point.options;
                                 fireEvent(navigation, 'showPopup', {
                                     point: point,
                                     formType: 'annotation-toolbar',
@@ -140,46 +124,40 @@
             };
         };
         bindingsUtils.manageIndicators = function (data) {
-            var navigation = this,
-                chart = navigation.chart,
-                seriesConfig = {
-                    linkedTo: data.linkedTo,
-                    type: data.type
-                },
-                indicatorsWithVolume = [
-                    'ad',
-                    'cmf',
-                    'mfi',
-                    'vbp',
-                    'vwap'
-                ],
-                indicatorsWithAxes = [
-                    'ad',
-                    'atr',
-                    'cci',
-                    'cmf',
-                    'macd',
-                    'mfi',
-                    'roc',
-                    'rsi',
-                    'ao',
-                    'aroon',
-                    'aroonoscillator',
-                    'trix',
-                    'apo',
-                    'dpo',
-                    'ppo',
-                    'natr',
-                    'williamsr',
-                    'stochastic',
-                    'slowstochastic',
-                    'linearRegression',
-                    'linearRegressionSlope',
-                    'linearRegressionIntercept',
-                    'linearRegressionAngle'
-                ],
-                yAxis,
-                series;
+            var navigation = this, chart = navigation.chart, seriesConfig = {
+                linkedTo: data.linkedTo,
+                type: data.type
+            }, indicatorsWithVolume = [
+                'ad',
+                'cmf',
+                'mfi',
+                'vbp',
+                'vwap'
+            ], indicatorsWithAxes = [
+                'ad',
+                'atr',
+                'cci',
+                'cmf',
+                'macd',
+                'mfi',
+                'roc',
+                'rsi',
+                'ao',
+                'aroon',
+                'aroonoscillator',
+                'trix',
+                'apo',
+                'dpo',
+                'ppo',
+                'natr',
+                'williamsr',
+                'stochastic',
+                'slowstochastic',
+                'linearRegression',
+                'linearRegressionSlope',
+                'linearRegressionIntercept',
+                'linearRegressionAngle'
+            ], yAxis, series;
             if (data.actionType === 'edit') {
                 navigation.fieldsToOptions(data.fields, seriesConfig);
                 series = chart.get(data.seriesId);
@@ -266,11 +244,7 @@
         // @todo
         // Consider using getHoverData(), but always kdTree (columns?)
         bindingsUtils.attractToPoint = function (e, chart) {
-            var coords = chart.pointer.getCoordinates(e),
-                x = coords.xAxis[0].value,
-                y = coords.yAxis[0].value,
-                distX = Number.MAX_VALUE,
-                closestPoint;
+            var coords = chart.pointer.getCoordinates(e), x = coords.xAxis[0].value, y = coords.yAxis[0].value, distX = Number.MAX_VALUE, closestPoint;
             chart.series.forEach(function (series) {
                 series.points.forEach(function (point) {
                     if (point && distX > Math.abs(point.x - x)) {
@@ -322,10 +296,7 @@
          */
         bindingsUtils.updateNthPoint = function (startIndex) {
             return function (e, annotation) {
-                var options = annotation.options.typeOptions,
-                    coords = this.chart.pointer.getCoordinates(e),
-                    x = coords.xAxis[0].value,
-                    y = coords.yAxis[0].value;
+                var options = annotation.options.typeOptions, coords = this.chart.pointer.getCoordinates(e), x = coords.xAxis[0].value, y = coords.yAxis[0].value;
                 options.points.forEach(function (point, index) {
                     if (index >= startIndex) {
                         point.x = x;
@@ -363,19 +334,17 @@
              *         Format: `{top: Number, height: Number}`
              */
             getYAxisPositions: function (yAxes, plotHeight, defaultHeight) {
-                var positions,
-                    allAxesHeight = 0;
+                var positions, allAxesHeight = 0;
                 /** @private */
                 function isPercentage(prop) {
                     return defined(prop) && !isNumber(prop) && prop.match('%');
                 }
                 positions = yAxes.map(function (yAxis) {
                     var height = isPercentage(yAxis.options.height) ?
-                            parseFloat(yAxis.options.height) / 100 :
-                            yAxis.height / plotHeight,
-                        top = isPercentage(yAxis.options.top) ?
-                            parseFloat(yAxis.options.top) / 100 :
-                            correctFloat(yAxis.top - yAxis.chart.plotTop) / plotHeight;
+                        parseFloat(yAxis.options.height) / 100 :
+                        yAxis.height / plotHeight, top = isPercentage(yAxis.options.top) ?
+                        parseFloat(yAxis.options.top) / 100 :
+                        correctFloat(yAxis.top - yAxis.chart.plotTop) / plotHeight;
                     // New yAxis does not contain "height" info yet
                     if (!isNumber(height)) {
                         height = defaultHeight / 100;
@@ -448,17 +417,10 @@
             resizeYAxes: function (defaultHeight) {
                 defaultHeight = defaultHeight || 20; // in %, but as a number
                 var chart = this.chart, 
-                    // Only non-navigator axes
-                    yAxes = chart.yAxis.filter(this.utils.isNotNavigatorYAxis),
-                    plotHeight = chart.plotHeight,
-                    allAxesLength = yAxes.length, 
-                    // Gather current heights (in %)
-                    positions = this.getYAxisPositions(yAxes,
-                    plotHeight,
-                    defaultHeight),
-                    resizers = this.getYAxisResizers(yAxes),
-                    allAxesHeight = positions.allAxesHeight,
-                    changedSpace = defaultHeight;
+                // Only non-navigator axes
+                yAxes = chart.yAxis.filter(this.utils.isNotNavigatorYAxis), plotHeight = chart.plotHeight, allAxesLength = yAxes.length, 
+                // Gather current heights (in %)
+                positions = this.getYAxisPositions(yAxes, plotHeight, defaultHeight), resizers = this.getYAxisResizers(yAxes), allAxesHeight = positions.allAxesHeight, changedSpace = defaultHeight;
                 // More than 100%
                 if (allAxesHeight > 1) {
                     // Simple case, add new panes up to 5
@@ -545,34 +507,34 @@
          * @optionparent navigation.bindings
          */
         var stockToolsBindings = {
-                // Line type annotations:
-                /**
-                 * A segment annotation bindings. Includes `start` and one event in `steps`
-                 * array.
-                 *
-                 * @type    {Highcharts.NavigationBindingsOptionsObject}
-                 * @product highstock
-                 * @default {"className": "highcharts-segment", "start": function() {}, "steps": [function() {}], "annotationsOptions": {}}
-                 */
-                segment: {
-                    /** @ignore-option */
-                    className: 'highcharts-segment',
-                    // eslint-disable-next-line valid-jsdoc
-                    /** @ignore-option */
-                    start: function (e) {
-                        var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
-                            langKey: 'segment',
-                            type: 'crookedLine',
-                            typeOptions: {
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        }, navigation.annotationsOptions, navigation.bindings.segment.annotationsOptions);
+            // Line type annotations:
+            /**
+             * A segment annotation bindings. Includes `start` and one event in `steps`
+             * array.
+             *
+             * @type    {Highcharts.NavigationBindingsOptionsObject}
+             * @product highstock
+             * @default {"className": "highcharts-segment", "start": function() {}, "steps": [function() {}], "annotationsOptions": {}}
+             */
+            segment: {
+                /** @ignore-option */
+                className: 'highcharts-segment',
+                // eslint-disable-next-line valid-jsdoc
+                /** @ignore-option */
+                start: function (e) {
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'segment',
+                        type: 'crookedLine',
+                        typeOptions: {
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.segment.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -594,26 +556,22 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'arrowSegment',
-                            type: 'crookedLine',
-                            typeOptions: {
-                                line: {
-                                    markerEnd: 'arrow'
-                                },
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.arrowSegment.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'arrowSegment',
+                        type: 'crookedLine',
+                        typeOptions: {
+                            line: {
+                                markerEnd: 'arrow'
+                            },
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.arrowSegment.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -635,24 +593,20 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'ray',
-                            type: 'crookedLine',
-                            typeOptions: {
-                                type: 'ray',
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.ray.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'ray',
+                        type: 'crookedLine',
+                        typeOptions: {
+                            type: 'ray',
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.ray.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -674,27 +628,23 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'arrowRay',
-                            type: 'infinityLine',
-                            typeOptions: {
-                                type: 'ray',
-                                line: {
-                                    markerEnd: 'arrow'
-                                },
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.arrowRay.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'arrowRay',
+                        type: 'infinityLine',
+                        typeOptions: {
+                            type: 'ray',
+                            line: {
+                                markerEnd: 'arrow'
+                            },
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.arrowRay.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -715,24 +665,20 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'infinityLine',
-                            type: 'infinityLine',
-                            typeOptions: {
-                                type: 'line',
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.infinityLine.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'infinityLine',
+                        type: 'infinityLine',
+                        typeOptions: {
+                            type: 'line',
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.infinityLine.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -754,27 +700,23 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'arrowInfinityLine',
-                            type: 'infinityLine',
-                            typeOptions: {
-                                type: 'line',
-                                line: {
-                                    markerEnd: 'arrow'
-                                },
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.arrowInfinityLine.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'arrowInfinityLine',
+                        type: 'infinityLine',
+                        typeOptions: {
+                            type: 'line',
+                            line: {
+                                markerEnd: 'arrow'
+                            },
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.arrowInfinityLine.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -795,22 +737,18 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'horizontalLine',
-                            type: 'infinityLine',
-                            draggable: 'y',
-                            typeOptions: {
-                                type: 'horizontalLine',
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.horizontalLine.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'horizontalLine',
+                        type: 'infinityLine',
+                        draggable: 'y',
+                        typeOptions: {
+                            type: 'horizontalLine',
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.horizontalLine.annotationsOptions);
                     this.chart.addAnnotation(options);
                 }
             },
@@ -827,22 +765,18 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'verticalLine',
-                            type: 'infinityLine',
-                            draggable: 'x',
-                            typeOptions: {
-                                type: 'verticalLine',
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.verticalLine.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'verticalLine',
+                        type: 'infinityLine',
+                        draggable: 'x',
+                        typeOptions: {
+                            type: 'verticalLine',
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.verticalLine.annotationsOptions);
                     this.chart.addAnnotation(options);
                 }
             },
@@ -861,26 +795,22 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'crooked3',
-                            type: 'crookedLine',
-                            typeOptions: {
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.crooked3.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'crooked3',
+                        type: 'crookedLine',
+                        typeOptions: {
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.crooked3.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -903,32 +833,28 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'crookedLine',
-                            type: 'crookedLine',
-                            typeOptions: {
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.crooked5.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'crookedLine',
+                        type: 'crookedLine',
+                        typeOptions: {
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.crooked5.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -953,34 +879,30 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'elliott3',
-                            type: 'elliottWave',
-                            typeOptions: {
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            },
-                            labelOptions: {
-                                style: {
-                                    color: '#666666'
-                                }
-                            }
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'elliott3',
+                        type: 'elliottWave',
+                        typeOptions: {
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
                         },
-                        navigation.annotationsOptions,
-                        navigation.bindings.elliott3.annotationsOptions);
+                        labelOptions: {
+                            style: {
+                                color: '#666666'
+                            }
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.elliott3.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -1004,40 +926,36 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'elliott5',
-                            type: 'elliottWave',
-                            typeOptions: {
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            },
-                            labelOptions: {
-                                style: {
-                                    color: '#666666'
-                                }
-                            }
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'elliott5',
+                        type: 'elliottWave',
+                        typeOptions: {
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
                         },
-                        navigation.annotationsOptions,
-                        navigation.bindings.elliott5.annotationsOptions);
+                        labelOptions: {
+                            style: {
+                                color: '#666666'
+                            }
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.elliott5.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -1063,43 +981,39 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'measure',
-                            type: 'measure',
-                            typeOptions: {
-                                selectType: 'x',
-                                point: {
-                                    x: coords.xAxis[0].value,
-                                    y: coords.yAxis[0].value,
-                                    xAxis: 0,
-                                    yAxis: 0
-                                },
-                                crosshairX: {
-                                    strokeWidth: 1,
-                                    stroke: '#000000'
-                                },
-                                crosshairY: {
-                                    enabled: false,
-                                    strokeWidth: 0,
-                                    stroke: '#000000'
-                                },
-                                background: {
-                                    width: 0,
-                                    height: 0,
-                                    strokeWidth: 0,
-                                    stroke: '#ffffff'
-                                }
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'measure',
+                        type: 'measure',
+                        typeOptions: {
+                            selectType: 'x',
+                            point: {
+                                x: coords.xAxis[0].value,
+                                y: coords.yAxis[0].value,
+                                xAxis: 0,
+                                yAxis: 0
                             },
-                            labelOptions: {
-                                style: {
-                                    color: '#666666'
-                                }
+                            crosshairX: {
+                                strokeWidth: 1,
+                                stroke: '#000000'
+                            },
+                            crosshairY: {
+                                enabled: false,
+                                strokeWidth: 0,
+                                stroke: '#000000'
+                            },
+                            background: {
+                                width: 0,
+                                height: 0,
+                                strokeWidth: 0,
+                                stroke: '#ffffff'
                             }
                         },
-                        navigation.annotationsOptions,
-                        navigation.bindings.measureX.annotationsOptions);
+                        labelOptions: {
+                            style: {
+                                color: '#666666'
+                            }
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.measureX.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -1121,43 +1035,39 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'measure',
-                            type: 'measure',
-                            typeOptions: {
-                                selectType: 'y',
-                                point: {
-                                    x: coords.xAxis[0].value,
-                                    y: coords.yAxis[0].value,
-                                    xAxis: 0,
-                                    yAxis: 0
-                                },
-                                crosshairX: {
-                                    enabled: false,
-                                    strokeWidth: 0,
-                                    stroke: '#000000'
-                                },
-                                crosshairY: {
-                                    strokeWidth: 1,
-                                    stroke: '#000000'
-                                },
-                                background: {
-                                    width: 0,
-                                    height: 0,
-                                    strokeWidth: 0,
-                                    stroke: '#ffffff'
-                                }
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'measure',
+                        type: 'measure',
+                        typeOptions: {
+                            selectType: 'y',
+                            point: {
+                                x: coords.xAxis[0].value,
+                                y: coords.yAxis[0].value,
+                                xAxis: 0,
+                                yAxis: 0
                             },
-                            labelOptions: {
-                                style: {
-                                    color: '#666666'
-                                }
+                            crosshairX: {
+                                enabled: false,
+                                strokeWidth: 0,
+                                stroke: '#000000'
+                            },
+                            crosshairY: {
+                                strokeWidth: 1,
+                                stroke: '#000000'
+                            },
+                            background: {
+                                width: 0,
+                                height: 0,
+                                strokeWidth: 0,
+                                stroke: '#ffffff'
                             }
                         },
-                        navigation.annotationsOptions,
-                        navigation.bindings.measureY.annotationsOptions);
+                        labelOptions: {
+                            style: {
+                                color: '#666666'
+                            }
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.measureY.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -1179,41 +1089,37 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'measure',
-                            type: 'measure',
-                            typeOptions: {
-                                selectType: 'xy',
-                                point: {
-                                    x: coords.xAxis[0].value,
-                                    y: coords.yAxis[0].value,
-                                    xAxis: 0,
-                                    yAxis: 0
-                                },
-                                background: {
-                                    width: 0,
-                                    height: 0,
-                                    strokeWidth: 10
-                                },
-                                crosshairX: {
-                                    strokeWidth: 1,
-                                    stroke: '#000000'
-                                },
-                                crosshairY: {
-                                    strokeWidth: 1,
-                                    stroke: '#000000'
-                                }
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'measure',
+                        type: 'measure',
+                        typeOptions: {
+                            selectType: 'xy',
+                            point: {
+                                x: coords.xAxis[0].value,
+                                y: coords.yAxis[0].value,
+                                xAxis: 0,
+                                yAxis: 0
                             },
-                            labelOptions: {
-                                style: {
-                                    color: '#666666'
-                                }
+                            background: {
+                                width: 0,
+                                height: 0,
+                                strokeWidth: 10
+                            },
+                            crosshairX: {
+                                strokeWidth: 1,
+                                stroke: '#000000'
+                            },
+                            crosshairY: {
+                                strokeWidth: 1,
+                                stroke: '#000000'
                             }
                         },
-                        navigation.annotationsOptions,
-                        navigation.bindings.measureXY.annotationsOptions);
+                        labelOptions: {
+                            style: {
+                                color: '#666666'
+                            }
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.measureXY.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -1236,28 +1142,24 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'fibonacci',
-                            type: 'fibonacci',
-                            typeOptions: {
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            },
-                            labelOptions: {
-                                style: {
-                                    color: '#666666'
-                                }
-                            }
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'fibonacci',
+                        type: 'fibonacci',
+                        typeOptions: {
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
                         },
-                        navigation.annotationsOptions,
-                        navigation.bindings.fibonacci.annotationsOptions);
+                        labelOptions: {
+                            style: {
+                                color: '#666666'
+                            }
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.fibonacci.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -1280,23 +1182,19 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
-                        navigation = this.chart.options.navigation,
-                        options = merge({
-                            langKey: 'parallelChannel',
-                            type: 'tunnel',
-                            typeOptions: {
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }]
-                            }
-                        },
-                        navigation.annotationsOptions,
-                        navigation.bindings.parallelChannel.annotationsOptions);
+                    var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
+                        langKey: 'parallelChannel',
+                        type: 'tunnel',
+                        typeOptions: {
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }]
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.parallelChannel.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -1320,32 +1218,32 @@
                 /** @ignore-option */
                 start: function (e) {
                     var coords = this.chart.pointer.getCoordinates(e), navigation = this.chart.options.navigation, options = merge({
-                            langKey: 'pitchfork',
-                            type: 'pitchfork',
-                            typeOptions: {
-                                points: [{
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value,
-                                        controlPoint: {
-                                            style: {
-                                                fill: 'red'
-                                            }
+                        langKey: 'pitchfork',
+                        type: 'pitchfork',
+                        typeOptions: {
+                            points: [{
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value,
+                                    controlPoint: {
+                                        style: {
+                                            fill: 'red'
                                         }
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }, {
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    }],
-                                innerBackground: {
-                                    fill: 'rgba(100, 170, 255, 0.8)'
-                                }
-                            },
-                            shapeOptions: {
-                                strokeWidth: 2
+                                    }
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }, {
+                                    x: coords.xAxis[0].value,
+                                    y: coords.yAxis[0].value
+                                }],
+                            innerBackground: {
+                                fill: 'rgba(100, 170, 255, 0.8)'
                             }
-                        }, navigation.annotationsOptions, navigation.bindings.pitchfork.annotationsOptions);
+                        },
+                        shapeOptions: {
+                            strokeWidth: 2
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.pitchfork.annotationsOptions);
                     return this.chart.addAnnotation(options);
                 },
                 /** @ignore-option */
@@ -1371,32 +1269,32 @@
                 /** @ignore-option */
                 start: function (e) {
                     var closestPoint = bindingsUtils.attractToPoint(e, this.chart), navigation = this.chart.options.navigation, verticalCounter = !defined(this.verticalCounter) ? 0 :
-                            this.verticalCounter, options = merge({
-                            langKey: 'verticalCounter',
-                            type: 'verticalLine',
-                            typeOptions: {
-                                point: {
-                                    x: closestPoint.x,
-                                    y: closestPoint.y,
-                                    xAxis: closestPoint.xAxis,
-                                    yAxis: closestPoint.yAxis
-                                },
-                                label: {
-                                    offset: closestPoint.below ? 40 : -40,
-                                    text: verticalCounter.toString()
-                                }
+                        this.verticalCounter, options = merge({
+                        langKey: 'verticalCounter',
+                        type: 'verticalLine',
+                        typeOptions: {
+                            point: {
+                                x: closestPoint.x,
+                                y: closestPoint.y,
+                                xAxis: closestPoint.xAxis,
+                                yAxis: closestPoint.yAxis
                             },
-                            labelOptions: {
-                                style: {
-                                    color: '#666666',
-                                    fontSize: '11px'
-                                }
-                            },
-                            shapeOptions: {
-                                stroke: 'rgba(0, 0, 0, 0.75)',
-                                strokeWidth: 1
+                            label: {
+                                offset: closestPoint.below ? 40 : -40,
+                                text: verticalCounter.toString()
                             }
-                        }, navigation.annotationsOptions, navigation.bindings.verticalCounter.annotationsOptions), annotation;
+                        },
+                        labelOptions: {
+                            style: {
+                                color: '#666666',
+                                fontSize: '11px'
+                            }
+                        },
+                        shapeOptions: {
+                            stroke: 'rgba(0, 0, 0, 0.75)',
+                            strokeWidth: 1
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.verticalCounter.annotationsOptions), annotation;
                     annotation = this.chart.addAnnotation(options);
                     verticalCounter++;
                     annotation.options.events.click.call(annotation, {});
@@ -1418,30 +1316,30 @@
                 /** @ignore-option */
                 start: function (e) {
                     var closestPoint = bindingsUtils.attractToPoint(e, this.chart), navigation = this.chart.options.navigation, options = merge({
-                            langKey: 'verticalLabel',
-                            type: 'verticalLine',
-                            typeOptions: {
-                                point: {
-                                    x: closestPoint.x,
-                                    y: closestPoint.y,
-                                    xAxis: closestPoint.xAxis,
-                                    yAxis: closestPoint.yAxis
-                                },
-                                label: {
-                                    offset: closestPoint.below ? 40 : -40
-                                }
+                        langKey: 'verticalLabel',
+                        type: 'verticalLine',
+                        typeOptions: {
+                            point: {
+                                x: closestPoint.x,
+                                y: closestPoint.y,
+                                xAxis: closestPoint.xAxis,
+                                yAxis: closestPoint.yAxis
                             },
-                            labelOptions: {
-                                style: {
-                                    color: '#666666',
-                                    fontSize: '11px'
-                                }
-                            },
-                            shapeOptions: {
-                                stroke: 'rgba(0, 0, 0, 0.75)',
-                                strokeWidth: 1
+                            label: {
+                                offset: closestPoint.below ? 40 : -40
                             }
-                        }, navigation.annotationsOptions, navigation.bindings.verticalLabel.annotationsOptions), annotation;
+                        },
+                        labelOptions: {
+                            style: {
+                                color: '#666666',
+                                fontSize: '11px'
+                            }
+                        },
+                        shapeOptions: {
+                            stroke: 'rgba(0, 0, 0, 0.75)',
+                            strokeWidth: 1
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.verticalLabel.annotationsOptions), annotation;
                     annotation = this.chart.addAnnotation(options);
                     annotation.options.events.click.call(annotation, {});
                 }
@@ -1462,29 +1360,29 @@
                 /** @ignore-option */
                 start: function (e) {
                     var closestPoint = bindingsUtils.attractToPoint(e, this.chart), navigation = this.chart.options.navigation, options = merge({
-                            langKey: 'verticalArrow',
-                            type: 'verticalLine',
-                            typeOptions: {
-                                point: {
-                                    x: closestPoint.x,
-                                    y: closestPoint.y,
-                                    xAxis: closestPoint.xAxis,
-                                    yAxis: closestPoint.yAxis
-                                },
-                                label: {
-                                    offset: closestPoint.below ? 40 : -40,
-                                    format: ' '
-                                },
-                                connector: {
-                                    fill: 'none',
-                                    stroke: closestPoint.below ? 'red' : 'green'
-                                }
+                        langKey: 'verticalArrow',
+                        type: 'verticalLine',
+                        typeOptions: {
+                            point: {
+                                x: closestPoint.x,
+                                y: closestPoint.y,
+                                xAxis: closestPoint.xAxis,
+                                yAxis: closestPoint.yAxis
                             },
-                            shapeOptions: {
-                                stroke: 'rgba(0, 0, 0, 0.75)',
-                                strokeWidth: 1
+                            label: {
+                                offset: closestPoint.below ? 40 : -40,
+                                format: ' '
+                            },
+                            connector: {
+                                fill: 'none',
+                                stroke: closestPoint.below ? 'red' : 'green'
                             }
-                        }, navigation.annotationsOptions, navigation.bindings.verticalArrow.annotationsOptions), annotation;
+                        },
+                        shapeOptions: {
+                            stroke: 'rgba(0, 0, 0, 0.75)',
+                            strokeWidth: 1
+                        }
+                    }, navigation.annotationsOptions, navigation.bindings.verticalArrow.annotationsOptions), annotation;
                     annotation = this.chart.addAnnotation(options);
                     annotation.options.events.click.call(annotation, {});
                 }
@@ -1704,14 +1602,8 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 init: function (button) {
-                    var chart = this.chart,
-                        series = chart.series[0],
-                        options = series.options,
-                        lastVisiblePrice = (options.lastVisiblePrice &&
-                            options.lastVisiblePrice.enabled),
-                        lastPrice = options.lastPrice && options.lastPrice.enabled,
-                        gui = chart.stockTools,
-                        iconsURL = gui.getIconsURL();
+                    var chart = this.chart, series = chart.series[0], options = series.options, lastVisiblePrice = (options.lastVisiblePrice &&
+                        options.lastVisiblePrice.enabled), lastPrice = options.lastPrice && options.lastPrice.enabled, gui = chart.stockTools, iconsURL = gui.getIconsURL();
                     if (gui && gui.guiEnabled) {
                         if (lastPrice) {
                             button.firstChild.style['background-image'] =
@@ -1783,9 +1675,7 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 init: function (button) {
-                    var chart = this.chart,
-                        gui = chart.stockTools,
-                        iconsURL = gui.getIconsURL();
+                    var chart = this.chart, gui = chart.stockTools, iconsURL = gui.getIconsURL();
                     this.toggledAnnotations = !this.toggledAnnotations;
                     (chart.annotations || []).forEach(function (annotation) {
                         annotation.setVisibility(!this.toggledAnnotations);
@@ -1822,12 +1712,7 @@
                 // eslint-disable-next-line valid-jsdoc
                 /** @ignore-option */
                 init: function (button) {
-                    var navigation = this,
-                        chart = navigation.chart,
-                        annotations = [],
-                        indicators = [],
-                        flags = [],
-                        yAxes = [];
+                    var navigation = this, chart = navigation.chart, annotations = [], indicators = [], flags = [], yAxes = [];
                     chart.annotations.forEach(function (annotation, index) {
                         annotations[index] = annotation.userOptions;
                     });
@@ -1873,15 +1758,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var addEvent = U.addEvent,
-            createElement = U.createElement,
-            css = U.css,
-            extend = U.extend,
-            fireEvent = U.fireEvent,
-            getStyle = U.getStyle,
-            isArray = U.isArray,
-            merge = U.merge,
-            pick = U.pick;
+        var addEvent = U.addEvent, createElement = U.createElement, css = U.css, extend = U.extend, fireEvent = U.fireEvent, getStyle = U.getStyle, isArray = U.isArray, merge = U.merge, pick = U.pick;
         var win = H.win, DIV = 'div', SPAN = 'span', UL = 'ul', LI = 'li', PREFIX = 'highcharts-', activeClass = PREFIX + 'active';
         H.setOptions({
             /**
@@ -2613,10 +2490,9 @@
             this.setStockTools();
         });
         addEvent(H.Chart, 'getMargins', function () {
-            var listWrapper = this.stockTools && this.stockTools.listWrapper,
-                offsetWidth = listWrapper && ((listWrapper.startWidth +
-                    getStyle(listWrapper, 'padding-left') +
-                    getStyle(listWrapper, 'padding-right')) || listWrapper.offsetWidth);
+            var listWrapper = this.stockTools && this.stockTools.listWrapper, offsetWidth = listWrapper && ((listWrapper.startWidth +
+                getStyle(listWrapper, 'padding-left') +
+                getStyle(listWrapper, 'padding-right')) || listWrapper.offsetWidth);
             if (offsetWidth && offsetWidth < this.plotWidth) {
                 this.plotLeft += offsetWidth;
             }
@@ -2664,11 +2540,7 @@
              * @return {void}
              */
             setStockTools: function (options) {
-                var chartOptions = this.options,
-                    lang = chartOptions.lang,
-                    guiOptions = merge(chartOptions.stockTools && chartOptions.stockTools.gui,
-                    options && options.gui),
-                    langOptions = lang.stockTools && lang.stockTools.gui;
+                var chartOptions = this.options, lang = chartOptions.lang, guiOptions = merge(chartOptions.stockTools && chartOptions.stockTools.gui, options && options.gui), langOptions = lang.stockTools && lang.stockTools.gui;
                 this.stockTools = new H.Toolbar(guiOptions, langOptions, this);
                 if (this.stockTools.guiEnabled) {
                     this.isDirtyBox = true;
@@ -2682,16 +2554,7 @@
              * @private
              */
             init: function () {
-                var _self = this,
-                    lang = this.lang,
-                    guiOptions = this.options,
-                    toolbar = this.toolbar,
-                    addSubmenu = _self.addSubmenu,
-                    buttons = guiOptions.buttons,
-                    defs = guiOptions.definitions,
-                    allButtons = toolbar.childNodes,
-                    inIframe = this.inIframe(),
-                    button;
+                var _self = this, lang = this.lang, guiOptions = this.options, toolbar = this.toolbar, addSubmenu = _self.addSubmenu, buttons = guiOptions.buttons, defs = guiOptions.definitions, allButtons = toolbar.childNodes, inIframe = this.inIframe(), button;
                 // create buttons
                 buttons.forEach(function (btnName) {
                     button = _self.addButton(toolbar, defs, btnName, lang);
@@ -2718,15 +2581,7 @@
              * list of all buttons
              */
             addSubmenu: function (parentBtn, button) {
-                var _self = this,
-                    submenuArrow = parentBtn.submenuArrow,
-                    buttonWrapper = parentBtn.buttonWrapper,
-                    buttonWidth = getStyle(buttonWrapper, 'width'),
-                    wrapper = this.wrapper,
-                    menuWrapper = this.listWrapper,
-                    allButtons = this.toolbar.childNodes,
-                    topMargin = 0,
-                    submenuWrapper;
+                var _self = this, submenuArrow = parentBtn.submenuArrow, buttonWrapper = parentBtn.buttonWrapper, buttonWidth = getStyle(buttonWrapper, 'width'), wrapper = this.wrapper, menuWrapper = this.listWrapper, allButtons = this.toolbar.childNodes, topMargin = 0, submenuWrapper;
                 // create submenu container
                 this.submenu = submenuWrapper = createElement(UL, {
                     className: PREFIX + 'submenu-wrapper'
@@ -2785,13 +2640,7 @@
              *
              */
             addSubmenuItems: function (buttonWrapper, button) {
-                var _self = this,
-                    submenuWrapper = this.submenu,
-                    lang = this.lang,
-                    menuWrapper = this.listWrapper,
-                    items = button.items,
-                    firstSubmenuItem,
-                    submenuBtn;
+                var _self = this, submenuWrapper = this.submenu, lang = this.lang, menuWrapper = this.listWrapper, items = button.items, firstSubmenuItem, submenuBtn;
                 // add items to submenu
                 items.forEach(function (btnName) {
                     // add buttons to submenu
@@ -2841,13 +2690,7 @@
              * @return {Object} - references to all created HTML elements
              */
             addButton: function (target, options, btnName, lang) {
-                var btnOptions = options[btnName],
-                    items = btnOptions.items,
-                    classMapping = H.Toolbar.prototype.classMapping,
-                    userClassName = btnOptions.className || '',
-                    mainButton,
-                    submenuArrow,
-                    buttonWrapper;
+                var btnOptions = options[btnName], items = btnOptions.items, classMapping = H.Toolbar.prototype.classMapping, userClassName = btnOptions.className || '', mainButton, submenuArrow, buttonWrapper;
                 // main button wrapper
                 buttonWrapper = createElement(LI, {
                     className: pick(classMapping[btnName], '') + ' ' + userClassName,
@@ -2882,8 +2725,7 @@
              *
              */
             addNavigation: function () {
-                var stockToolbar = this,
-                    wrapper = stockToolbar.wrapper;
+                var stockToolbar = this, wrapper = stockToolbar.wrapper;
                 // arrow wrapper
                 stockToolbar.arrowWrapper = createElement(DIV, {
                     className: PREFIX + 'arrow-wrapper'
@@ -2908,15 +2750,10 @@
              *
              */
             scrollButtons: function () {
-                var targetY = 0,
-                    _self = this,
-                    wrapper = _self.wrapper,
-                    toolbar = _self.toolbar,
-                    step = 0.1 * wrapper.offsetHeight; // 0.1 = 10%
-                    _self.eventsToUnbind.push(addEvent(_self.arrowUp, 'click',
-                    function () {
-                        if (targetY > 0) {
-                            targetY -= step;
+                var targetY = 0, _self = this, wrapper = _self.wrapper, toolbar = _self.toolbar, step = 0.1 * wrapper.offsetHeight; // 0.1 = 10%
+                _self.eventsToUnbind.push(addEvent(_self.arrowUp, 'click', function () {
+                    if (targetY > 0) {
+                        targetY -= step;
                         toolbar.style['margin-top'] = -targetY + 'px';
                     }
                 }));
@@ -2933,15 +2770,7 @@
              *
              */
             createHTML: function () {
-                var stockToolbar = this,
-                    chart = stockToolbar.chart,
-                    guiOptions = stockToolbar.options,
-                    container = chart.container,
-                    navigation = chart.options.navigation,
-                    bindingsClassName = navigation && navigation.bindingsClassName,
-                    listWrapper,
-                    toolbar,
-                    wrapper;
+                var stockToolbar = this, chart = stockToolbar.chart, guiOptions = stockToolbar.options, container = chart.container, navigation = chart.options.navigation, bindingsClassName = navigation && navigation.bindingsClassName, listWrapper, toolbar, wrapper;
                 // create main container
                 stockToolbar.wrapper = wrapper = createElement(DIV, {
                     className: PREFIX + 'stocktools-wrapper ' +
@@ -2986,13 +2815,7 @@
              * @private
              */
             showHideToolbar: function () {
-                var stockToolbar = this,
-                    chart = this.chart,
-                    wrapper = stockToolbar.wrapper,
-                    toolbar = this.listWrapper,
-                    submenu = this.submenu,
-                    visible = this.visible,
-                    showhideBtn;
+                var stockToolbar = this, chart = this.chart, wrapper = stockToolbar.wrapper, toolbar = this.listWrapper, submenu = this.submenu, visible = this.visible, showhideBtn;
                 // Show hide toolbar
                 this.showhideBtn = showhideBtn = createElement(DIV, {
                     className: PREFIX + 'toggle-toolbar ' + PREFIX + 'arrow-left'
@@ -3037,10 +2860,9 @@
              *
              */
             switchSymbol: function (button, redraw) {
-                var buttonWrapper = button.parentNode,
-                    buttonWrapperClass = buttonWrapper.classList.value, 
-                    // main button in first level og GUI
-                    mainNavButton = buttonWrapper.parentNode.parentNode;
+                var buttonWrapper = button.parentNode, buttonWrapperClass = buttonWrapper.classList.value, 
+                // main button in first level og GUI
+                mainNavButton = buttonWrapper.parentNode.parentNode;
                 // set class
                 mainNavButton.className = '';
                 if (buttonWrapperClass) {
@@ -3078,7 +2900,7 @@
              */
             unselectAllButtons: function (button) {
                 var activeButtons = button.parentNode
-                        .querySelectorAll('.' + activeClass);
+                    .querySelectorAll('.' + activeClass);
                 [].forEach.call(activeButtons, function (activeBtn) {
                     if (activeBtn !== button) {
                         activeBtn.classList.remove(activeClass);
@@ -3117,8 +2939,7 @@
              * @private
              */
             destroy: function () {
-                var stockToolsDiv = this.wrapper,
-                    parent = stockToolsDiv && stockToolsDiv.parentNode;
+                var stockToolsDiv = this.wrapper, parent = stockToolsDiv && stockToolsDiv.parentNode;
                 this.eventsToUnbind.forEach(function (unbinder) {
                     unbinder();
                 });
@@ -3191,9 +3012,7 @@
         };
         // Comunication with bindings:
         addEvent(H.NavigationBindings, 'selectButton', function (event) {
-            var button = event.button,
-                className = PREFIX + 'submenu-wrapper',
-                gui = this.chart.stockTools;
+            var button = event.button, className = PREFIX + 'submenu-wrapper', gui = this.chart.stockTools;
             if (gui && gui.guiEnabled) {
                 // Unslect other active buttons
                 gui.unselectAllButtons(event.button);
@@ -3206,9 +3025,7 @@
             }
         });
         addEvent(H.NavigationBindings, 'deselectButton', function (event) {
-            var button = event.button,
-                className = PREFIX + 'submenu-wrapper',
-                gui = this.chart.stockTools;
+            var button = event.button, className = PREFIX + 'submenu-wrapper', gui = this.chart.stockTools;
             if (gui && gui.guiEnabled) {
                 // If deselecting a button from a submenu, select state for it's parent
                 if (button.parentNode.className.indexOf(className) >= 0) {

@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -36,9 +36,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var correctFloat = U.correctFloat,
-            isArray = U.isArray,
-            seriesType = U.seriesType;
+        var correctFloat = U.correctFloat, isArray = U.isArray, seriesType = U.seriesType;
         /**
          * The EMA series type.
          *
@@ -83,9 +81,7 @@
          */
         {
             accumulatePeriodPoints: function (period, index, yVal) {
-                var sum = 0,
-                    i = 0,
-                    y = 0;
+                var sum = 0, i = 0, y = 0;
                 while (i < period) {
                     y = index < 0 ? yVal[i] : yVal[i][index];
                     sum = sum + y;
@@ -94,31 +90,16 @@
                 return sum;
             },
             calculateEma: function (xVal, yVal, i, EMApercent, calEMA, index, SMA) {
-                var x = xVal[i - 1],
-                    yValue = index < 0 ?
-                        yVal[i - 1] :
-                        yVal[i - 1][index],
-                    y;
+                var x = xVal[i - 1], yValue = index < 0 ?
+                    yVal[i - 1] :
+                    yVal[i - 1][index], y;
                 y = typeof calEMA === 'undefined' ?
                     SMA : correctFloat((yValue * EMApercent) +
                     (calEMA * (1 - EMApercent)));
                 return [x, y];
             },
             getValues: function (series, params) {
-                var period = params.period,
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    EMApercent = 2 / (period + 1),
-                    sum = 0,
-                    EMA = [],
-                    xData = [],
-                    yData = [],
-                    index = -1,
-                    SMA = 0,
-                    calEMA,
-                    EMAPoint,
-                    i;
+                var period = params.period, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, EMApercent = 2 / (period + 1), sum = 0, EMA = [], xData = [], yData = [], index = -1, SMA = 0, calEMA, EMAPoint, i;
                 // Check period, if bigger than points length, skip
                 if (yValLen < period) {
                     return;

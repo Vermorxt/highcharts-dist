@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -28,7 +28,7 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'mixins/reduce-array.js', [_modules['parts/Globals.js']], function (H) {
+    _registerModule(_modules, 'mixins/reduce-array.js', [], function () {
         /**
          *
          *  (c) 2010-2020 Pawel Fus & Daniel Studencki
@@ -38,22 +38,17 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var reduce = H.reduce;
         var reduceArrayMixin = {
-                /**
-                 * Get min value of array filled by OHLC data.
-                 * @private
-                 * @param {Array<*>} arr Array of OHLC points (arrays).
-                 * @param {string} index Index of "low" value in point array.
-                 * @return {number} Returns min value.
-                 */
-                minInArray: function (arr,
-            index) {
-                    return reduce(arr,
-            function (min,
-            target) {
-                        return Math.min(min,
-            target[index]);
+            /**
+             * Get min value of array filled by OHLC data.
+             * @private
+             * @param {Array<*>} arr Array of OHLC points (arrays).
+             * @param {string} index Index of "low" value in point array.
+             * @return {number} Returns min value.
+             */
+            minInArray: function (arr, index) {
+                return arr.reduce(function (min, target) {
+                    return Math.min(min, target[index]);
                 }, Number.MAX_VALUE);
             },
             /**
@@ -64,7 +59,7 @@
              * @return {number} Returns max value.
              */
             maxInArray: function (arr, index) {
-                return reduce(arr, function (max, target) {
+                return arr.reduce(function (max, target) {
                     return Math.max(max, target[index]);
                 }, -Number.MAX_VALUE);
             },
@@ -77,7 +72,7 @@
              * @return {Array<number,number>} Returns array with min and max value.
              */
             getArrayExtremes: function (arr, minIndex, maxIndex) {
-                return reduce(arr, function (prev, target) {
+                return arr.reduce(function (prev, target) {
                     return [
                         Math.min(prev[0], target[minIndex]),
                         Math.max(prev[1], target[maxIndex])
@@ -96,8 +91,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isArray = U.isArray,
-            seriesType = U.seriesType;
+        var isArray = U.isArray, seriesType = U.seriesType;
         var getArrayExtremes = reduceArrayMixin.getArrayExtremes;
         /**
          * The Williams %R series type.
@@ -144,23 +138,11 @@
         {
             nameBase: 'Williams %R',
             getValues: function (series, params) {
-                var period = params.period,
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    WR = [], // 0- date, 1- Williams %R
-                    xData = [],
-                    yData = [],
-                    slicedY,
-                    close = 3,
-                    low = 2,
-                    high = 1,
-                    extremes,
-                    R,
-                    HH, // Highest high value in period
-                    LL, // Lowest low value in period
-                    CC, // Current close value
-                    i;
+                var period = params.period, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, WR = [], // 0- date, 1- Williams %R
+                xData = [], yData = [], slicedY, close = 3, low = 2, high = 1, extremes, R, HH, // Highest high value in period
+                LL, // Lowest low value in period
+                CC, // Current close value
+                i;
                 // Williams %R requires close value
                 if (xVal.length < period ||
                     !isArray(yVal[0]) ||

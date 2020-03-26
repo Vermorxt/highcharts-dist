@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * (c) 2014-2019 Highsoft AS
  * Authors: Jon Arild Nygard / Oystein Moseng
@@ -33,14 +33,9 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var extend = U.extend,
-            isArray = U.isArray,
-            isNumber = U.isNumber,
-            isObject = U.isObject,
-            merge = U.merge,
-            pick = U.pick;
+        var extend = U.extend, isArray = U.isArray, isNumber = U.isNumber, isObject = U.isObject, merge = U.merge, pick = U.pick;
         var isBoolean = function (x) {
-                return typeof x === 'boolean';
+            return typeof x === 'boolean';
         }, isFn = function (x) {
             return typeof x === 'function';
         };
@@ -50,21 +45,10 @@
          * @todo Remove logic from Treemap and make it utilize this mixin.
          * @private
          */
-        var setTreeValues = function setTreeValues(tree,
-            options) {
-                var before = options.before,
-            idRoot = options.idRoot,
-            mapIdToNode = options.mapIdToNode,
-            nodeRoot = mapIdToNode[idRoot],
-            levelIsConstant = (isBoolean(options.levelIsConstant) ?
-                    options.levelIsConstant :
-                    true),
-            points = options.points,
-            point = points[tree.i],
-            optionsPoint = point && point.options || {},
-            childrenTotal = 0,
-            children = [],
-            value;
+        var setTreeValues = function setTreeValues(tree, options) {
+            var before = options.before, idRoot = options.idRoot, mapIdToNode = options.mapIdToNode, nodeRoot = mapIdToNode[idRoot], levelIsConstant = (isBoolean(options.levelIsConstant) ?
+                options.levelIsConstant :
+                true), points = options.points, point = points[tree.i], optionsPoint = point && point.options || {}, childrenTotal = 0, children = [], value;
             extend(tree, {
                 levelDynamic: tree.level - (levelIsConstant ? 0 : nodeRoot.level),
                 name: pick(point && point.name, ''),
@@ -76,8 +60,7 @@
             }
             // First give the children some values
             tree.children.forEach(function (child, i) {
-                var newOptions = extend({},
-                    options);
+                var newOptions = extend({}, options);
                 extend(newOptions, {
                     index: i,
                     siblings: tree.children.length,
@@ -103,24 +86,8 @@
         /**
          * @private
          */
-        var getColor = function getColor(node,
-            options) {
-                var index = options.index,
-            mapOptionsToLevel = options.mapOptionsToLevel,
-            parentColor = options.parentColor,
-            parentColorIndex = options.parentColorIndex,
-            series = options.series,
-            colors = options.colors,
-            siblings = options.siblings,
-            points = series.points,
-            getColorByPoint,
-            chartOptionsChart = series.chart.options.chart,
-            point,
-            level,
-            colorByPoint,
-            colorIndexByPoint,
-            color,
-            colorIndex;
+        var getColor = function getColor(node, options) {
+            var index = options.index, mapOptionsToLevel = options.mapOptionsToLevel, parentColor = options.parentColor, parentColorIndex = options.parentColorIndex, series = options.series, colors = options.colors, siblings = options.siblings, points = series.points, getColorByPoint, chartOptionsChart = series.chart.options.chart, point, level, colorByPoint, colorIndexByPoint, color, colorIndex;
             /**
              * @private
              */
@@ -171,13 +138,7 @@
          *         Returns a map from level number to its given options.
          */
         var getLevelOptions = function getLevelOptions(params) {
-                var result = null,
-            defaults,
-            converted,
-            i,
-            from,
-            to,
-            levels;
+            var result = null, defaults, converted, i, from, to, levels;
             if (isObject(params)) {
                 result = {};
                 from = isNumber(params.from) ? params.from : 1;
@@ -186,9 +147,7 @@
                 defaults = isObject(params.defaults) ? params.defaults : {};
                 if (isArray(levels)) {
                     converted = levels.reduce(function (obj, item) {
-                        var level,
-                            levelIsConstant,
-                            options;
+                        var level, levelIsConstant, options;
                         if (isObject(item) && isNumber(item.level)) {
                             options = merge({}, item);
                             levelIsConstant = (isBoolean(options.levelIsConstant) ?
@@ -230,8 +189,7 @@
          *         Returns the resulting rootId after update.
          */
         var updateRootId = function (series) {
-                var rootId,
-            options;
+            var rootId, options;
             if (isObject(series)) {
                 // Get the series options.
                 options = isObject(series.options) ? series.options : {};
@@ -247,11 +205,11 @@
             return rootId;
         };
         var result = {
-                getColor: getColor,
-                getLevelOptions: getLevelOptions,
-                setTreeValues: setTreeValues,
-                updateRootId: updateRootId
-            };
+            getColor: getColor,
+            getLevelOptions: getLevelOptions,
+            setTreeValues: setTreeValues,
+            updateRootId: updateRootId
+        };
 
         return result;
     });
@@ -262,7 +220,7 @@
          *
          * */
         var isFn = function (x) {
-                return typeof x === 'function';
+            return typeof x === 'function';
         };
         /* eslint-disable no-invalid-this, valid-jsdoc */
         /**
@@ -279,12 +237,7 @@
          * @todo export this function to enable usage
          */
         var draw = function draw(params) {
-                var component = this,
-            graphic = component.graphic,
-            animatableAttribs = params.animatableAttribs,
-            onComplete = params.onComplete,
-            css = params.css,
-            renderer = params.renderer;
+            var component = this, graphic = component.graphic, animatableAttribs = params.animatableAttribs, onComplete = params.onComplete, css = params.css, renderer = params.renderer;
             if (component.shouldDraw()) {
                 if (!graphic) {
                     component.graphic = graphic =
@@ -298,7 +251,7 @@
             }
             else if (graphic) {
                 var destroy = function () {
-                        component.graphic = graphic = graphic.destroy();
+                    component.graphic = graphic = graphic.destroy();
                     if (isFn(onComplete)) {
                         onComplete();
                     }
@@ -321,8 +274,7 @@
          * @param {Highcharts.Dictionary<any>} params Parameters
          */
         var drawPoint = function drawPoint(params) {
-                var point = this,
-            attribs = params.attribs = params.attribs || {};
+            var point = this, attribs = params.attribs = params.attribs || {};
             // Assigning class in dot notation does go well in IE8
             // eslint-disable-next-line dot-notation
             attribs['class'] = point.getClassName();
@@ -345,30 +297,13 @@
          *
          * */
         var color = Color.parse;
-        var addEvent = U.addEvent,
-            correctFloat = U.correctFloat,
-            defined = U.defined,
-            error = U.error,
-            extend = U.extend,
-            fireEvent = U.fireEvent,
-            isArray = U.isArray,
-            isNumber = U.isNumber,
-            isObject = U.isObject,
-            isString = U.isString,
-            merge = U.merge,
-            objectEach = U.objectEach,
-            pick = U.pick,
-            seriesType = U.seriesType,
-            stableSort = U.stableSort;
+        var addEvent = U.addEvent, correctFloat = U.correctFloat, defined = U.defined, error = U.error, extend = U.extend, fireEvent = U.fireEvent, isArray = U.isArray, isNumber = U.isNumber, isObject = U.isObject, isString = U.isString, merge = U.merge, objectEach = U.objectEach, pick = U.pick, seriesType = U.seriesType, stableSort = U.stableSort;
         /* eslint-disable no-invalid-this */
         var AXIS_MAX = 100;
-        var seriesTypes = H.seriesTypes,
-            noop = H.noop,
-            getColor = mixinTreeSeries.getColor,
-            getLevelOptions = mixinTreeSeries.getLevelOptions, 
-            // @todo Similar to eachObject, this function is likely redundant
-            isBoolean = function (x) {
-                return typeof x === 'boolean';
+        var seriesTypes = H.seriesTypes, noop = H.noop, getColor = mixinTreeSeries.getColor, getLevelOptions = mixinTreeSeries.getLevelOptions, 
+        // @todo Similar to eachObject, this function is likely redundant
+        isBoolean = function (x) {
+            return typeof x === 'boolean';
         }, Series = H.Series, 
         // @todo Similar to recursive, this function is likely redundant
         eachObject = function (list, func, context) {
@@ -533,9 +468,8 @@
                 enabled: true,
                 formatter: function () {
                     var point = this && this.point ?
-                            this.point :
-                            {},
-                        name = isString(point.name) ? point.name : '';
+                        this.point :
+                        {}, name = isString(point.name) ? point.name : '';
                     return name;
                 },
                 inside: true,
@@ -886,12 +820,8 @@
              *         Map from parent id to children index in data.
              */
             getListOfParents: function (data, existingIds) {
-                var arr = isArray(data) ? data : [],
-                    ids = isArray(existingIds) ? existingIds : [],
-                    listOfParents = arr.reduce(function (prev,
-                    curr,
-                    i) {
-                        var parent = pick(curr.parent, '');
+                var arr = isArray(data) ? data : [], ids = isArray(existingIds) ? existingIds : [], listOfParents = arr.reduce(function (prev, curr, i) {
+                    var parent = pick(curr.parent, '');
                     if (typeof prev[parent] === 'undefined') {
                         prev[parent] = [];
                     }
@@ -913,9 +843,8 @@
             },
             // Creates a tree structured object from the series points
             getTree: function () {
-                var series = this,
-                    allIds = this.data.map(function (d) {
-                        return d.id;
+                var series = this, allIds = this.data.map(function (d) {
+                    return d.id;
                 }), parentList = series.getListOfParents(this.data, allIds);
                 series.nodeMap = [];
                 return series.buildNode('', -1, 0, parentList, null);
@@ -926,8 +855,7 @@
                 return !!this.processedXData.length; // != 0
             },
             init: function (chart, options) {
-                var series = this,
-                    colorMapSeriesMixin = H.colorMapSeriesMixin;
+                var series = this, colorMapSeriesMixin = H.colorMapSeriesMixin;
                 // If color series logic is loaded, add some properties
                 if (colorMapSeriesMixin) {
                     this.colorAttribs = colorMapSeriesMixin.colorAttribs;
@@ -952,12 +880,7 @@
                 }
             },
             buildNode: function (id, i, level, list, parent) {
-                var series = this,
-                    children = [],
-                    point = series.points[i],
-                    height = 0,
-                    node,
-                    child;
+                var series = this, children = [], point = series.points[i], height = 0, node, child;
                 // Actions
                 ((list[id] || [])).forEach(function (i) {
                     child = series.buildNode(series.points[i].id, i, (level + 1), list, id);
@@ -980,18 +903,9 @@
                 return node;
             },
             setTreeValues: function (tree) {
-                var series = this,
-                    options = series.options,
-                    idRoot = series.rootNode,
-                    mapIdToNode = series.nodeMap,
-                    nodeRoot = mapIdToNode[idRoot],
-                    levelIsConstant = (isBoolean(options.levelIsConstant) ?
-                        options.levelIsConstant :
-                        true),
-                    childrenTotal = 0,
-                    children = [],
-                    val,
-                    point = series.points[tree.i];
+                var series = this, options = series.options, idRoot = series.rootNode, mapIdToNode = series.nodeMap, nodeRoot = mapIdToNode[idRoot], levelIsConstant = (isBoolean(options.levelIsConstant) ?
+                    options.levelIsConstant :
+                    true), childrenTotal = 0, children = [], val, point = series.points[tree.i];
                 // First give the children some values
                 tree.children.forEach(function (child) {
                     child = series.setTreeValues(child);
@@ -1036,16 +950,8 @@
              *        The rectangular area of the parent.
              */
             calculateChildrenAreas: function (parent, area) {
-                var series = this,
-                    options = series.options,
-                    mapOptionsToLevel = series.mapOptionsToLevel,
-                    level = mapOptionsToLevel[parent.level + 1],
-                    algorithm = pick((series[(level && level.layoutAlgorithm)] &&
-                        level.layoutAlgorithm),
-                    options.layoutAlgorithm),
-                    alternate = options.alternateStartingDirection,
-                    childrenValues = [],
-                    children;
+                var series = this, options = series.options, mapOptionsToLevel = series.mapOptionsToLevel, level = mapOptionsToLevel[parent.level + 1], algorithm = pick((series[(level && level.layoutAlgorithm)] &&
+                    level.layoutAlgorithm), options.layoutAlgorithm), alternate = options.alternateStartingDirection, childrenValues = [], children;
                 // Collect all children which should be included
                 children = parent.children.filter(function (n) {
                     return !n.ignore;
@@ -1077,9 +983,7 @@
             },
             setPointValues: function () {
                 var series = this;
-                var points = series.points,
-                    xAxis = series.xAxis,
-                    yAxis = series.yAxis;
+                var points = series.points, xAxis = series.xAxis, yAxis = series.yAxis;
                 var styledMode = series.chart.styledMode;
                 // Get the crisp correction in classic mode. For this to work in
                 // styled mode, we would need to first add the shape (without x,
@@ -1088,27 +992,18 @@
                 // shapeArgs. This applies also to column series, but the
                 // downside is performance and code complexity.
                 var getCrispCorrection = function (point) { return (styledMode ?
-                        0 :
-                        ((series.pointAttribs(point)['stroke-width'] || 0) % 2) / 2); };
+                    0 :
+                    ((series.pointAttribs(point)['stroke-width'] || 0) % 2) / 2); };
                 points.forEach(function (point) {
-                    var _a = point.node,
-                        values = _a.pointValues,
-                        visible = _a.visible;
+                    var _a = point.node, values = _a.pointValues, visible = _a.visible;
                     // Points which is ignored, have no values.
                     if (values && visible) {
-                        var height = values.height,
-                            width = values.width,
-                            x = values.x,
-                            y = values.y;
+                        var height = values.height, width = values.width, x = values.x, y = values.y;
                         var crispCorr = getCrispCorrection(point);
-                        var x1 = Math.round(xAxis.toPixels(x,
-                            true)) - crispCorr;
-                        var x2 = Math.round(xAxis.toPixels(x + width,
-                            true)) - crispCorr;
-                        var y1 = Math.round(yAxis.toPixels(y,
-                            true)) - crispCorr;
-                        var y2 = Math.round(yAxis.toPixels(y + height,
-                            true)) - crispCorr;
+                        var x1 = Math.round(xAxis.toPixels(x, true)) - crispCorr;
+                        var x2 = Math.round(xAxis.toPixels(x + width, true)) - crispCorr;
+                        var y1 = Math.round(yAxis.toPixels(y, true)) - crispCorr;
+                        var y2 = Math.round(yAxis.toPixels(y + height, true)) - crispCorr;
                         // Set point values
                         point.shapeArgs = {
                             x: Math.min(x1, x2),
@@ -1130,11 +1025,7 @@
             },
             // Set the node's color recursively, from the parent down.
             setColorRecursive: function (node, parentColor, colorIndex, index, siblings) {
-                var series = this,
-                    chart = series && series.chart,
-                    colors = chart && chart.options && chart.options.colors,
-                    colorInfo,
-                    point;
+                var series = this, chart = series && series.chart, colors = chart && chart.options && chart.options.colors, colorInfo, point;
                 if (node) {
                     colorInfo = getColor(node, {
                         colors: colors,
@@ -1213,16 +1104,7 @@
                 };
             },
             algorithmCalcPoints: function (directionChange, last, group, childrenArea) {
-                var pX,
-                    pY,
-                    pW,
-                    pH,
-                    gW = group.lW,
-                    gH = group.lH,
-                    plot = group.plot,
-                    keep,
-                    i = 0,
-                    end = group.elArr.length - 1;
+                var pX, pY, pW, pH, gW = group.lW, gH = group.lH, plot = group.plot, keep, i = 0, end = group.elArr.length - 1;
                 if (last) {
                     gW = group.nW;
                     gH = group.nH;
@@ -1278,22 +1160,12 @@
                 }
             },
             algorithmLowAspectRatio: function (directionChange, parent, children) {
-                var childrenArea = [],
-                    series = this,
-                    pTot,
-                    plot = {
-                        x: parent.x,
-                        y: parent.y,
-                        parent: parent
-                    },
-                    direction = parent.direction,
-                    i = 0,
-                    end = children.length - 1,
-                    group = new this.algorithmGroup(// eslint-disable-line new-cap
-                    parent.height,
-                    parent.width,
-                    direction,
-                    plot);
+                var childrenArea = [], series = this, pTot, plot = {
+                    x: parent.x,
+                    y: parent.y,
+                    parent: parent
+                }, direction = parent.direction, i = 0, end = children.length - 1, group = new this.algorithmGroup(// eslint-disable-line new-cap
+                parent.height, parent.width, direction, plot);
                 // Loop through and calculate all areas
                 children.forEach(function (child) {
                     pTot =
@@ -1313,17 +1185,7 @@
                 return childrenArea;
             },
             algorithmFill: function (directionChange, parent, children) {
-                var childrenArea = [],
-                    pTot,
-                    direction = parent.direction,
-                    x = parent.x,
-                    y = parent.y,
-                    width = parent.width,
-                    height = parent.height,
-                    pX,
-                    pY,
-                    pW,
-                    pH;
+                var childrenArea = [], pTot, direction = parent.direction, x = parent.x, y = parent.y, width = parent.width, height = parent.height, pX, pY, pW, pH;
                 children.forEach(function (child) {
                     pTot =
                         (parent.width * parent.height) * (child.val / parent.val);
@@ -1366,15 +1228,9 @@
                 return this.algorithmFill(false, parent, children);
             },
             translate: function () {
-                var series = this,
-                    options = series.options, 
-                    // NOTE: updateRootId modifies series.
-                    rootId = updateRootId(series),
-                    rootNode,
-                    pointValues,
-                    seriesArea,
-                    tree,
-                    val;
+                var series = this, options = series.options, 
+                // NOTE: updateRootId modifies series.
+                rootId = updateRootId(series), rootNode, pointValues, seriesArea, tree, val;
                 // Call prototype function
                 Series.prototype.translate.call(series);
                 // @todo Only if series.isDirtyData is true
@@ -1398,8 +1254,7 @@
                 }
                 // Parents of the root node is by default visible
                 recursive(series.nodeMap[series.rootNode], function (node) {
-                    var next = false,
-                        p = node.parent;
+                    var next = false, p = node.parent;
                     node.visible = true;
                     if (p || p === '') {
                         next = series.nodeMap[p];
@@ -1464,10 +1319,8 @@
              * @function Highcharts.Series#drawDataLabels
              */
             drawDataLabels: function () {
-                var series = this,
-                    mapOptionsToLevel = series.mapOptionsToLevel,
-                    points = series.points.filter(function (n) {
-                        return n.node.visible;
+                var series = this, mapOptionsToLevel = series.mapOptionsToLevel, points = series.points.filter(function (n) {
+                    return n.node.visible;
                 }), options, level;
                 points.forEach(function (point) {
                     level = mapOptionsToLevel[point.node.level];
@@ -1520,16 +1373,9 @@
             },
             // Get presentational attributes
             pointAttribs: function (point, state) {
-                var series = this,
-                    mapOptionsToLevel = (isObject(series.mapOptionsToLevel) ?
-                        series.mapOptionsToLevel :
-                        {}),
-                    level = point && mapOptionsToLevel[point.node.level] || {},
-                    options = this.options,
-                    attr,
-                    stateOptions = (state && options.states[state]) || {},
-                    className = (point && point.getClassName()) || '',
-                    opacity;
+                var series = this, mapOptionsToLevel = (isObject(series.mapOptionsToLevel) ?
+                    series.mapOptionsToLevel :
+                    {}), level = point && mapOptionsToLevel[point.node.level] || {}, options = this.options, attr, stateOptions = (state && options.states[state]) || {}, className = (point && point.getClassName()) || '', opacity;
                 // Set attributes by precedence. Point trumps level trumps series.
                 // Stroke width uses pick because it can be 0.
                 attr = {
@@ -1569,25 +1415,9 @@
             },
             // Override drawPoints
             drawPoints: function () {
-                var series = this,
-                    chart = series.chart,
-                    renderer = chart.renderer,
-                    points = series.points,
-                    styledMode = chart.styledMode,
-                    options = series.options,
-                    shadow = styledMode ? {} : options.shadow,
-                    borderRadius = options.borderRadius,
-                    withinAnimationLimit = chart.pointCount < options.animationLimit,
-                    allowTraversingTree = options.allowTraversingTree;
+                var series = this, chart = series.chart, renderer = chart.renderer, points = series.points, styledMode = chart.styledMode, options = series.options, shadow = styledMode ? {} : options.shadow, borderRadius = options.borderRadius, withinAnimationLimit = chart.pointCount < options.animationLimit, allowTraversingTree = options.allowTraversingTree;
                 points.forEach(function (point) {
-                    var levelDynamic = point.node.levelDynamic,
-                        animate = {},
-                        attr = {},
-                        css = {},
-                        groupKey = 'level-group-' + levelDynamic,
-                        hasGraphic = !!point.graphic,
-                        shouldAnimate = withinAnimationLimit && hasGraphic,
-                        shapeArgs = point.shapeArgs;
+                    var levelDynamic = point.node.levelDynamic, animate = {}, attr = {}, css = {}, groupKey = 'level-group-' + levelDynamic, hasGraphic = !!point.graphic, shouldAnimate = withinAnimationLimit && hasGraphic, shapeArgs = point.shapeArgs;
                     // Don't bother with calculate styling if the point is not drawn
                     if (point.shouldDraw()) {
                         if (borderRadius) {
@@ -1642,9 +1472,7 @@
             },
             // Add drilling on the suitable points
             onClickDrillToNode: function (event) {
-                var series = this,
-                    point = event.point,
-                    drillId = point && point.drillId;
+                var series = this, point = event.point, drillId = point && point.drillId;
                 // If a drill id is returned, add click event and cursor.
                 if (isString(drillId)) {
                     point.setState(''); // Remove hover
@@ -1665,8 +1493,7 @@
              *         event.
              */
             drillToByGroup: function (point) {
-                var series = this,
-                    drillId = false;
+                var series = this, drillId = false;
                 if ((point.node.level - series.nodeMap[series.rootNode].level) ===
                     1 &&
                     !point.node.isLeaf) {
@@ -1688,9 +1515,7 @@
              *         event.
              */
             drillToByLeaf: function (point) {
-                var series = this,
-                    drillId = false,
-                    nodeParent;
+                var series = this, drillId = false, nodeParent;
                 if ((point.node.parent !== series.rootNode) &&
                     point.node.isLeaf) {
                     nodeParent = point.node;
@@ -1704,8 +1529,7 @@
                 return drillId;
             },
             drillUp: function () {
-                var series = this,
-                    node = series.nodeMap[series.rootNode];
+                var series = this, node = series.nodeMap[series.rootNode];
                 if (node && isString(node.parent)) {
                     series.setRootNode(node.parent, true, { trigger: 'traverseUpButton' });
                 }
@@ -1741,15 +1565,12 @@
              * @fires Highcharts.Series#event:setRootNode
              */
             setRootNode: function (id, redraw, eventArguments) {
-                var series = this,
-                    eventArgs = extend({
-                        newRootId: id,
-                        previousRootId: series.rootNode,
-                        redraw: pick(redraw,
-                    true),
-                        series: series
-                    },
-                    eventArguments);
+                var series = this, eventArgs = extend({
+                    newRootId: id,
+                    previousRootId: series.rootNode,
+                    redraw: pick(redraw, true),
+                    series: series
+                }, eventArguments);
                 /**
                  * The default functionality of the setRootNode event.
                  *
@@ -1765,7 +1586,7 @@
                  * @return {void}
                  */
                 var defaultFn = function (args) {
-                        var series = args.series;
+                    var series = args.series;
                     // Store previous and new root ids on the series.
                     series.idPreviousRoot = args.previousRootId;
                     series.rootNode = args.newRootId;
@@ -1779,15 +1600,7 @@
                 fireEvent(series, 'setRootNode', eventArgs, defaultFn);
             },
             renderTraverseUpButton: function (rootId) {
-                var series = this,
-                    nodeMap = series.nodeMap,
-                    node = nodeMap[rootId],
-                    name = node.name,
-                    buttonOptions = series.options.traverseUpButton,
-                    backText = pick(buttonOptions.text,
-                    name, '< Back'),
-                    attr,
-                    states;
+                var series = this, nodeMap = series.nodeMap, node = nodeMap[rootId], name = node.name, buttonOptions = series.options.traverseUpButton, backText = pick(buttonOptions.text, name, '< Back'), attr, states;
                 if (rootId === '') {
                     if (series.drillUpButton) {
                         series.drillUpButton =
@@ -1821,11 +1634,12 @@
             drawLegendSymbol: LegendSymbolMixin.drawRectangle,
             getExtremes: function () {
                 // Get the extremes from the value data
-                Series.prototype.getExtremes.call(this, this.colorValueData);
-                this.valueMin = this.dataMin;
-                this.valueMax = this.dataMax;
+                var _a = Series.prototype.getExtremes
+                    .call(this, this.colorValueData), dataMin = _a.dataMin, dataMax = _a.dataMax;
+                this.valueMin = dataMin;
+                this.valueMax = dataMax;
                 // Get the extremes from the y data
-                Series.prototype.getExtremes.call(this);
+                return Series.prototype.getExtremes.call(this);
             },
             getExtremesFromAll: true,
             /**
@@ -1849,9 +1663,7 @@
             setVisible: seriesTypes.pie.prototype.pointClass.prototype.setVisible,
             /* eslint-disable no-invalid-this, valid-jsdoc */
             getClassName: function () {
-                var className = Point.prototype.getClassName.call(this),
-                    series = this.series,
-                    options = series.options;
+                var className = Point.prototype.getClassName.call(this), series = this.series, options = series.options;
                 // Above the current level
                 if (this.node.level <= series.nodeMap[series.rootNode].level) {
                     className += ' highcharts-above-level';
@@ -1890,10 +1702,7 @@
             }
         });
         addEvent(H.Series, 'afterBindAxes', function () {
-            var series = this,
-                xAxis = series.xAxis,
-                yAxis = series.yAxis,
-                treeAxis;
+            var series = this, xAxis = series.xAxis, yAxis = series.yAxis, treeAxis;
             if (xAxis && yAxis) {
                 if (series.is('treemap')) {
                     treeAxis = {

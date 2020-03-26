@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * Exporting module
  *
@@ -38,8 +38,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var merge = U.merge,
-            objectEach = U.objectEach;
+        var merge = U.merge, objectEach = U.objectEach;
         /**
          * @interface Highcharts.AjaxSettingsObject
          */ /**
@@ -85,22 +84,19 @@
          */
         H.ajax = function (attr) {
             var options = merge(true, {
-                    url: false,
-                    type: 'get',
-                    dataType: 'json',
-                    success: false,
-                    error: false,
-                    data: false,
-                    headers: {}
-                },
-                attr),
-                headers = {
-                    json: 'application/json',
-                    xml: 'application/xml',
-                    text: 'text/plain',
-                    octet: 'application/octet-stream'
-                },
-                r = new XMLHttpRequest();
+                url: false,
+                type: 'get',
+                dataType: 'json',
+                success: false,
+                error: false,
+                data: false,
+                headers: {}
+            }, attr), headers = {
+                json: 'application/json',
+                xml: 'application/xml',
+                text: 'text/plain',
+                octet: 'application/octet-stream'
+            }, r = new XMLHttpRequest();
             /**
              * @private
              * @param {XMLHttpRequest} xhr - Internal request object.
@@ -189,11 +185,7 @@
          *  Mixin for downloading content in the browser
          *
          * */
-        var win = Highcharts.win,
-            nav = win.navigator,
-            doc = win.document,
-            domurl = win.URL || win.webkitURL || win,
-            isEdgeBrowser = /Edge\/\d+/.test(nav.userAgent);
+        var win = Highcharts.win, nav = win.navigator, doc = win.document, domurl = win.URL || win.webkitURL || win, isEdgeBrowser = /Edge\/\d+/.test(nav.userAgent);
         /**
          * Convert base64 dataURL to Blob if supported, otherwise returns undefined.
          * @private
@@ -213,10 +205,7 @@
                 win.Blob &&
                 domurl.createObjectURL) {
                 // Try to convert data URL to Blob
-                var binStr = win.atob(parts[3]),
-                    buf = new win.ArrayBuffer(binStr.length),
-                    binary = new win.Uint8Array(buf),
-                    blob;
+                var binStr = win.atob(parts[3]), buf = new win.ArrayBuffer(binStr.length), binary = new win.Uint8Array(buf), blob;
                 for (var i = 0; i < binary.length; ++i) {
                     binary[i] = binStr.charCodeAt(i);
                 }
@@ -236,8 +225,7 @@
          * @return {void}
          */
         Highcharts.downloadURL = function (dataURL, filename) {
-            var a = doc.createElement('a'),
-                windowRef;
+            var a = doc.createElement('a'), windowRef;
             // IE specific blob implementation
             // Don't use for normal dataURLs
             if (typeof dataURL !== 'string' &&
@@ -316,15 +304,8 @@
         * @name Highcharts.ExportDataEventObject#dataRows
         * @type {Array<Array<string>>}
         */
-        var defined = U.defined,
-            extend = U.extend,
-            isObject = U.isObject,
-            pick = U.pick;
-        var win = Highcharts.win,
-            doc = win.document,
-            seriesTypes = Highcharts.seriesTypes,
-            downloadURL = Highcharts.downloadURL,
-            fireEvent = Highcharts.fireEvent;
+        var defined = U.defined, extend = U.extend, isObject = U.isObject, pick = U.pick;
+        var win = Highcharts.win, doc = win.document, seriesTypes = Highcharts.seriesTypes, downloadURL = Highcharts.downloadURL, fireEvent = Highcharts.fireEvent;
         // Can we add this to utils? Also used in screen-reader.js
         /**
          * HTML encode some characters vulnerable for XSS.
@@ -577,28 +558,11 @@
          * @fires Highcharts.Chart#event:exportData
          */
         Highcharts.Chart.prototype.getDataRows = function (multiLevelHeaders) {
-            var hasParallelCoords = this.hasParallelCoordinates,
-                time = this.time,
-                csvOptions = ((this.options.exporting && this.options.exporting.csv) || {}),
-                xAxis,
-                xAxes = this.xAxis,
-                rows = {},
-                rowArr = [],
-                dataRows,
-                topLevelColumnTitles = [],
-                columnTitles = [],
-                columnTitleObj,
-                i,
-                x,
-                xTitle, 
-                // Options
-                columnHeaderFormatter = function (item,
-                key,
-                keyLength) {
-                    if (csvOptions.columnHeaderFormatter) {
-                        var s = csvOptions.columnHeaderFormatter(item,
-                key,
-                keyLength);
+            var hasParallelCoords = this.hasParallelCoordinates, time = this.time, csvOptions = ((this.options.exporting && this.options.exporting.csv) || {}), xAxis, xAxes = this.xAxis, rows = {}, rowArr = [], dataRows, topLevelColumnTitles = [], columnTitles = [], columnTitleObj, i, x, xTitle, 
+            // Options
+            columnHeaderFormatter = function (item, key, keyLength) {
+                if (csvOptions.columnHeaderFormatter) {
+                    var s = csvOptions.columnHeaderFormatter(item, key, keyLength);
                     if (s !== false) {
                         return s;
                     }
@@ -622,16 +586,15 @@
             }, 
             // Map the categories for value axes
             getCategoryAndDateTimeMap = function (series, pointArrayMap, pIdx) {
-                var categoryMap = {},
-                    dateTimeValueAxisMap = {};
+                var categoryMap = {}, dateTimeValueAxisMap = {};
                 pointArrayMap.forEach(function (prop) {
                     var axisName = ((series.keyToAxis && series.keyToAxis[prop]) ||
-                            prop) + 'Axis', 
-                        // Points in parallel coordinates refers to all yAxis
-                        // not only `series.yAxis`
-                        axis = Highcharts.isNumber(pIdx) ?
-                            series.chart[axisName][pIdx] :
-                            series[axisName];
+                        prop) + 'Axis', 
+                    // Points in parallel coordinates refers to all yAxis
+                    // not only `series.yAxis`
+                    axis = Highcharts.isNumber(pIdx) ?
+                        series.chart[axisName][pIdx] :
+                        series[axisName];
                     categoryMap[prop] = (axis && axis.categories) || [];
                     dateTimeValueAxisMap[prop] = (axis && axis.isDatetimeAxis);
                 });
@@ -644,15 +607,7 @@
             i = 0;
             this.setUpKeyToAxis();
             this.series.forEach(function (series) {
-                var keys = series.options.keys,
-                    pointArrayMap = keys || series.pointArrayMap || ['y'],
-                    valueCount = pointArrayMap.length,
-                    xTaken = !series.requireSorting && {},
-                    xAxisIndex = xAxes.indexOf(series.xAxis),
-                    categoryAndDatetimeMap = getCategoryAndDateTimeMap(series,
-                    pointArrayMap),
-                    mockSeries,
-                    j;
+                var keys = series.options.keys, pointArrayMap = keys || series.pointArrayMap || ['y'], valueCount = pointArrayMap.length, xTaken = !series.requireSorting && {}, xAxisIndex = xAxes.indexOf(series.xAxis), categoryAndDatetimeMap = getCategoryAndDateTimeMap(series, pointArrayMap), mockSeries, j;
                 if (series.options.includeInDataExport !== false &&
                     !series.options.isInternal &&
                     series.visible !== false // #55
@@ -686,11 +641,7 @@
                     // Export directly from options.data because we need the uncropped
                     // data (#7913), and we need to support Boost (#7026).
                     series.options.data.forEach(function eachData(options, pIdx) {
-                        var key,
-                            prop,
-                            val,
-                            name,
-                            point;
+                        var key, prop, val, name, point;
                         // In parallel coordinates chart, each data point is connected
                         // to a separate yAxis, conform this
                         if (hasParallelCoords) {
@@ -744,8 +695,7 @@
                     rowArr.push(rows[x]);
                 }
             }
-            var xAxisIndex,
-                column;
+            var xAxisIndex, column;
             // Add computed column headers and top level headers to final row set
             dataRows = multiLevelHeaders ? [topLevelColumnTitles, columnTitles] :
                 [columnTitles];
@@ -808,16 +758,15 @@
          */
         Highcharts.Chart.prototype.getCSV = function (useLocalDecimalPoint) {
             var csv = '', rows = this.getDataRows(), csvOptions = this.options.exporting.csv, decimalPoint = pick(csvOptions.decimalPoint, csvOptions.itemDelimiter !== ',' && useLocalDecimalPoint ?
-                    (1.1).toLocaleString()[1] :
-                    '.'), 
-                // use ';' for direct to Excel
-                itemDelimiter = pick(csvOptions.itemDelimiter, decimalPoint === ',' ? ';' : ','), 
-                // '\n' isn't working with the js csv data extraction
-                lineDelimiter = csvOptions.lineDelimiter;
+                (1.1).toLocaleString()[1] :
+                '.'), 
+            // use ';' for direct to Excel
+            itemDelimiter = pick(csvOptions.itemDelimiter, decimalPoint === ',' ? ';' : ','), 
+            // '\n' isn't working with the js csv data extraction
+            lineDelimiter = csvOptions.lineDelimiter;
             // Transform the rows to CSV
             rows.forEach(function (row, i) {
-                var val = '',
-                    j = row.length;
+                var val = '', j = row.length;
                 while (j--) {
                     val = row[j];
                     if (typeof val === 'string') {
@@ -860,9 +809,9 @@
          */
         Highcharts.Chart.prototype.getTable = function (useLocalDecimalPoint) {
             var html = '<table id="highcharts-data-table-' + this.index + '">', options = this.options, decimalPoint = useLocalDecimalPoint ? (1.1).toLocaleString()[1] : '.', useMultiLevelHeaders = pick(options.exporting.useMultiLevelHeaders, true), rows = this.getDataRows(useMultiLevelHeaders), rowLength = 0, topHeaders = useMultiLevelHeaders ? rows.shift() : null, subHeaders = rows.shift(), 
-                // Compare two rows for equality
-                isRowEqual = function (row1, row2) {
-                    var i = row1.length;
+            // Compare two rows for equality
+            isRowEqual = function (row1, row2) {
+                var i = row1.length;
                 if (row2.length === i) {
                     while (i--) {
                         if (row1[i] !== row2[i]) {
@@ -895,13 +844,7 @@
             }, 
             // Get table header markup from row data
             getTableHeaderHTML = function (topheaders, subheaders, rowLength) {
-                var html = '<thead>',
-                    i = 0,
-                    len = rowLength || subheaders && subheaders.length,
-                    next,
-                    cur,
-                    curColspan = 0,
-                    rowspan;
+                var html = '<thead>', i = 0, len = rowLength || subheaders && subheaders.length, next, cur, curColspan = 0, rowspan;
                 // Clean up multiple table headers. Chart.getDataRows() returns two
                 // levels of headers when using multilevel, not merged. We need to
                 // merge identical headers, remove redundant headers, and keep it
@@ -1004,10 +947,8 @@
          *         The blob object, or undefined if not supported.
          */
         function getBlobFromContent(content, type) {
-            var nav = win.navigator,
-                webKit = (nav.userAgent.indexOf('WebKit') > -1 &&
-                    nav.userAgent.indexOf('Chrome') < 0),
-                domurl = win.URL || win.webkitURL || win;
+            var nav = win.navigator, webKit = (nav.userAgent.indexOf('WebKit') > -1 &&
+                nav.userAgent.indexOf('Chrome') < 0), domurl = win.URL || win.webkitURL || win;
             try {
                 // MS specific
                 if (nav.msSaveOrOpenBlob && win.MSBlobBuilder) {
@@ -1047,24 +988,24 @@
          */
         Highcharts.Chart.prototype.downloadXLS = function () {
             var uri = 'data:application/vnd.ms-excel;base64,', template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
-                    'xmlns:x="urn:schemas-microsoft-com:office:excel" ' +
-                    'xmlns="http://www.w3.org/TR/REC-html40">' +
-                    '<head><!--[if gte mso 9]><xml><x:ExcelWorkbook>' +
-                    '<x:ExcelWorksheets><x:ExcelWorksheet>' +
-                    '<x:Name>Ark1</x:Name>' +
-                    '<x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>' +
-                    '</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook>' +
-                    '</xml><![endif]-->' +
-                    '<style>td{border:none;font-family: Calibri, sans-serif;} ' +
-                    '.number{mso-number-format:"0.00";} ' +
-                    '.text{ mso-number-format:"\@";}</style>' +
-                    '<meta name=ProgId content=Excel.Sheet>' +
-                    '<meta charset=UTF-8>' +
-                    '</head><body>' +
-                    this.getTable(true) +
-                    '</body></html>', base64 = function (s) {
-                    return win.btoa(unescape(encodeURIComponent(s))); // #50
-                };
+                'xmlns:x="urn:schemas-microsoft-com:office:excel" ' +
+                'xmlns="http://www.w3.org/TR/REC-html40">' +
+                '<head><!--[if gte mso 9]><xml><x:ExcelWorkbook>' +
+                '<x:ExcelWorksheets><x:ExcelWorksheet>' +
+                '<x:Name>Ark1</x:Name>' +
+                '<x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>' +
+                '</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook>' +
+                '</xml><![endif]-->' +
+                '<style>td{border:none;font-family: Calibri, sans-serif;} ' +
+                '.number{mso-number-format:"0.00";} ' +
+                '.text{ mso-number-format:"\@";}</style>' +
+                '<meta name=ProgId content=Excel.Sheet>' +
+                '<meta charset=UTF-8>' +
+                '</head><body>' +
+                this.getTable(true) +
+                '</body></html>', base64 = function (s) {
+                return win.btoa(unescape(encodeURIComponent(s))); // #50
+            };
             downloadURL(getBlobFromContent(template, 'application/vnd.ms-excel') ||
                 uri + base64(template), this.getFilename() + '.xls');
         };

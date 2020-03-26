@@ -1,5 +1,5 @@
 /**
- * @license Highcharts Gantt JS v8.0.4 (2020-03-10)
+ * @license Highcharts Gantt JS v8.0.4 (2020-03-26)
  *
  * Tree Grid
  *
@@ -34,14 +34,9 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var extend = U.extend,
-            isArray = U.isArray,
-            isNumber = U.isNumber,
-            isObject = U.isObject,
-            merge = U.merge,
-            pick = U.pick;
+        var extend = U.extend, isArray = U.isArray, isNumber = U.isNumber, isObject = U.isObject, merge = U.merge, pick = U.pick;
         var isBoolean = function (x) {
-                return typeof x === 'boolean';
+            return typeof x === 'boolean';
         }, isFn = function (x) {
             return typeof x === 'function';
         };
@@ -51,21 +46,10 @@
          * @todo Remove logic from Treemap and make it utilize this mixin.
          * @private
          */
-        var setTreeValues = function setTreeValues(tree,
-            options) {
-                var before = options.before,
-            idRoot = options.idRoot,
-            mapIdToNode = options.mapIdToNode,
-            nodeRoot = mapIdToNode[idRoot],
-            levelIsConstant = (isBoolean(options.levelIsConstant) ?
-                    options.levelIsConstant :
-                    true),
-            points = options.points,
-            point = points[tree.i],
-            optionsPoint = point && point.options || {},
-            childrenTotal = 0,
-            children = [],
-            value;
+        var setTreeValues = function setTreeValues(tree, options) {
+            var before = options.before, idRoot = options.idRoot, mapIdToNode = options.mapIdToNode, nodeRoot = mapIdToNode[idRoot], levelIsConstant = (isBoolean(options.levelIsConstant) ?
+                options.levelIsConstant :
+                true), points = options.points, point = points[tree.i], optionsPoint = point && point.options || {}, childrenTotal = 0, children = [], value;
             extend(tree, {
                 levelDynamic: tree.level - (levelIsConstant ? 0 : nodeRoot.level),
                 name: pick(point && point.name, ''),
@@ -77,8 +61,7 @@
             }
             // First give the children some values
             tree.children.forEach(function (child, i) {
-                var newOptions = extend({},
-                    options);
+                var newOptions = extend({}, options);
                 extend(newOptions, {
                     index: i,
                     siblings: tree.children.length,
@@ -104,24 +87,8 @@
         /**
          * @private
          */
-        var getColor = function getColor(node,
-            options) {
-                var index = options.index,
-            mapOptionsToLevel = options.mapOptionsToLevel,
-            parentColor = options.parentColor,
-            parentColorIndex = options.parentColorIndex,
-            series = options.series,
-            colors = options.colors,
-            siblings = options.siblings,
-            points = series.points,
-            getColorByPoint,
-            chartOptionsChart = series.chart.options.chart,
-            point,
-            level,
-            colorByPoint,
-            colorIndexByPoint,
-            color,
-            colorIndex;
+        var getColor = function getColor(node, options) {
+            var index = options.index, mapOptionsToLevel = options.mapOptionsToLevel, parentColor = options.parentColor, parentColorIndex = options.parentColorIndex, series = options.series, colors = options.colors, siblings = options.siblings, points = series.points, getColorByPoint, chartOptionsChart = series.chart.options.chart, point, level, colorByPoint, colorIndexByPoint, color, colorIndex;
             /**
              * @private
              */
@@ -172,13 +139,7 @@
          *         Returns a map from level number to its given options.
          */
         var getLevelOptions = function getLevelOptions(params) {
-                var result = null,
-            defaults,
-            converted,
-            i,
-            from,
-            to,
-            levels;
+            var result = null, defaults, converted, i, from, to, levels;
             if (isObject(params)) {
                 result = {};
                 from = isNumber(params.from) ? params.from : 1;
@@ -187,9 +148,7 @@
                 defaults = isObject(params.defaults) ? params.defaults : {};
                 if (isArray(levels)) {
                     converted = levels.reduce(function (obj, item) {
-                        var level,
-                            levelIsConstant,
-                            options;
+                        var level, levelIsConstant, options;
                         if (isObject(item) && isNumber(item.level)) {
                             options = merge({}, item);
                             levelIsConstant = (isBoolean(options.levelIsConstant) ?
@@ -231,8 +190,7 @@
          *         Returns the resulting rootId after update.
          */
         var updateRootId = function (series) {
-                var rootId,
-            options;
+            var rootId, options;
             if (isObject(series)) {
                 // Get the series options.
                 options = isObject(series.options) ? series.options : {};
@@ -248,11 +206,11 @@
             return rootId;
         };
         var result = {
-                getColor: getColor,
-                getLevelOptions: getLevelOptions,
-                setTreeValues: setTreeValues,
-                updateRootId: updateRootId
-            };
+            getColor: getColor,
+            getLevelOptions: getLevelOptions,
+            setTreeValues: setTreeValues,
+            updateRootId: updateRootId
+        };
 
         return result;
     });
@@ -269,11 +227,9 @@
          *
          * */
         /* eslint no-console: 0 */
-        var extend = U.extend,
-            isNumber = U.isNumber,
-            pick = U.pick;
+        var extend = U.extend, isNumber = U.isNumber, pick = U.pick;
         var isFunction = function (x) {
-                return typeof x === 'function';
+            return typeof x === 'function';
         };
         /**
          * Creates an object map from parent id to childrens index.
@@ -290,11 +246,9 @@
          * @return {Highcharts.Dictionary<Array<*>>}
          *         Map from parent id to children index in data
          */
-        var getListOfParents = function (data,
-            ids) {
-                var listOfParents = data.reduce(function (prev,
-            curr) {
-                    var parent = pick(curr.parent, '');
+        var getListOfParents = function (data, ids) {
+            var listOfParents = data.reduce(function (prev, curr) {
+                var parent = pick(curr.parent, '');
                 if (typeof prev[parent] === 'undefined') {
                     prev[parent] = [];
                 }
@@ -313,26 +267,14 @@
             });
             return listOfParents;
         };
-        var getNode = function (id,
-            parent,
-            level,
-            data,
-            mapOfIdToChildren,
-            options) {
-                var descendants = 0,
-            height = 0,
-            after = options && options.after,
-            before = options && options.before,
-            node = {
-                    data: data,
-                    depth: level - 1,
-                    id: id,
-                    level: level,
-                    parent: parent
-                },
-            start,
-            end,
-            children;
+        var getNode = function (id, parent, level, data, mapOfIdToChildren, options) {
+            var descendants = 0, height = 0, after = options && options.after, before = options && options.before, node = {
+                data: data,
+                depth: level - 1,
+                id: id,
+                level: level,
+                parent: parent
+            }, start, end, children;
             // Allow custom logic before the children has been created.
             if (isFunction(before)) {
                 before(node, options);
@@ -340,15 +282,9 @@
             // Call getNode recursively on the children. Calulate the height of the
             // node, and the number of descendants.
             children = ((mapOfIdToChildren[id] || [])).map(function (child) {
-                var node = getNode(child.id,
-                    id, (level + 1),
-                    child,
-                    mapOfIdToChildren,
-                    options),
-                    childStart = child.start,
-                    childEnd = (child.milestone === true ?
-                        childStart :
-                        child.end);
+                var node = getNode(child.id, id, (level + 1), child, mapOfIdToChildren, options), childStart = child.start, childEnd = (child.milestone === true ?
+                    childStart :
+                    child.end);
                 // Start should be the lowest child.start.
                 start = ((!isNumber(start) || childStart < start) ?
                     childStart :
@@ -378,18 +314,17 @@
             }
             return node;
         };
-        var getTree = function (data,
-            options) {
-                var ids = data.map(function (d) {
-                    return d.id;
+        var getTree = function (data, options) {
+            var ids = data.map(function (d) {
+                return d.id;
             }), mapOfIdToChildren = getListOfParents(data, ids);
             return getNode('', null, 1, null, mapOfIdToChildren, options);
         };
         var Tree = {
-                getListOfParents: getListOfParents,
-                getNode: getNode,
-                getTree: getTree
-            };
+            getListOfParents: getListOfParents,
+            getNode: getNode,
+            getTree: getTree
+        };
 
         return Tree;
     });
@@ -404,24 +339,15 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var addEvent = U.addEvent,
-            defined = U.defined,
-            erase = U.erase,
-            find = U.find,
-            isArray = U.isArray,
-            isNumber = U.isNumber,
-            merge = U.merge,
-            pick = U.pick,
-            timeUnits = U.timeUnits,
-            wrap = U.wrap;
+        var addEvent = U.addEvent, defined = U.defined, erase = U.erase, find = U.find, isArray = U.isArray, isNumber = U.isNumber, merge = U.merge, pick = U.pick, timeUnits = U.timeUnits, wrap = U.wrap;
         var argsToArray = function (args) {
-                return Array.prototype.slice.call(args, 1);
+            return Array.prototype.slice.call(args, 1);
         }, dateFormat = H.dateFormat, isObject = function (x) {
             // Always use strict mode
             return U.isObject(x, true);
         }, Chart = H.Chart, Axis = H.Axis;
         var applyGridOptions = function applyGridOptions(axis) {
-                var options = axis.options;
+            var options = axis.options;
             // Center-align by default
             if (!options.labels) {
                 options.labels = {};
@@ -493,15 +419,15 @@
         // Enum for which side the axis is on.
         // Maps to axis.side
         var axisSide = {
-                top: 0,
-                right: 1,
-                bottom: 2,
-                left: 3,
-                0: 'top',
-                1: 'right',
-                2: 'bottom',
-                3: 'left'
-            };
+            top: 0,
+            right: 1,
+            bottom: 2,
+            left: 3,
+            0: 'top',
+            1: 'right',
+            2: 'bottom',
+            3: 'left'
+        };
         /**
          * Checks if an axis is the outer axis in its dimension. Since
          * axes are placed outwards in order, the axis with the highest
@@ -518,14 +444,8 @@
          *         true if the axis is the outermost axis in its dimension; false if not
          */
         Axis.prototype.isOuterAxis = function () {
-            var axis = this,
-                chart = axis.chart,
-                columnIndex = axis.columnIndex,
-                columns = axis.linkedParent && axis.linkedParent.columns ||
-                    axis.columns,
-                parentAxis = columnIndex ? axis.linkedParent : axis,
-                thisIndex = -1,
-                lastIndex = 0;
+            var axis = this, chart = axis.chart, columnIndex = axis.columnIndex, columns = axis.linkedParent && axis.linkedParent.columns ||
+                axis.columns, parentAxis = columnIndex ? axis.linkedParent : axis, thisIndex = -1, lastIndex = 0;
             chart[axis.coll].forEach(function (otherAxis, index) {
                 if (otherAxis.side === axis.side && !otherAxis.options.isInternal) {
                     lastIndex = index;
@@ -555,14 +475,11 @@
          */
         Axis.prototype.getMaxLabelDimensions = function (ticks, tickPositions) {
             var dimensions = {
-                    width: 0,
-                    height: 0
-                };
+                width: 0,
+                height: 0
+            };
             tickPositions.forEach(function (pos) {
-                var tick = ticks[pos],
-                    tickHeight = 0,
-                    tickWidth = 0,
-                    label;
+                var tick = ticks[pos], tickHeight = 0, tickWidth = 0, label;
                 if (isObject(tick)) {
                     label = isObject(tick.label) ? tick.label : {};
                     // Find width and height of tick
@@ -584,12 +501,10 @@
         // Adds week date format
         H.dateFormats.W = function (timestamp) {
             var d = new this.Date(timestamp);
-            var firstDay = (this.get('Day',
-                d) + 6) % 7;
+            var firstDay = (this.get('Day', d) + 6) % 7;
             var thursday = new this.Date(d.valueOf());
             this.set('Date', thursday, this.get('Date', d) - firstDay + 3);
-            var firstThursday = new this.Date(this.get('FullYear',
-                thursday), 0, 1);
+            var firstThursday = new this.Date(this.get('FullYear', thursday), 0, 1);
             if (this.get('Day', firstThursday) !== 4) {
                 this.set('Month', d, 0);
                 this.set('Date', d, 1 + (11 - this.get('Day', firstThursday)) % 7);
@@ -609,35 +524,12 @@
          * @private
          */
         function (e) {
-            var tick = this,
-                label = tick.label,
-                axis = tick.axis,
-                reversed = axis.reversed,
-                chart = axis.chart,
-                options = axis.options,
-                gridOptions = ((options && isObject(options.grid)) ? options.grid : {}),
-                labelOpts = axis.options.labels,
-                align = labelOpts.align, 
-                // verticalAlign is currently not supported for axis.labels.
-                verticalAlign = 'middle', // labelOpts.verticalAlign,
-                side = axisSide[axis.side],
-                tickmarkOffset = e.tickmarkOffset,
-                tickPositions = axis.tickPositions,
-                tickPos = tick.pos - tickmarkOffset,
-                nextTickPos = (isNumber(tickPositions[e.index + 1]) ?
-                    tickPositions[e.index + 1] - tickmarkOffset :
-                    axis.max + tickmarkOffset),
-                tickSize = axis.tickSize('tick',
-                true),
-                tickWidth = isArray(tickSize) ? tickSize[0] : 0,
-                crispCorr = tickSize && tickSize[1] / 2,
-                labelHeight,
-                lblMetrics,
-                lines,
-                bottom,
-                top,
-                left,
-                right;
+            var tick = this, label = tick.label, axis = tick.axis, reversed = axis.reversed, chart = axis.chart, options = axis.options, gridOptions = ((options && isObject(options.grid)) ? options.grid : {}), labelOpts = axis.options.labels, align = labelOpts.align, 
+            // verticalAlign is currently not supported for axis.labels.
+            verticalAlign = 'middle', // labelOpts.verticalAlign,
+            side = axisSide[axis.side], tickmarkOffset = e.tickmarkOffset, tickPositions = axis.tickPositions, tickPos = tick.pos - tickmarkOffset, nextTickPos = (isNumber(tickPositions[e.index + 1]) ?
+                tickPositions[e.index + 1] - tickmarkOffset :
+                axis.max + tickmarkOffset), tickSize = axis.tickSize('tick', true), tickWidth = isArray(tickSize) ? tickSize[0] : 0, crispCorr = tickSize && tickSize[1] / 2, labelHeight, lblMetrics, lines, bottom, top, left, right;
             // Only center tick labels in grid axes
             if (gridOptions.enabled === true) {
                 // Calculate top and bottom positions of the cell.
@@ -706,17 +598,14 @@
         // Draw vertical axis ticks extra long to create cell floors and roofs.
         // Overrides the tickLength for vertical axes.
         addEvent(Axis, 'afterTickSize', function (e) {
-            var _a = this,
-                defaultLeftAxisOptions = _a.defaultLeftAxisOptions,
-                horiz = _a.horiz,
-                _b = _a.options.grid,
-                gridOptions = _b === void 0 ? {} : _b;
+            var defaultLeftAxisOptions = Axis.defaultLeftAxisOptions;
+            var _a = this, horiz = _a.horiz, _b = _a.options.grid, gridOptions = _b === void 0 ? {} : _b;
             var dimensions = this.maxLabelDimensions;
             if (gridOptions.enabled) {
                 var labelPadding = (Math.abs(defaultLeftAxisOptions.labels.x) * 2);
                 var distance = horiz ?
-                        gridOptions.cellHeight || labelPadding + dimensions.height :
-                        labelPadding + dimensions.width;
+                    gridOptions.cellHeight || labelPadding + dimensions.height :
+                    labelPadding + dimensions.width;
                 if (isArray(e.tickSize)) {
                     e.tickSize[0] = distance;
                 }
@@ -726,36 +615,18 @@
             }
         });
         addEvent(Axis, 'afterGetTitlePosition', function (e) {
-            var axis = this,
-                options = axis.options,
-                gridOptions = (options && isObject(options.grid)) ? options.grid : {};
+            var axis = this, options = axis.options, gridOptions = (options && isObject(options.grid)) ? options.grid : {};
             if (gridOptions.enabled === true) {
                 // compute anchor points for each of the title align options
-                var title = axis.axisTitle,
-                    titleWidth = title && title.getBBox().width,
-                    horiz = axis.horiz,
-                    axisLeft = axis.left,
-                    axisTop = axis.top,
-                    axisWidth = axis.width,
-                    axisHeight = axis.height,
-                    axisTitleOptions = options.title,
-                    opposite = axis.opposite,
-                    offset = axis.offset,
-                    tickSize = axis.tickSize() || [0],
-                    xOption = axisTitleOptions.x || 0,
-                    yOption = axisTitleOptions.y || 0,
-                    titleMargin = pick(axisTitleOptions.margin,
-                    horiz ? 5 : 10),
-                    titleFontSize = axis.chart.renderer.fontMetrics(axisTitleOptions.style &&
-                        axisTitleOptions.style.fontSize,
-                    title).f, 
-                    // TODO account for alignment
-                    // the position in the perpendicular direction of the axis
-                    offAxis = (horiz ? axisTop + axisHeight : axisLeft) +
-                        (horiz ? 1 : -1) * // horizontal axis reverses the margin
-                            (opposite ? -1 : 1) * // so does opposite axes
-                            (tickSize[0] / 2) +
-                        (axis.side === axisSide.bottom ? titleFontSize : 0);
+                var title = axis.axisTitle, titleWidth = title && title.getBBox().width, horiz = axis.horiz, axisLeft = axis.left, axisTop = axis.top, axisWidth = axis.width, axisHeight = axis.height, axisTitleOptions = options.title, opposite = axis.opposite, offset = axis.offset, tickSize = axis.tickSize() || [0], xOption = axisTitleOptions.x || 0, yOption = axisTitleOptions.y || 0, titleMargin = pick(axisTitleOptions.margin, horiz ? 5 : 10), titleFontSize = axis.chart.renderer.fontMetrics(axisTitleOptions.style &&
+                    axisTitleOptions.style.fontSize, title).f, 
+                // TODO account for alignment
+                // the position in the perpendicular direction of the axis
+                offAxis = (horiz ? axisTop + axisHeight : axisLeft) +
+                    (horiz ? 1 : -1) * // horizontal axis reverses the margin
+                        (opposite ? -1 : 1) * // so does opposite axes
+                        (tickSize[0] / 2) +
+                    (axis.side === axisSide.bottom ? titleFontSize : 0);
                 e.titlePosition.x = horiz ?
                     axisLeft - titleWidth / 2 - titleMargin + xOption :
                     offAxis + (opposite ? axisWidth : 0) + offset + xOption;
@@ -770,9 +641,7 @@
         });
         // Avoid altering tickInterval when reserving space.
         wrap(Axis.prototype, 'unsquish', function (proceed) {
-            var axis = this,
-                options = axis.options,
-                gridOptions = (options && isObject(options.grid)) ? options.grid : {};
+            var axis = this, options = axis.options, gridOptions = (options && isObject(options.grid)) ? options.grid : {};
             if (gridOptions.enabled === true && this.categories) {
                 return this.tickInterval;
             }
@@ -791,10 +660,7 @@
          * @function
          */
         function (e) {
-            var options = this.options,
-                userOptions = e.userOptions,
-                gridAxisOptions,
-                gridOptions = ((options && isObject(options.grid)) ? options.grid : {});
+            var options = this.options, userOptions = e.userOptions, gridAxisOptions, gridOptions = ((options && isObject(options.grid)) ? options.grid : {});
             if (gridOptions.enabled === true) {
                 // Merge the user options into default grid axis options so that
                 // when a user option is set, it takes presedence.
@@ -877,15 +743,10 @@
                         !defined(userOptions.tickInterval)) {
                         gridAxisOptions.tickPositioner = function (min, max) {
                             var parentInfo = (this.linkedParent &&
-                                    this.linkedParent.tickPositions &&
-                                    this.linkedParent.tickPositions.info);
+                                this.linkedParent.tickPositions &&
+                                this.linkedParent.tickPositions.info);
                             if (parentInfo) {
-                                var unitIdx,
-                                    count,
-                                    unitName,
-                                    i,
-                                    units = gridAxisOptions.units,
-                                    unitRange;
+                                var unitIdx, count, unitName, i, units = gridAxisOptions.units, unitRange;
                                 for (i = 0; i < units.length; i++) {
                                     if (units[i][0] ===
                                         parentInfo.unitName) {
@@ -936,11 +797,7 @@
             }
         });
         addEvent(Axis, 'afterSetAxisTranslation', function () {
-            var axis = this,
-                options = axis.options,
-                gridOptions = ((options && isObject(options.grid)) ? options.grid : {}),
-                tickInfo = this.tickPositions && this.tickPositions.info,
-                userLabels = this.userOptions.labels || {};
+            var axis = this, options = axis.options, gridOptions = ((options && isObject(options.grid)) ? options.grid : {}), tickInfo = this.tickPositions && this.tickPositions.info, userLabels = this.userOptions.labels || {};
             if (this.horiz) {
                 if (gridOptions.enabled === true) {
                     axis.series.forEach(function (series) {
@@ -985,22 +842,9 @@
          * @private
          */
         function () {
-            var axis = this,
-                options = axis.options,
-                gridOptions = ((options && isObject(options.grid)) ? options.grid : {}),
-                categoryAxis = axis.categories,
-                tickPositions = axis.tickPositions,
-                firstPos = tickPositions[0],
-                lastPos = tickPositions[tickPositions.length - 1],
-                linkedMin = axis.linkedParent && axis.linkedParent.min,
-                linkedMax = axis.linkedParent && axis.linkedParent.max,
-                min = linkedMin || axis.min,
-                max = linkedMax || axis.max,
-                tickInterval = axis.tickInterval,
-                endMoreThanMin = (firstPos < min &&
-                    firstPos + tickInterval > min),
-                startLessThanMax = (lastPos > max &&
-                    lastPos - tickInterval < max);
+            var axis = this, options = axis.options, gridOptions = ((options && isObject(options.grid)) ? options.grid : {}), categoryAxis = axis.categories, tickPositions = axis.tickPositions, firstPos = tickPositions[0], lastPos = tickPositions[tickPositions.length - 1], linkedMin = axis.linkedParent && axis.linkedParent.min, linkedMax = axis.linkedParent && axis.linkedParent.max, min = linkedMin || axis.min, max = linkedMax || axis.max, tickInterval = axis.tickInterval, endMoreThanMin = (firstPos < min &&
+                firstPos + tickInterval > min), startLessThanMax = (lastPos > max &&
+                lastPos - tickInterval < max);
             if (gridOptions.enabled === true &&
                 !categoryAxis &&
                 (axis.horiz || axis.isLinked)) {
@@ -1032,14 +876,7 @@
          *        the original function
          */
         function () {
-            var axis = this,
-                options = axis.options,
-                gridOptions = ((options && isObject(options.grid)) ? options.grid : {}),
-                yStartIndex,
-                yEndIndex,
-                xStartIndex,
-                xEndIndex,
-                renderer = axis.chart.renderer;
+            var axis = this, options = axis.options, gridOptions = ((options && isObject(options.grid)) ? options.grid : {}), yStartIndex, yEndIndex, xStartIndex, xEndIndex, renderer = axis.chart.renderer;
             if (gridOptions.enabled === true) {
                 // @todo acutual label padding (top, bottom, left, right)
                 axis.maxLabelDimensions = axis.getMaxLabelDimensions(axis.ticks, axis.tickPositions);
@@ -1066,7 +903,7 @@
                         // Negate distance if top or left axis
                         // Subtract 1px to draw the line at the end of the tick
                         var distance = (axis.tickSize('tick')[0] - 1) * ((axis.side === axisSide.top ||
-                                axis.side === axisSide.left) ? -1 : 1);
+                            axis.side === axisSide.left) ? -1 : 1);
                         // If axis is horizontal, reposition line path vertically
                         if (axis.horiz) {
                             linePath[yStartIndex] =
@@ -1113,31 +950,20 @@
         });
         // Handle columns and getOffset
         var onGridAxisAfterGetOffset = function onGridAxisAfterGetOffset() {
-                (this.columns || []).forEach(function (column) {
-                    column.getOffset();
+            (this.columns || []).forEach(function (column) {
+                column.getOffset();
             });
         };
         var onGridAxisAfterInit = function onGridAxisAfterInit() {
-                var axis = this,
-            chart = axis.chart,
-            userOptions = axis.userOptions,
-            options = axis.options,
-            gridOptions = options && isObject(options.grid) ? options.grid : {};
+            var axis = this, chart = axis.chart, userOptions = axis.userOptions, options = axis.options, gridOptions = options && isObject(options.grid) ? options.grid : {};
             if (gridOptions.enabled) {
                 applyGridOptions(axis);
                 // TODO: wrap the axis instead
                 wrap(axis, 'labelFormatter', function (proceed) {
-                    var axis = this.axis,
-                        tickPos = axis.tickPositions,
-                        value = this.value,
-                        series = (axis.isLinked ?
-                            axis.linkedParent :
-                            axis).series[0],
-                        isFirst = value === tickPos[0],
-                        isLast = value === tickPos[tickPos.length - 1],
-                        point = series && find(series.options.data,
-                        function (p) {
-                            return p[axis.isXAxis ? 'x' : 'y'] === value;
+                    var axis = this.axis, tickPos = axis.tickPositions, value = this.value, series = (axis.isLinked ?
+                        axis.linkedParent :
+                        axis).series[0], isFirst = value === tickPos[0], isLast = value === tickPos[tickPos.length - 1], point = series && find(series.options.data, function (p) {
+                        return p[axis.isXAxis ? 'x' : 'y'] === value;
                     });
                     // Make additional properties available for the
                     // formatter
@@ -1149,20 +975,16 @@
                 });
             }
             if (gridOptions.columns) {
-                var columns = axis.columns = [],
-                    columnIndex = axis.columnIndex = 0;
+                var columns = axis.columns = [], columnIndex = axis.columnIndex = 0;
                 // Handle columns, each column is a grid axis
                 while (++columnIndex < gridOptions.columns.length) {
-                    var columnOptions = merge(userOptions,
-                        gridOptions.columns[gridOptions.columns.length - columnIndex - 1], {
-                            linkedTo: 0,
-                            // Force to behave like category axis
-                            type: 'category'
-                        });
+                    var columnOptions = merge(userOptions, gridOptions.columns[gridOptions.columns.length - columnIndex - 1], {
+                        linkedTo: 0,
+                        // Force to behave like category axis
+                        type: 'category'
+                    });
                     delete columnOptions.grid.columns; // Prevent recursion
-                    var column = new Axis(axis.chart,
-                        columnOptions,
-                        true);
+                    var column = new Axis(axis.chart, columnOptions, true);
                     column.isColumn = true;
                     column.columnIndex = columnIndex;
                     // Remove column axis from chart axes array, and place it
@@ -1174,41 +996,37 @@
             }
         };
         var onGridAxisAfterSetChartSize = function onGridAxisAfterSetChartSize() {
-                this.axes.forEach(function (axis) {
-                    (axis.columns || []).forEach(function (column) {
-                        column.setAxisSize();
+            this.axes.forEach(function (axis) {
+                (axis.columns || []).forEach(function (column) {
+                    column.setAxisSize();
                     column.setAxisTranslation();
                 });
             });
         };
         // Handle columns and setScale
         var onGridAxisAfterSetScale = function onGridAxisAfterSetScale() {
-                (this.columns || []).forEach(function (column) {
-                    column.setScale();
+            (this.columns || []).forEach(function (column) {
+                column.setScale();
             });
         };
         var onGridAxisDestroy = function onGridAxisDestroy(e) {
-                (this.columns || []).forEach(function (column) {
-                    column.destroy(e.keepEvents);
+            (this.columns || []).forEach(function (column) {
+                column.destroy(e.keepEvents);
             });
         };
         // Wraps axis init to draw cell walls on vertical axes.
         var onGridAxisInit = function onGridAxisInit(e) {
-                var userOptions = e.userOptions,
-            gridOptions = ((userOptions && isObject(userOptions.grid)) ?
-                    userOptions.grid :
-                    {});
+            var userOptions = e.userOptions, gridOptions = ((userOptions && isObject(userOptions.grid)) ?
+                userOptions.grid :
+                {});
             if (gridOptions.enabled && defined(gridOptions.borderColor)) {
                 userOptions.tickColor = userOptions.lineColor = gridOptions.borderColor;
             }
         };
         var onGridAxisAfterSetOptions = function onGridAxisAfterSetOptions(e) {
-                var axis = this,
-            userOptions = e.userOptions,
-            gridOptions = ((userOptions && isObject(userOptions.grid)) ?
-                    userOptions.grid :
-                    {}),
-            columns = gridOptions.columns;
+            var axis = this, userOptions = e.userOptions, gridOptions = ((userOptions && isObject(userOptions.grid)) ?
+                userOptions.grid :
+                {}), columns = gridOptions.columns;
             // Add column options to the parent axis.
             // Children has their column options set on init in onGridAxisAfterInit.
             if (gridOptions.enabled && columns) {
@@ -1216,13 +1034,13 @@
             }
         };
         var axisEvents = {
-                afterGetOffset: onGridAxisAfterGetOffset,
-                afterInit: onGridAxisAfterInit,
-                afterSetOptions: onGridAxisAfterSetOptions,
-                afterSetScale: onGridAxisAfterSetScale,
-                destroy: onGridAxisDestroy,
-                init: onGridAxisInit
-            };
+            afterGetOffset: onGridAxisAfterGetOffset,
+            afterInit: onGridAxisAfterInit,
+            afterSetOptions: onGridAxisAfterSetOptions,
+            afterSetScale: onGridAxisAfterSetScale,
+            destroy: onGridAxisDestroy,
+            init: onGridAxisInit
+        };
         // Add event handlers
         Object.keys(axisEvents).forEach(function (event) {
             addEvent(Axis, event, axisEvents[event]);
@@ -1230,7 +1048,7 @@
         addEvent(Chart, 'afterSetChartSize', onGridAxisAfterSetChartSize);
 
     });
-    _registerModule(_modules, 'modules/broken-axis.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (H, U) {
+    _registerModule(_modules, 'modules/broken-axis.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js'], _modules['parts/Stacking.js']], function (H, U, StackItem) {
         /* *
          *
          *  (c) 2009-2020 Torstein Honsi
@@ -1240,14 +1058,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var addEvent = U.addEvent,
-            extend = U.extend,
-            find = U.find,
-            fireEvent = U.fireEvent,
-            isArray = U.isArray,
-            pick = U.pick;
-        var Axis = H.Axis,
-            Series = H.Series;
+        var addEvent = U.addEvent, extend = U.extend, find = U.find, fireEvent = U.fireEvent, isArray = U.isArray, pick = U.pick;
+        var Axis = H.Axis, Series = H.Series;
         /**
          * Returns the first break found where the x is larger then break.from and
          * smaller then break.to.
@@ -1260,22 +1072,16 @@
          *         Returns the first break found that matches, returns false if no break
          *         is found.
          */
-        var findBreakAt = function (x,
-            breaks) {
-                return find(breaks,
-            function (b) {
-                    return b.from < x && x < b.to;
+        var findBreakAt = function (x, breaks) {
+            return find(breaks, function (b) {
+                return b.from < x && x < b.to;
             });
         };
         extend(Axis.prototype, {
             isInBreak: function (brk, val) {
-                var ret,
-                    repeat = brk.repeat || Infinity,
-                    from = brk.from,
-                    length = brk.to - brk.from,
-                    test = (val >= from ?
-                        (val - from) % repeat :
-                        repeat - ((from - val) % repeat));
+                var ret, repeat = brk.repeat || Infinity, from = brk.from, length = brk.to - brk.from, test = (val >= from ?
+                    (val - from) % repeat :
+                    repeat - ((from - val) % repeat));
                 if (!brk.inclusive) {
                     ret = test < length && test !== 0;
                 }
@@ -1285,11 +1091,7 @@
                 return ret;
             },
             isInAnyBreak: function (val, testKeep) {
-                var breaks = this.options.breaks,
-                    i = breaks && breaks.length,
-                    inbrk,
-                    keep,
-                    ret;
+                var breaks = this.options.breaks, i = breaks && breaks.length, inbrk, keep, ret;
                 if (i) {
                     while (i--) {
                         if (this.isInBreak(breaks[i], val)) {
@@ -1317,11 +1119,7 @@
         });
         addEvent(Axis, 'afterSetTickPositions', function () {
             if (this.isBroken) {
-                var axis = this,
-                    tickPositions = this.tickPositions,
-                    info = this.tickPositions.info,
-                    newPositions = [],
-                    i;
+                var axis = this, tickPositions = this.tickPositions, info = this.tickPositions.info, newPositions = [], i;
                 for (i = 0; i < tickPositions.length; i++) {
                     if (!axis.isInAnyBreak(tickPositions[i])) {
                         newPositions.push(tickPositions[i]);
@@ -1353,16 +1151,13 @@
          * @return {void}
          */
         Axis.prototype.setBreaks = function (breaks, redraw) {
-            var axis = this,
-                isBroken = (isArray(breaks) && !!breaks.length);
+            var axis = this, isBroken = (isArray(breaks) && !!breaks.length);
             /* eslint-disable valid-jsdoc */
             /**
              * @private
              */
             function breakVal2Lin(val) {
-                var nval = val,
-                    brk,
-                    i;
+                var nval = val, brk, i;
                 for (i = 0; i < axis.breakArray.length; i++) {
                     brk = axis.breakArray[i];
                     if (brk.to <= val) {
@@ -1382,9 +1177,7 @@
              * @private
              */
             function breakLin2Val(val) {
-                var nval = val,
-                    brk,
-                    i;
+                var nval = val, brk, i;
                 for (i = 0; i < axis.breakArray.length; i++) {
                     brk = axis.breakArray[i];
                     if (brk.from >= nval) {
@@ -1421,8 +1214,7 @@
                     // If trying to set extremes inside a break, extend min to after,
                     // and max to before the break ( #3857 )
                     if (this.isBroken) {
-                        var axisBreak,
-                            breaks = this.options.breaks;
+                        var axisBreak, breaks = this.options.breaks;
                         while ((axisBreak = findBreakAt(newMin, breaks))) {
                             newMin = axisBreak.to;
                         }
@@ -1441,17 +1233,8 @@
                     this.unitLength = null;
                     if (this.isBroken) {
                         var breaks = axis.options.breaks, 
-                            // Temporary one:
-                            breakArrayT = [],
-                            breakArray = [],
-                            length = 0,
-                            inBrk,
-                            repeat,
-                            min = axis.userMin || axis.min,
-                            max = axis.userMax || axis.max,
-                            pointRangePadding = pick(axis.pointRangePadding, 0),
-                            start,
-                            i;
+                        // Temporary one:
+                        breakArrayT = [], breakArray = [], length = 0, inBrk, repeat, min = axis.userMin || axis.min, max = axis.userMax || axis.max, pointRangePadding = pick(axis.pointRangePadding, 0), start, i;
                         // Min & max check (#4247)
                         breaks.forEach(function (brk) {
                             repeat = brk.repeat || Infinity;
@@ -1539,12 +1322,7 @@
             }
         };
         addEvent(Series, 'afterGeneratePoints', function () {
-            var _a = this,
-                isDirty = _a.isDirty,
-                connectNulls = _a.options.connectNulls,
-                points = _a.points,
-                xAxis = _a.xAxis,
-                yAxis = _a.yAxis;
+            var _a = this, isDirty = _a.isDirty, connectNulls = _a.options.connectNulls, points = _a.points, xAxis = _a.xAxis, yAxis = _a.yAxis;
             /* Set, or reset visibility of the points. Axis.setBreaks marks the series
             as isDirty */
             if (isDirty) {
@@ -1554,10 +1332,8 @@
                     // Respect nulls inside the break (#4275)
                     var nullGap = point.y === null && connectNulls === false;
                     var isPointInBreak = (!nullGap &&
-                            (xAxis && xAxis.isInAnyBreak(point.x,
-                        true) ||
-                                yAxis && yAxis.isInAnyBreak(point.y,
-                        true)));
+                        (xAxis && xAxis.isInAnyBreak(point.x, true) ||
+                            yAxis && yAxis.isInAnyBreak(point.y, true)));
                     // Set point.visible if in any break.
                     // If not in break, reset visible to original value.
                     point.visible = isPointInBreak ?
@@ -1572,12 +1348,7 @@
         });
         /* eslint-enable no-invalid-this */
         H.Series.prototype.drawBreaks = function (axis, keys) {
-            var series = this,
-                points = series.points,
-                breaks,
-                threshold,
-                eventName,
-                y;
+            var series = this, points = series.points, breaks, threshold, eventName, y;
             if (!axis) {
                 return; // #5950
             }
@@ -1623,13 +1394,7 @@
          *         Gapped path
          */
         H.Series.prototype.gappedPath = function () {
-            var currentDataGrouping = this.currentDataGrouping,
-                groupingSize = currentDataGrouping && currentDataGrouping.gapSize,
-                gapSize = this.options.gapSize,
-                points = this.points.slice(),
-                i = points.length - 1,
-                yAxis = this.yAxis,
-                stack;
+            var currentDataGrouping = this.currentDataGrouping, groupingSize = currentDataGrouping && currentDataGrouping.gapSize, gapSize = this.options.gapSize, points = this.points.slice(), i = points.length - 1, yAxis = this.yAxis, stack;
             /**
              * Defines when to display a gap in the graph, together with the
              * [gapUnit](plotOptions.series.gapUnit) option.
@@ -1694,8 +1459,7 @@
                     gapSize = groupingSize;
                 }
                 // extension for ordinal breaks
-                var current = void 0,
-                    next = void 0;
+                var current = void 0, next = void 0;
                 while (i--) {
                     // Reassign next if it is not visible
                     if (!(next && next.visible !== false)) {
@@ -1716,7 +1480,7 @@
                         // For stacked chart generate empty stack items, #6546
                         if (this.options.stacking) {
                             stack = yAxis.stacks[this.stackKey][xRange] =
-                                new H.StackItem(yAxis, yAxis.options
+                                new StackItem(yAxis, yAxis.options
                                     .stackLabels, false, xRange, this.stack);
                             stack.total = 0;
                         }
@@ -1742,27 +1506,17 @@
          *
          * */
         /* eslint no-console: 0 */
-        var addEvent = U.addEvent,
-            defined = U.defined,
-            fireEvent = U.fireEvent,
-            extend = U.extend,
-            isNumber = U.isNumber,
-            isString = U.isString,
-            merge = U.merge,
-            pick = U.pick,
-            wrap = U.wrap;
+        var addEvent = U.addEvent, defined = U.defined, fireEvent = U.fireEvent, extend = U.extend, isNumber = U.isNumber, isString = U.isString, merge = U.merge, pick = U.pick, wrap = U.wrap;
         var argsToArray = function (args) {
-                return Array.prototype.slice.call(args, 1);
+            return Array.prototype.slice.call(args, 1);
         }, find = U.find, getLevelOptions = mixinTreeSeries.getLevelOptions, isBoolean = function (x) {
             return typeof x === 'boolean';
         }, isObject = function (x) {
             // Always use strict mode.
             return U.isObject(x, true);
         }, GridAxis = H.Axis, GridAxisTick = Tick;
-        var override = function (obj,
-            methods) {
-                var method,
-            func;
+        var override = function (obj, methods) {
+            var method, func;
             for (method in methods) {
                 if (Object.hasOwnProperty.call(methods, method)) {
                     func = methods[method];
@@ -1770,10 +1524,8 @@
                 }
             }
         };
-        var getBreakFromNode = function (node,
-            max) {
-                var from = node.collapseStart,
-            to = node.collapseEnd;
+        var getBreakFromNode = function (node, max) {
+            var from = node.collapseStart, to = node.collapseEnd;
             // In broken-axis, the axis.max is minimized until it is not within a break.
             // Therefore, if break.to is larger than axis.max, the axis.to should not
             // add the 0.5 axis.tickMarkOffset, to avoid adding a break larger than
@@ -1802,9 +1554,8 @@
          *         List of positions.
          */
         var getTickPositions = function (axis) {
-                return Object.keys(axis.mapOfPosToGridNode).reduce(function (arr,
-            key) {
-                    var pos = +key;
+            return Object.keys(axis.mapOfPosToGridNode).reduce(function (arr, key) {
+                var pos = +key;
                 if (axis.min <= pos &&
                     axis.max >= pos &&
                     !axis.isInAnyBreak(pos)) {
@@ -1831,11 +1582,8 @@
          * @return {boolean}
          *         Returns true if collapsed, false if expanded.
          */
-        var isCollapsed = function (axis,
-            node) {
-                var breaks = (axis.options.breaks || []),
-            obj = getBreakFromNode(node,
-            axis.max);
+        var isCollapsed = function (axis, node) {
+            var breaks = (axis.options.breaks || []), obj = getBreakFromNode(node, axis.max);
             return breaks.some(function (b) {
                 return b.from === obj.from && b.to === obj.to;
             });
@@ -1858,11 +1606,8 @@
          * @return {Array<object>}
          *         Returns an array of the new breaks for the axis.
          */
-        var collapse = function (axis,
-            node) {
-                var breaks = (axis.options.breaks || []),
-            obj = getBreakFromNode(node,
-            axis.max);
+        var collapse = function (axis, node) {
+            var breaks = (axis.options.breaks || []), obj = getBreakFromNode(node, axis.max);
             breaks.push(obj);
             return breaks;
         };
@@ -1884,11 +1629,8 @@
          * @return {Array<object>}
          *         Returns an array of the new breaks for the axis.
          */
-        var expand = function (axis,
-            node) {
-                var breaks = (axis.options.breaks || []),
-            obj = getBreakFromNode(node,
-            axis.max);
+        var expand = function (axis, node) {
+            var breaks = (axis.options.breaks || []), obj = getBreakFromNode(node, axis.max);
             // Remove the break from the axis breaks array.
             return breaks.reduce(function (arr, b) {
                 if (b.to !== obj.to || b.from !== obj.from) {
@@ -1915,30 +1657,16 @@
          * @return {Array<object>}
          *         Returns an array of the new breaks for the axis.
          */
-        var toggleCollapse = function (axis,
-            node) {
-                return (isCollapsed(axis,
-            node) ?
-                    expand(axis,
-            node) :
-                    collapse(axis,
-            node));
+        var toggleCollapse = function (axis, node) {
+            return (isCollapsed(axis, node) ?
+                expand(axis, node) :
+                collapse(axis, node));
         };
-        var renderLabelIcon = function (tick,
-            params) {
-                var icon = tick.labelIcon,
-            isNew = !icon,
-            renderer = params.renderer,
-            labelBox = params.xy,
-            options = params.options,
-            width = options.width,
-            height = options.height,
-            iconCenter = {
-                    x: labelBox.x - (width / 2) - options.padding,
-                    y: labelBox.y - (height / 2)
-                },
-            rotation = params.collapsed ? 90 : 180,
-            shouldRender = params.show && isNumber(iconCenter.y);
+        var renderLabelIcon = function (tick, params) {
+            var icon = tick.labelIcon, isNew = !icon, renderer = params.renderer, labelBox = params.xy, options = params.options, width = options.width, height = options.height, iconCenter = {
+                x: labelBox.x - (width / 2) - options.padding,
+                y: labelBox.y - (height / 2)
+            }, rotation = params.collapsed ? 90 : 180, shouldRender = params.show && isNumber(iconCenter.y);
             if (isNew) {
                 tick.labelIcon = icon = renderer
                     .path(renderer.symbols[options.type](options.x, options.y, width, height))
@@ -1970,16 +1698,15 @@
             });
         };
         var onTickHover = function (label) {
-                label.addClass('highcharts-treegrid-node-active');
+            label.addClass('highcharts-treegrid-node-active');
             if (!label.renderer.styledMode) {
                 label.css({
                     textDecoration: 'underline'
                 });
             }
         };
-        var onTickHoverExit = function (label,
-            options) {
-                var css = defined(options.style) ? options.style : {};
+        var onTickHoverExit = function (label, options) {
+            var css = defined(options.style) ? options.style : {};
             label.removeClass('highcharts-treegrid-node-active');
             if (!label.renderer.styledMode) {
                 label.css({
@@ -2011,25 +1738,13 @@
          * @todo It should be optional to have one category per point, or merge cells
          * @todo Add unit-tests.
          */
-        var getTreeGridFromData = function (data,
-            uniqueNames,
-            numberOfSeries) {
-                var categories = [],
-            collapsedNodes = [],
-            mapOfIdToNode = {},
-            mapOfPosToGridNode = {},
-            posIterator = -1,
-            uniqueNamesEnabled = isBoolean(uniqueNames) ? uniqueNames : false,
-            tree,
-            treeParams,
-            updateYValuesAndTickPos;
+        var getTreeGridFromData = function (data, uniqueNames, numberOfSeries) {
+            var categories = [], collapsedNodes = [], mapOfIdToNode = {}, mapOfPosToGridNode = {}, posIterator = -1, uniqueNamesEnabled = isBoolean(uniqueNames) ? uniqueNames : false, tree, treeParams, updateYValuesAndTickPos;
             // Build the tree from the series data.
             treeParams = {
                 // After the children has been created.
                 after: function (node) {
-                    var gridNode = mapOfPosToGridNode[node.pos],
-                        height = 0,
-                        descendants = 0;
+                    var gridNode = mapOfPosToGridNode[node.pos], height = 0, descendants = 0;
                     gridNode.children.forEach(function (child) {
                         descendants += child.descendants + 1;
                         height = Math.max(child.height + 1, height);
@@ -2042,14 +1757,10 @@
                 },
                 // Before the children has been created.
                 before: function (node) {
-                    var data = isObject(node.data) ? node.data : {},
-                        name = isString(data.name) ? data.name : '',
-                        parentNode = mapOfIdToNode[node.parent],
-                        parentGridNode = (isObject(parentNode) ?
-                            mapOfPosToGridNode[parentNode.pos] :
-                            null),
-                        hasSameName = function (x) {
-                            return x.name === name;
+                    var data = isObject(node.data) ? node.data : {}, name = isString(data.name) ? data.name : '', parentNode = mapOfIdToNode[node.parent], parentGridNode = (isObject(parentNode) ?
+                        mapOfPosToGridNode[parentNode.pos] :
+                        null), hasSameName = function (x) {
+                        return x.name === name;
                     }, gridNode, pos;
                     // If not unique names, look for a sibling node with the same name.
                     if (uniqueNamesEnabled &&
@@ -2096,14 +1807,8 @@
                 }
             };
             updateYValuesAndTickPos = function (map, numberOfSeries) {
-                var setValues = function (gridNode,
-                    start,
-                    result) {
-                        var nodes = gridNode.nodes,
-                    end = start + (start === -1 ? 0 : numberOfSeries - 1),
-                    diff = (end - start) / 2,
-                    padding = 0.5,
-                    pos = start + diff;
+                var setValues = function (gridNode, start, result) {
+                    var nodes = gridNode.nodes, end = start + (start === -1 ? 0 : numberOfSeries - 1), diff = (end - start) / 2, padding = 0.5, pos = start + diff;
                     nodes.forEach(function (node) {
                         var data = node.data;
                         if (isObject(data)) {
@@ -2149,21 +1854,13 @@
          * @param {object[]} e.target.axes The axes of the chart.
          */
         var onBeforeRender = function (e) {
-                var chart = e.target,
-            axes = chart.axes;
+            var chart = e.target, axes = chart.axes;
             axes
                 .filter(function (axis) {
                 return axis.options.type === 'treegrid';
             })
                 .forEach(function (axis) {
-                var options = axis.options || {},
-                    labelOptions = options.labels,
-                    removeFoundExtremesEvent,
-                    uniqueNames = options.uniqueNames,
-                    numberOfSeries = 0,
-                    isDirty,
-                    data,
-                    treeGrid;
+                var options = axis.options || {}, labelOptions = options.labels, removeFoundExtremesEvent, uniqueNames = options.uniqueNames, numberOfSeries = 0, isDirty, data, treeGrid;
                 // Check whether any of series is rendering for the first time,
                 // visibility has changed, or its data is dirty,
                 // and only then update. #10570, #10580
@@ -2206,7 +1903,7 @@
                     // Update yData now that we have calculated the y values
                     axis.series.forEach(function (series) {
                         var data = series.options.data.map(function (d) {
-                                return isObject(d) ? merge(d) : d;
+                            return isObject(d) ? merge(d) : d;
                         });
                         // Avoid destroying points when series is not visible
                         if (series.visible) {
@@ -2229,8 +1926,7 @@
                         removeFoundExtremesEvent =
                             addEvent(axis, 'foundExtremes', function () {
                                 treeGrid.collapsedNodes.forEach(function (node) {
-                                    var breaks = collapse(axis,
-                                        node);
+                                    var breaks = collapse(axis, node);
                                     axis.setBreaks(breaks, false);
                                 });
                                 removeFoundExtremesEvent();
@@ -2241,8 +1937,7 @@
         };
         override(GridAxis.prototype, {
             init: function (proceed, chart, userOptions) {
-                var axis = this,
-                    isTreeGrid = userOptions.type === 'treegrid';
+                var axis = this, isTreeGrid = userOptions.type === 'treegrid';
                 // Set default and forced options for TreeGrid
                 if (isTreeGrid) {
                     // Add event for updating the categories of a treegrid.
@@ -2350,16 +2045,9 @@
              *        The original function
              */
             getMaxLabelDimensions: function (proceed) {
-                var axis = this,
-                    options = axis.options,
-                    labelOptions = options && options.labels,
-                    indentation = (labelOptions && isNumber(labelOptions.indentation) ?
-                        options.labels.indentation :
-                        0),
-                    retVal = proceed.apply(axis,
-                    argsToArray(arguments)),
-                    isTreeGrid = axis.options.type === 'treegrid',
-                    treeDepth;
+                var axis = this, options = axis.options, labelOptions = options && options.labels, indentation = (labelOptions && isNumber(labelOptions.indentation) ?
+                    options.labels.indentation :
+                    0), retVal = proceed.apply(axis, argsToArray(arguments)), isTreeGrid = axis.options.type === 'treegrid', treeDepth;
                 if (isTreeGrid && this.mapOfPosToGridNode) {
                     treeDepth = axis.mapOfPosToGridNode[-1].height;
                     retVal.width += indentation * (treeDepth - 1);
@@ -2379,14 +2067,7 @@
              *        The tick position in axis values.
              */
             generateTick: function (proceed, pos) {
-                var axis = this,
-                    mapOptionsToLevel = (isObject(axis.mapOptionsToLevel) ? axis.mapOptionsToLevel : {}),
-                    isTreeGrid = axis.options.type === 'treegrid',
-                    ticks = axis.ticks,
-                    tick = ticks[pos],
-                    levelOptions,
-                    options,
-                    gridNode;
+                var axis = this, mapOptionsToLevel = (isObject(axis.mapOptionsToLevel) ? axis.mapOptionsToLevel : {}), isTreeGrid = axis.options.type === 'treegrid', ticks = axis.ticks, tick = ticks[pos], levelOptions, options, gridNode;
                 if (isTreeGrid) {
                     gridNode = axis.mapOfPosToGridNode[pos];
                     levelOptions = mapOptionsToLevel[gridNode.depth];
@@ -2424,9 +2105,7 @@
              *        The original setTickInterval function.
              */
             setTickInterval: function (proceed) {
-                var axis = this,
-                    options = axis.options,
-                    isTreeGrid = options.type === 'treegrid';
+                var axis = this, options = axis.options, isTreeGrid = options.type === 'treegrid';
                 if (isTreeGrid) {
                     axis.min = pick(axis.userMin, options.min, axis.dataMin);
                     axis.max = pick(axis.userMax, options.max, axis.dataMax);
@@ -2447,27 +2126,7 @@
         });
         override(GridAxisTick.prototype, {
             getLabelPosition: function (proceed, x, y, label, horiz, labelOptions, tickmarkOffset, index, step) {
-                var tick = this,
-                    lbOptions = pick(tick.options && tick.options.labels,
-                    labelOptions),
-                    pos = tick.pos,
-                    axis = tick.axis,
-                    options = axis.options,
-                    isTreeGrid = options.type === 'treegrid',
-                    result = proceed.apply(tick,
-                    [x,
-                    y,
-                    label,
-                    horiz,
-                    lbOptions,
-                    tickmarkOffset,
-                    index,
-                    step]),
-                    symbolOptions,
-                    indentation,
-                    mapOfPosToGridNode,
-                    node,
-                    level;
+                var tick = this, lbOptions = pick(tick.options && tick.options.labels, labelOptions), pos = tick.pos, axis = tick.axis, options = axis.options, isTreeGrid = options.type === 'treegrid', result = proceed.apply(tick, [x, y, label, horiz, lbOptions, tickmarkOffset, index, step]), symbolOptions, indentation, mapOfPosToGridNode, node, level;
                 if (isTreeGrid) {
                     symbolOptions = (lbOptions && isObject(lbOptions.symbol) ?
                         lbOptions.symbol :
@@ -2488,8 +2147,8 @@
             },
             renderLabel: function (proceed) {
                 var tick = this, pos = tick.pos, axis = tick.axis, label = tick.label, mapOfPosToGridNode = axis.mapOfPosToGridNode, options = axis.options, labelOptions = pick(tick.options && tick.options.labels, options && options.labels), symbolOptions = (labelOptions && isObject(labelOptions.symbol) ?
-                        labelOptions.symbol :
-                        {}), node = mapOfPosToGridNode && mapOfPosToGridNode[pos], level = node && node.depth, isTreeGrid = options.type === 'treegrid', hasLabel = !!(label && label.element), shouldRender = axis.tickPositions.indexOf(pos) > -1, prefixClassName = 'highcharts-treegrid-node-', collapsed, addClassName, removeClassName, styledMode = axis.chart.styledMode;
+                    labelOptions.symbol :
+                    {}), node = mapOfPosToGridNode && mapOfPosToGridNode[pos], level = node && node.depth, isTreeGrid = options.type === 'treegrid', hasLabel = !!(label && label.element), shouldRender = axis.tickPositions.indexOf(pos) > -1, prefixClassName = 'highcharts-treegrid-node-', collapsed, addClassName, removeClassName, styledMode = axis.chart.styledMode;
                 if (isTreeGrid && node) {
                     // Add class name for hierarchical styling.
                     if (hasLabel) {
@@ -2555,12 +2214,7 @@
              *        {@link Highcharts.Chart#redraw}
              */
             collapse: function (redraw) {
-                var tick = this,
-                    axis = tick.axis,
-                    pos = tick.pos,
-                    node = axis.mapOfPosToGridNode[pos],
-                    breaks = collapse(axis,
-                    node);
+                var tick = this, axis = tick.axis, pos = tick.pos, node = axis.mapOfPosToGridNode[pos], breaks = collapse(axis, node);
                 axis.setBreaks(breaks, pick(redraw, true));
             },
             /**
@@ -2576,12 +2230,7 @@
              *        {@link Highcharts.Chart#redraw}
              */
             expand: function (redraw) {
-                var tick = this,
-                    axis = tick.axis,
-                    pos = tick.pos,
-                    node = axis.mapOfPosToGridNode[pos],
-                    breaks = expand(axis,
-                    node);
+                var tick = this, axis = tick.axis, pos = tick.pos, node = axis.mapOfPosToGridNode[pos], breaks = expand(axis, node);
                 axis.setBreaks(breaks, pick(redraw, true));
             },
             /**
@@ -2598,12 +2247,7 @@
              *        {@link Highcharts.Chart#redraw}
              */
             toggleCollapse: function (redraw) {
-                var tick = this,
-                    axis = tick.axis,
-                    pos = tick.pos,
-                    node = axis.mapOfPosToGridNode[pos],
-                    breaks = toggleCollapse(axis,
-                    node);
+                var tick = this, axis = tick.axis, pos = tick.pos, node = axis.mapOfPosToGridNode[pos], breaks = toggleCollapse(axis, node);
                 axis.setBreaks(breaks, pick(redraw, true));
             }
         });

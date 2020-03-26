@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * (c) 2010-2019 Highsoft AS
  * Author: Sebastian Domas
@@ -33,10 +33,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var addEvent = U.addEvent,
-            defined = U.defined;
-        var Series = H.Series,
-            noop = H.noop;
+        var addEvent = U.addEvent, defined = U.defined;
+        var Series = H.Series, noop = H.noop;
         /* ************************************************************************** *
          *
          * DERIVED SERIES MIXIN
@@ -50,18 +48,17 @@
          * @mixin derivedSeriesMixin
          */
         var derivedSeriesMixin = {
-                hasDerivedData: true,
-                /* eslint-disable valid-jsdoc */
-                /**
-                 * Initialise series
-                 *
-                 * @private
-                 * @function derivedSeriesMixin.init
-                 * @return {void}
-                 */
-                init: function () {
-                    Series.prototype.init.apply(this,
-            arguments);
+            hasDerivedData: true,
+            /* eslint-disable valid-jsdoc */
+            /**
+             * Initialise series
+             *
+             * @private
+             * @function derivedSeriesMixin.init
+             * @return {void}
+             */
+            init: function () {
+                Series.prototype.init.apply(this, arguments);
                 this.initialised = false;
                 this.baseSeries = null;
                 this.eventRemovers = [];
@@ -87,11 +84,9 @@
              * @return {void}
              */
             setBaseSeries: function () {
-                var chart = this.chart,
-                    baseSeriesOptions = this.options.baseSeries,
-                    baseSeries = (defined(baseSeriesOptions) &&
-                        (chart.series[baseSeriesOptions] ||
-                            chart.get(baseSeriesOptions)));
+                var chart = this.chart, baseSeriesOptions = this.options.baseSeries, baseSeries = (defined(baseSeriesOptions) &&
+                    (chart.series[baseSeriesOptions] ||
+                        chart.get(baseSeriesOptions)));
                 this.baseSeries = baseSeries || null;
             },
             /**
@@ -102,8 +97,7 @@
              * @return {void}
              */
             addEvents: function () {
-                var derivedSeries = this,
-                    chartSeriesLinked;
+                var derivedSeries = this, chartSeriesLinked;
                 chartSeriesLinked = addEvent(this.chart, 'afterLinkSeries', function () {
                     derivedSeries.setBaseSeries();
                     if (derivedSeries.baseSeries && !derivedSeries.initialised) {
@@ -123,9 +117,7 @@
              * @return {void}
              */
             addBaseSeriesEvents: function () {
-                var derivedSeries = this,
-                    updatedDataRemover,
-                    destroyRemover;
+                var derivedSeries = this, updatedDataRemover, destroyRemover;
                 updatedDataRemover = addEvent(derivedSeries.baseSeries, 'updatedData', function () {
                     derivedSeries.setDerivedData();
                 });
@@ -163,13 +155,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var arrayMax = U.arrayMax,
-            arrayMin = U.arrayMin,
-            correctFloat = U.correctFloat,
-            isNumber = U.isNumber,
-            merge = U.merge,
-            objectEach = U.objectEach,
-            seriesType = U.seriesType;
+        var arrayMax = U.arrayMax, arrayMin = U.arrayMin, correctFloat = U.correctFloat, isNumber = U.isNumber, merge = U.merge, objectEach = U.objectEach, seriesType = U.seriesType;
         /* ************************************************************************** *
          *  HISTOGRAM
          * ************************************************************************** */
@@ -178,8 +164,8 @@
          * base series
          **/
         var binsNumberFormulas = {
-                'square-root': function (baseSeries) {
-                    return Math.ceil(Math.sqrt(baseSeries.options.data.length));
+            'square-root': function (baseSeries) {
+                return Math.ceil(Math.sqrt(baseSeries.options.data.length));
             },
             'sturges': function (baseSeries) {
                 return Math.ceil(Math.log(baseSeries.options.data.length) * Math.LOG2E);
@@ -264,22 +250,14 @@
                 if (!yData.length) {
                     return;
                 }
-                var data = this.derivedData(yData,
-                    this.binsNumber(),
-                    this.options.binWidth);
+                var data = this.derivedData(yData, this.binsNumber(), this.options.binWidth);
                 this.setData(data, false);
             },
             derivedData: function (baseData, binsNumber, binWidth) {
-                var series = this,
-                    max = arrayMax(baseData), 
-                    // Float correction needed, because first frequency value is not
-                    // corrected when generating frequencies (within for loop).
-                    min = correctFloat(arrayMin(baseData)),
-                    frequencies = [],
-                    bins = {},
-                    data = [],
-                    x,
-                    fitToBin;
+                var series = this, max = arrayMax(baseData), 
+                // Float correction needed, because first frequency value is not
+                // corrected when generating frequencies (within for loop).
+                min = correctFloat(arrayMin(baseData)), frequencies = [], bins = {}, data = [], x, fitToBin;
                 binWidth = series.binWidth = series.options.pointRange = (correctFloat(isNumber(binWidth) ?
                     (binWidth || 1) :
                     (max - min) / binsNumber));
@@ -293,7 +271,11 @@
                 x < max &&
                     (series.userOptions.binWidth ||
                         correctFloat(max - x) >= binWidth ||
-                        correctFloat(min + (frequencies.length * binWidth) - x) <= 0); x = correctFloat(x + binWidth)) {
+                        // #13069 - Every add and subtract operation should
+                        // be corrected, due to general problems with
+                        // operations on float numbers in JS.
+                        correctFloat(correctFloat(min + (frequencies.length * binWidth)) -
+                            x) <= 0); x = correctFloat(x + binWidth)) {
                     frequencies.push(x);
                     bins[x] = 0;
                 }
@@ -323,8 +305,8 @@
             binsNumber: function () {
                 var binsNumberOption = this.options.binsNumber;
                 var binsNumber = binsNumberFormulas[binsNumberOption] ||
-                        // #7457
-                        (typeof binsNumberOption === 'function' && binsNumberOption);
+                    // #7457
+                    (typeof binsNumberOption === 'function' && binsNumberOption);
                 return Math.ceil((binsNumber && binsNumber(this.baseSeries)) ||
                     (isNumber(binsNumberOption) ?
                         binsNumberOption :
@@ -364,10 +346,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var correctFloat = U.correctFloat,
-            isNumber = U.isNumber,
-            merge = U.merge,
-            seriesType = U.seriesType;
+        var correctFloat = U.correctFloat, isNumber = U.isNumber, merge = U.merge, seriesType = U.seriesType;
         /* ************************************************************************** *
          *  BELL CURVE                                                                *
          * ************************************************************************** */
@@ -376,10 +355,8 @@
          * @private
          */
         function mean(data) {
-            var length = data.length,
-                sum = data.reduce(function (sum,
-                value) {
-                    return (sum += value);
+            var length = data.length, sum = data.reduce(function (sum, value) {
+                return (sum += value);
             }, 0);
             return length > 0 && sum / length;
         }
@@ -387,8 +364,7 @@
          * @private
          */
         function standardDeviation(data, average) {
-            var len = data.length,
-                sum;
+            var len = data.length, sum;
             average = isNumber(average) ? average : mean(data);
             sum = data.reduce(function (sum, value) {
                 var diff = value - average;
@@ -468,13 +444,7 @@
                 return (void 0);
             },
             derivedData: function (mean, standardDeviation) {
-                var intervals = this.options.intervals,
-                    pointsInInterval = this.options.pointsInInterval,
-                    x = mean - intervals * standardDeviation,
-                    stop = intervals * pointsInInterval * 2 + 1,
-                    increment = standardDeviation / pointsInInterval,
-                    data = [],
-                    i;
+                var intervals = this.options.intervals, pointsInInterval = this.options.pointsInInterval, x = mean - intervals * standardDeviation, stop = intervals * pointsInInterval * 2 + 1, increment = standardDeviation / pointsInInterval, data = [], i;
                 for (i = 0; i < stop; i++) {
                     data.push([x, normalDensity(x, mean, standardDeviation)]);
                     x += increment;

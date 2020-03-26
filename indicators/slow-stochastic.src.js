@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Slow Stochastic series type for Highstock
  *
@@ -41,31 +41,26 @@
         var error = U.error;
         /* eslint-disable no-invalid-this, valid-jsdoc */
         var requiredIndicatorMixin = {
-                /**
-                 * Check whether given indicator is loaded,
-            else throw error.
-                 * @private
-                 * @param {Highcharts.Indicator} indicator
-                 *        Indicator constructor function.
-                 * @param {string} requiredIndicator
-                 *        Required indicator type.
-                 * @param {string} type
-                 *        Type of indicator where function was called (parent).
-                 * @param {Highcharts.IndicatorCallbackFunction} callback
-                 *        Callback which is triggered if the given indicator is loaded.
-                 *        Takes indicator as an argument.
-                 * @param {string} errMessage
-                 *        Error message that will be logged in console.
-                 * @return {boolean}
-                 *         Returns false when there is no required indicator loaded.
-                 */
-                isParentLoaded: function (indicator,
-            requiredIndicator,
-            type,
-            callback,
-            errMessage) {
-                    if (indicator) {
-                        return callback ? callback(indicator) : true;
+            /**
+             * Check whether given indicator is loaded, else throw error.
+             * @private
+             * @param {Highcharts.Indicator} indicator
+             *        Indicator constructor function.
+             * @param {string} requiredIndicator
+             *        Required indicator type.
+             * @param {string} type
+             *        Type of indicator where function was called (parent).
+             * @param {Highcharts.IndicatorCallbackFunction} callback
+             *        Callback which is triggered if the given indicator is loaded.
+             *        Takes indicator as an argument.
+             * @param {string} errMessage
+             *        Error message that will be logged in console.
+             * @return {boolean}
+             *         Returns false when there is no required indicator loaded.
+             */
+            isParentLoaded: function (indicator, requiredIndicator, type, callback, errMessage) {
+                if (indicator) {
+                    return callback ? callback(indicator) : true;
                 }
                 error(errMessage || this.generateMessage(type, requiredIndicator));
                 return false;
@@ -143,23 +138,18 @@
         {
             nameBase: 'Slow Stochastic',
             init: function () {
-                var args = arguments,
-                    ctx = this;
+                var args = arguments, ctx = this;
                 requiredIndicator.isParentLoaded(H.seriesTypes.stochastic, 'stochastic', ctx.type, function (indicator) {
                     indicator.prototype.init.apply(ctx, args);
                     return;
                 });
             },
             getValues: function (series, params) {
-                var periods = params.periods,
-                    fastValues = seriesTypes.stochastic.prototype.getValues.call(this,
-                    series,
-                    params),
-                    slowValues = {
-                        values: [],
-                        xData: [],
-                        yData: []
-                    };
+                var periods = params.periods, fastValues = seriesTypes.stochastic.prototype.getValues.call(this, series, params), slowValues = {
+                    values: [],
+                    xData: [],
+                    yData: []
+                };
                 var i = 0;
                 if (!fastValues) {
                     return;
@@ -168,12 +158,12 @@
                 var fastYData = fastValues.yData.slice(periods[1] - 1);
                 // Get SMA(%D)
                 var smoothedValues = seriesTypes.sma.prototype.getValues.call(this, {
-                        xData: slowValues.xData,
-                        yData: fastYData
-                    }, {
-                        index: 1,
-                        period: periods[2]
-                    });
+                    xData: slowValues.xData,
+                    yData: fastYData
+                }, {
+                    index: 1,
+                    period: periods[2]
+                });
                 if (!smoothedValues) {
                     return;
                 }

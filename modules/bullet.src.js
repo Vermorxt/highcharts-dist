@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * Bullet graph series type for Highcharts
  *
@@ -38,11 +38,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isNumber = U.isNumber,
-            merge = U.merge,
-            pick = U.pick,
-            relativeLength = U.relativeLength,
-            seriesType = U.seriesType;
+        var isNumber = U.isNumber, merge = U.merge, pick = U.pick, relativeLength = U.relativeLength, seriesType = U.seriesType;
         var columnProto = H.seriesTypes.column.prototype;
         /**
          * The bullet series type.
@@ -145,22 +141,10 @@
              * @function Highcharts.Series#drawPoints
              */
             drawPoints: function () {
-                var series = this,
-                    chart = series.chart,
-                    options = series.options,
-                    animationLimit = options.animationLimit || 250;
+                var series = this, chart = series.chart, options = series.options, animationLimit = options.animationLimit || 250;
                 columnProto.drawPoints.apply(this);
                 series.points.forEach(function (point) {
-                    var pointOptions = point.options,
-                        shapeArgs,
-                        targetGraphic = point.targetGraphic,
-                        targetShapeArgs,
-                        targetVal = point.target,
-                        pointVal = point.y,
-                        width,
-                        height,
-                        targetOptions,
-                        y;
+                    var pointOptions = point.options, shapeArgs, targetGraphic = point.targetGraphic, targetShapeArgs, targetVal = point.target, pointVal = point.y, width, height, targetOptions, y;
                     if (isNumber(targetVal) && targetVal !== null) {
                         targetOptions = merge(options.targetOptions, pointOptions.targetOptions);
                         height = targetOptions.height;
@@ -233,18 +217,18 @@
              * @function Highcharts.Series#getExtremes
              */
             getExtremes: function (yData) {
-                var series = this,
-                    targetData = series.targetData,
-                    yMax,
-                    yMin;
-                columnProto.getExtremes.call(this, yData);
+                var series = this, targetData = series.targetData, yMax, yMin;
+                var dataExtremes = columnProto.getExtremes.call(this, yData);
                 if (targetData && targetData.length) {
-                    yMax = series.dataMax;
-                    yMin = series.dataMin;
-                    columnProto.getExtremes.call(this, targetData);
-                    series.dataMax = Math.max(series.dataMax, yMax);
-                    series.dataMin = Math.min(series.dataMin, yMin);
+                    var targetExtremes = columnProto.getExtremes.call(this, targetData);
+                    if (isNumber(targetExtremes.dataMin)) {
+                        dataExtremes.dataMin = Math.min(pick(dataExtremes.dataMin, Infinity), targetExtremes.dataMin);
+                    }
+                    if (isNumber(targetExtremes.dataMax)) {
+                        dataExtremes.dataMax = Math.max(pick(dataExtremes.dataMax, -Infinity), targetExtremes.dataMax);
+                    }
                 }
+                return dataExtremes;
             }
             /* eslint-enable valid-jsdoc */
         }, 

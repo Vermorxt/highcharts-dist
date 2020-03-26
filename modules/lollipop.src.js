@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * (c) 2009-2019 Sebastian Bochan, Rafal Sebestjanski
  *
@@ -37,8 +37,7 @@
          *
          * */
         var seriesType = U.seriesType;
-        var areaProto = H.seriesTypes.area.prototype,
-            colProto = H.seriesTypes.column.prototype;
+        var areaProto = H.seriesTypes.area.prototype, colProto = H.seriesTypes.column.prototype;
         /**
          * The lollipop series is a carteseian series with a line anchored from
          * the x axis and a dot at the end to mark the value.

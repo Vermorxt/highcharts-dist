@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -38,8 +38,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isArray = U.isArray,
-            seriesType = U.seriesType;
+        var isArray = U.isArray, seriesType = U.seriesType;
         /* eslint-disable require-jsdoc */
         // Utils:
         function populateAverage(xVal, yVal, i, period, index) {
@@ -49,8 +48,7 @@
                 Closing Price [n days ago] * 100
 
                Return y as null when avoiding division by zero */
-            var nDaysAgoY,
-                rocY;
+            var nDaysAgoY, rocY;
             if (index < 0) {
                 // y data given as an array of values
                 nDaysAgoY = yVal[i - period];
@@ -112,16 +110,7 @@
         {
             nameBase: 'Rate of Change',
             getValues: function (series, params) {
-                var period = params.period,
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    ROC = [],
-                    xData = [],
-                    yData = [],
-                    i,
-                    index = -1,
-                    ROCPoint;
+                var period = params.period, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, ROC = [], xData = [], yData = [], i, index = -1, ROCPoint;
                 // Period is used as a number of time periods ago, so we need more
                 // (at least 1 more) data than the period value
                 if (xVal.length <= period) {

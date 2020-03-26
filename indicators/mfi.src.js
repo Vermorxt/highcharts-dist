@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Money Flow Index indicator for Highstock
  *
@@ -40,9 +40,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var error = U.error,
-            isArray = U.isArray,
-            seriesType = U.seriesType;
+        var error = U.error, isArray = U.isArray, seriesType = U.seriesType;
         /* eslint-disable require-jsdoc */
         // Utils:
         function sumArray(array) {
@@ -108,30 +106,10 @@
         {
             nameBase: 'Money Flow Index',
             getValues: function (series, params) {
-                var period = params.period,
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    decimals = params.decimals, 
-                    // MFI starts calculations from the second point
-                    // Cause we need to calculate change between two points
-                    range = 1,
-                    volumeSeries = series.chart.get(params.volumeSeriesID),
-                    yValVolume = (volumeSeries && volumeSeries.yData),
-                    MFI = [],
-                    isUp = false,
-                    xData = [],
-                    yData = [],
-                    positiveMoneyFlow = [],
-                    negativeMoneyFlow = [],
-                    newTypicalPrice,
-                    oldTypicalPrice,
-                    rawMoneyFlow,
-                    negativeMoneyFlowSum,
-                    positiveMoneyFlowSum,
-                    moneyFlowRatio,
-                    MFIPoint,
-                    i;
+                var period = params.period, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, decimals = params.decimals, 
+                // MFI starts calculations from the second point
+                // Cause we need to calculate change between two points
+                range = 1, volumeSeries = series.chart.get(params.volumeSeriesID), yValVolume = (volumeSeries && volumeSeries.yData), MFI = [], isUp = false, xData = [], yData = [], positiveMoneyFlow = [], negativeMoneyFlow = [], newTypicalPrice, oldTypicalPrice, rawMoneyFlow, negativeMoneyFlowSum, positiveMoneyFlowSum, moneyFlowRatio, MFIPoint, i;
                 if (!volumeSeries) {
                     error('Series ' +
                         params.volumeSeriesID +

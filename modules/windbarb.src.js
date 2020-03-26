@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * Wind barb series module
  *
@@ -38,28 +38,25 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var defined = U.defined,
-            stableSort = U.stableSort;
+        var defined = U.defined, stableSort = U.stableSort;
         var seriesTypes = H.seriesTypes;
         /**
          * @private
          * @mixin onSeriesMixin
          */
         var onSeriesMixin = {
-                /* eslint-disable valid-jsdoc */
-                /**
-                 * Override getPlotBox. If the onSeries option is valid,
-            return the plot box
-                 * of the onSeries,
-            otherwise proceed as usual.
-                 *
-                 * @private
-                 * @function onSeriesMixin.getPlotBox
-                 * @return {Highcharts.SeriesPlotBoxObject}
-                 */
-                getPlotBox: function () {
-                    return H.Series.prototype.getPlotBox.call((this.options.onSeries &&
-                        this.chart.get(this.options.onSeries)) || this);
+            /* eslint-disable valid-jsdoc */
+            /**
+             * Override getPlotBox. If the onSeries option is valid, return the plot box
+             * of the onSeries, otherwise proceed as usual.
+             *
+             * @private
+             * @function onSeriesMixin.getPlotBox
+             * @return {Highcharts.SeriesPlotBoxObject}
+             */
+            getPlotBox: function () {
+                return H.Series.prototype.getPlotBox.call((this.options.onSeries &&
+                    this.chart.get(this.options.onSeries)) || this);
             },
             /**
              * Extend the translate method by placing the point on the related series
@@ -70,29 +67,8 @@
              */
             translate: function () {
                 seriesTypes.column.prototype.translate.apply(this);
-                var series = this,
-                    options = series.options,
-                    chart = series.chart,
-                    points = series.points,
-                    cursor = points.length - 1,
-                    point,
-                    lastPoint,
-                    optionsOnSeries = options.onSeries,
-                    onSeries = (optionsOnSeries &&
-                        chart.get(optionsOnSeries)),
-                    onKey = options.onKey || 'y',
-                    step = onSeries && onSeries.options.step,
-                    onData = (onSeries && onSeries.points),
-                    i = onData && onData.length,
-                    inverted = chart.inverted,
-                    xAxis = series.xAxis,
-                    yAxis = series.yAxis,
-                    xOffset = 0,
-                    leftPoint,
-                    lastX,
-                    rightPoint,
-                    currentDataGrouping,
-                    distanceRatio;
+                var series = this, options = series.options, chart = series.chart, points = series.points, cursor = points.length - 1, point, lastPoint, optionsOnSeries = options.onSeries, onSeries = (optionsOnSeries &&
+                    chart.get(optionsOnSeries)), onKey = options.onKey || 'y', step = onSeries && onSeries.options.step, onData = (onSeries && onSeries.points), i = onData && onData.length, inverted = chart.inverted, xAxis = series.xAxis, yAxis = series.yAxis, xOffset = 0, leftPoint, lastX, rightPoint, currentDataGrouping, distanceRatio;
                 // relate to a master series
                 if (onSeries && onSeries.visible && i) {
                     xOffset = (onSeries.pointXOffset || 0) + (onSeries.barW || 0) / 2;
@@ -198,10 +174,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var animObject = U.animObject,
-            isNumber = U.isNumber,
-            pick = U.pick,
-            seriesType = U.seriesType;
+        var animObject = U.animObject, isNumber = U.isNumber, pick = U.pick, seriesType = U.seriesType;
         var noop = H.noop;
         // eslint-disable-next-line valid-jsdoc
         /**
@@ -214,10 +187,7 @@
         function registerApproximation() {
             if (H.approximations && !H.approximations.windbarb) {
                 H.approximations.windbarb = function (values, directions) {
-                    var vectorX = 0,
-                        vectorY = 0,
-                        i,
-                        len = values.length;
+                    var vectorX = 0, vectorY = 0, i, len = values.length;
                     for (i = 0; i < len; i++) {
                         vectorX += values[i] * Math.cos(directions[i] * H.deg2rad);
                         vectorY += values[i] * Math.sin(directions[i] * H.deg2rad);
@@ -363,9 +333,7 @@
             },
             // Get presentational attributes.
             pointAttribs: function (point, state) {
-                var options = this.options,
-                    stroke = point.color || this.color,
-                    strokeWidth = this.options.lineWidth;
+                var options = this.options, stroke = point.color || this.color, strokeWidth = this.options.lineWidth;
                 if (state) {
                     stroke = options.states[state].color || stroke;
                     strokeWidth =
@@ -384,12 +352,7 @@
             // Create a single wind arrow. It is later rotated around the zero
             // centerpoint.
             windArrow: function (point) {
-                var knots = point.value * 1.943844,
-                    level = point.beaufortLevel,
-                    path,
-                    barbs,
-                    u = this.options.vectorLength / 20,
-                    pos = -10;
+                var knots = point.value * 1.943844, level = point.beaufortLevel, path, barbs, u = this.options.vectorLength / 20, pos = -10;
                 if (point.isNull) {
                     return [];
                 }
@@ -436,8 +399,7 @@
                 return path;
             },
             translate: function () {
-                var beaufortFloor = this.beaufortFloor,
-                    beaufortName = this.beaufortName;
+                var beaufortFloor = this.beaufortFloor, beaufortName = this.beaufortName;
                 onSeriesMixin.translate.call(this);
                 this.points.forEach(function (point) {
                     var level = 0;
@@ -452,13 +414,9 @@
                 });
             },
             drawPoints: function () {
-                var chart = this.chart,
-                    yAxis = this.yAxis,
-                    inverted = chart.inverted,
-                    shapeOffset = this.options.vectorLength / 2;
+                var chart = this.chart, yAxis = this.yAxis, inverted = chart.inverted, shapeOffset = this.options.vectorLength / 2;
                 this.points.forEach(function (point) {
-                    var plotX = point.plotX,
-                        plotY = point.plotY;
+                    var plotX = point.plotX, plotY = point.plotY;
                     // Check if it's inside the plot area, but only for the X
                     // dimension.
                     if (this.options.clip === false ||
@@ -515,7 +473,7 @@
             // Don't invert the marker group (#4960)
             invertGroups: noop,
             // No data extremes for the Y axis
-            getExtremes: noop
+            getExtremes: function () { return ({}); }
         }, {
             isValid: function () {
                 return isNumber(this.value) && this.value >= 0;

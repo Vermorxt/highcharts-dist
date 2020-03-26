@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -40,9 +40,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var error = U.error,
-            isArray = U.isArray,
-            seriesType = U.seriesType;
+        var error = U.error, isArray = U.isArray, seriesType = U.seriesType;
         /**
          * The Volume Weighted Average Price (VWAP) series type.
          *
@@ -96,13 +94,7 @@
              * @return {object} - computed VWAP
              **/
             getValues: function (series, params) {
-                var indicator = this,
-                    chart = series.chart,
-                    xValues = series.xData,
-                    yValues = series.yData,
-                    period = params.period,
-                    isOHLC = true,
-                    volumeSeries;
+                var indicator = this, chart = series.chart, xValues = series.xData, yValues = series.yData, period = params.period, isOHLC = true, volumeSeries;
                 // Checks if volume series exists
                 if (!(volumeSeries = (chart.get(params.volumeSeriesID)))) {
                     error('Series ' +
@@ -130,20 +122,7 @@
              * @return {object} - Object contains computed VWAP
              **/
             calculateVWAPValues: function (isOHLC, xValues, yValues, volumeSeries, period) {
-                var volumeValues = volumeSeries.yData,
-                    volumeLength = volumeSeries.xData.length,
-                    pointsLength = xValues.length,
-                    cumulativePrice = [],
-                    cumulativeVolume = [],
-                    xData = [],
-                    yData = [],
-                    VWAP = [],
-                    commonLength,
-                    typicalPrice,
-                    cPrice,
-                    cVolume,
-                    i,
-                    j;
+                var volumeValues = volumeSeries.yData, volumeLength = volumeSeries.xData.length, pointsLength = xValues.length, cumulativePrice = [], cumulativeVolume = [], xData = [], yData = [], VWAP = [], commonLength, typicalPrice, cPrice, cVolume, i, j;
                 if (pointsLength <= volumeLength) {
                     commonLength = pointsLength;
                 }

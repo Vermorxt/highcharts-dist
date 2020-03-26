@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * Sankey diagram module
  *
@@ -34,10 +34,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var defined = U.defined,
-            extend = U.extend,
-            find = U.find,
-            pick = U.pick;
+        var defined = U.defined, extend = U.extend, find = U.find, pick = U.pick;
         H.NodesMixin = {
             /* eslint-disable valid-jsdoc */
             /**
@@ -54,10 +51,7 @@
                         return node.id === id;
                     });
                 }
-                var node = findById(this.nodes,
-                    id),
-                    PointClass = this.pointClass,
-                    options;
+                var node = findById(this.nodes, id), PointClass = this.pointClass, options;
                 if (!node) {
                     options = this.options.nodes && findById(this.options.nodes, id);
                     node = (new PointClass()).init(this, extend({
@@ -83,8 +77,7 @@
                      * @private
                      */
                     node.getSum = function () {
-                        var sumTo = 0,
-                            sumFrom = 0;
+                        var sumTo = 0, sumFrom = 0;
                         node.linksTo.forEach(function (link) {
                             sumTo += link.weight;
                         });
@@ -127,8 +120,7 @@
              * but pushed to the this.nodes array.
              */
             generatePoints: function () {
-                var chart = this.chart,
-                    nodeLookup = {};
+                var chart = this.chart, nodeLookup = {};
                 H.Series.prototype.generatePoints.call(this);
                 if (!this.nodes) {
                     this.nodes = []; // List of Point-like node items
@@ -191,10 +183,8 @@
              * highlight all connected nodes.
              */
             setNodeState: function (state) {
-                var args = arguments,
-                    others = this.isNode ? this.linksTo.concat(this.linksFrom) :
-                        [this.fromNode,
-                    this.toNode];
+                var args = arguments, others = this.isNode ? this.linksTo.concat(this.linksFrom) :
+                    [this.fromNode, this.toNode];
                 if (state !== 'select') {
                     others.forEach(function (linkOrNode) {
                         if (linkOrNode && linkOrNode.series) {
@@ -222,14 +212,9 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var extend = U.extend,
-            isArray = U.isArray,
-            isNumber = U.isNumber,
-            isObject = U.isObject,
-            merge = U.merge,
-            pick = U.pick;
+        var extend = U.extend, isArray = U.isArray, isNumber = U.isNumber, isObject = U.isObject, merge = U.merge, pick = U.pick;
         var isBoolean = function (x) {
-                return typeof x === 'boolean';
+            return typeof x === 'boolean';
         }, isFn = function (x) {
             return typeof x === 'function';
         };
@@ -239,21 +224,10 @@
          * @todo Remove logic from Treemap and make it utilize this mixin.
          * @private
          */
-        var setTreeValues = function setTreeValues(tree,
-            options) {
-                var before = options.before,
-            idRoot = options.idRoot,
-            mapIdToNode = options.mapIdToNode,
-            nodeRoot = mapIdToNode[idRoot],
-            levelIsConstant = (isBoolean(options.levelIsConstant) ?
-                    options.levelIsConstant :
-                    true),
-            points = options.points,
-            point = points[tree.i],
-            optionsPoint = point && point.options || {},
-            childrenTotal = 0,
-            children = [],
-            value;
+        var setTreeValues = function setTreeValues(tree, options) {
+            var before = options.before, idRoot = options.idRoot, mapIdToNode = options.mapIdToNode, nodeRoot = mapIdToNode[idRoot], levelIsConstant = (isBoolean(options.levelIsConstant) ?
+                options.levelIsConstant :
+                true), points = options.points, point = points[tree.i], optionsPoint = point && point.options || {}, childrenTotal = 0, children = [], value;
             extend(tree, {
                 levelDynamic: tree.level - (levelIsConstant ? 0 : nodeRoot.level),
                 name: pick(point && point.name, ''),
@@ -265,8 +239,7 @@
             }
             // First give the children some values
             tree.children.forEach(function (child, i) {
-                var newOptions = extend({},
-                    options);
+                var newOptions = extend({}, options);
                 extend(newOptions, {
                     index: i,
                     siblings: tree.children.length,
@@ -292,24 +265,8 @@
         /**
          * @private
          */
-        var getColor = function getColor(node,
-            options) {
-                var index = options.index,
-            mapOptionsToLevel = options.mapOptionsToLevel,
-            parentColor = options.parentColor,
-            parentColorIndex = options.parentColorIndex,
-            series = options.series,
-            colors = options.colors,
-            siblings = options.siblings,
-            points = series.points,
-            getColorByPoint,
-            chartOptionsChart = series.chart.options.chart,
-            point,
-            level,
-            colorByPoint,
-            colorIndexByPoint,
-            color,
-            colorIndex;
+        var getColor = function getColor(node, options) {
+            var index = options.index, mapOptionsToLevel = options.mapOptionsToLevel, parentColor = options.parentColor, parentColorIndex = options.parentColorIndex, series = options.series, colors = options.colors, siblings = options.siblings, points = series.points, getColorByPoint, chartOptionsChart = series.chart.options.chart, point, level, colorByPoint, colorIndexByPoint, color, colorIndex;
             /**
              * @private
              */
@@ -360,13 +317,7 @@
          *         Returns a map from level number to its given options.
          */
         var getLevelOptions = function getLevelOptions(params) {
-                var result = null,
-            defaults,
-            converted,
-            i,
-            from,
-            to,
-            levels;
+            var result = null, defaults, converted, i, from, to, levels;
             if (isObject(params)) {
                 result = {};
                 from = isNumber(params.from) ? params.from : 1;
@@ -375,9 +326,7 @@
                 defaults = isObject(params.defaults) ? params.defaults : {};
                 if (isArray(levels)) {
                     converted = levels.reduce(function (obj, item) {
-                        var level,
-                            levelIsConstant,
-                            options;
+                        var level, levelIsConstant, options;
                         if (isObject(item) && isNumber(item.level)) {
                             options = merge({}, item);
                             levelIsConstant = (isBoolean(options.levelIsConstant) ?
@@ -419,8 +368,7 @@
          *         Returns the resulting rootId after update.
          */
         var updateRootId = function (series) {
-                var rootId,
-            options;
+            var rootId, options;
             if (isObject(series)) {
                 // Get the series options.
                 options = isObject(series.options) ? series.options : {};
@@ -436,11 +384,11 @@
             return rootId;
         };
         var result = {
-                getColor: getColor,
-                getLevelOptions: getLevelOptions,
-                setTreeValues: setTreeValues,
-                updateRootId: updateRootId
-            };
+            getColor: getColor,
+            getLevelOptions: getLevelOptions,
+            setTreeValues: setTreeValues,
+            updateRootId: updateRootId
+        };
 
         return result;
     });
@@ -534,31 +482,20 @@
         * @name Highcharts.SeriesSankeyDataLabelsFormatterContextObject#point
         * @type {Highcharts.SankeyNodeObject}
         */
-        var defined = U.defined,
-            find = U.find,
-            isObject = U.isObject,
-            merge = U.merge,
-            pick = U.pick,
-            relativeLength = U.relativeLength,
-            seriesType = U.seriesType,
-            stableSort = U.stableSort;
+        var defined = U.defined, find = U.find, isObject = U.isObject, merge = U.merge, pick = U.pick, relativeLength = U.relativeLength, seriesType = U.seriesType, stableSort = U.stableSort;
         var getLevelOptions = mixinTreeSeries.getLevelOptions;
         // eslint-disable-next-line valid-jsdoc
         /**
          * @private
          */
         var getDLOptions = function getDLOptions(params) {
-                var optionsPoint = (isObject(params.optionsPoint) ?
-                    params.optionsPoint.dataLabels :
-                    {}),
-            optionsLevel = (isObject(params.level) ?
-                    params.level.dataLabels :
-                    {}),
-            options = merge({
-                    style: {}
-                },
-            optionsLevel,
-            optionsPoint);
+            var optionsPoint = (isObject(params.optionsPoint) ?
+                params.optionsPoint.dataLabels :
+                {}), optionsLevel = (isObject(params.level) ?
+                params.level.dataLabels :
+                {}), options = merge({
+                style: {}
+            }, optionsLevel, optionsPoint);
             return options;
         };
         /**
@@ -848,9 +785,7 @@
                 // the given nodePadding, we sacrifice the padding in order to
                 // render all nodes within the plot area (#11917).
                 if (this.nodeColumns) {
-                    var maxLength = this.nodeColumns.reduce(function (acc,
-                        col) { return Math.max(acc,
-                        col.length); }, 0);
+                    var maxLength = this.nodeColumns.reduce(function (acc, col) { return Math.max(acc, col.length); }, 0);
                     if (maxLength * nodePadding > this.chart.plotSizeY) {
                         nodePadding = this.chart.plotSizeY / maxLength;
                     }
@@ -862,9 +797,7 @@
              * @private
              */
             createNodeColumn: function () {
-                var series = this,
-                    chart = this.chart,
-                    column = [];
+                var series = this, chart = this.chart, column = [];
                 column.sum = function () {
                     return this.reduce(function (sum, node) {
                         return sum + node.getSum();
@@ -872,13 +805,10 @@
                 };
                 // Get the offset in pixels of a node inside the column.
                 column.offset = function (node, factor) {
-                    var offset = 0,
-                        totalNodeOffset,
-                        nodePadding = series.nodePadding;
+                    var offset = 0, totalNodeOffset, nodePadding = series.nodePadding;
                     for (var i = 0; i < column.length; i++) {
                         var sum = column[i].getSum();
-                        var height = Math.max(sum * factor,
-                            series.options.minLinkWidth);
+                        var height = Math.max(sum * factor, series.options.minLinkWidth);
                         if (sum) {
                             totalNodeOffset = height + nodePadding;
                         }
@@ -897,13 +827,11 @@
                 // Get the top position of the column in pixels.
                 column.top = function (factor) {
                     var nodePadding = series.nodePadding;
-                    var height = this.reduce(function (height,
-                        node) {
-                            if (height > 0) {
-                                height += nodePadding;
+                    var height = this.reduce(function (height, node) {
+                        if (height > 0) {
+                            height += nodePadding;
                         }
-                        var nodeHeight = Math.max(node.getSum() * factor,
-                            series.options.minLinkWidth);
+                        var nodeHeight = Math.max(node.getSum() * factor, series.options.minLinkWidth);
                         height += nodeHeight;
                         return height;
                     }, 0);
@@ -919,10 +847,7 @@
             createNodeColumns: function () {
                 var columns = [];
                 this.nodes.forEach(function (node) {
-                    var fromColumn = -1,
-                        fromNode,
-                        i,
-                        point;
+                    var fromColumn = -1, fromNode, i, point;
                     if (!defined(node.options.column)) {
                         // No links to this node, place it left
                         if (node.linksTo.length === 0) {
@@ -983,9 +908,9 @@
              */
             pointAttribs: function (point, state) {
                 var series = this, level = point.isNode ? point.level : point.fromNode.level, levelOptions = series.mapOptionsToLevel[level || 0] || {}, options = point.options, stateOptions = (levelOptions.states && levelOptions.states[state]) || {}, values = [
-                        'colorByPoint', 'borderColor', 'borderWidth', 'linkOpacity'
-                    ].reduce(function (obj, key) {
-                        obj[key] = pick(stateOptions[key], options[key], levelOptions[key], series.options[key]);
+                    'colorByPoint', 'borderColor', 'borderWidth', 'linkOpacity'
+                ].reduce(function (obj, key) {
+                    obj[key] = pick(stateOptions[key], options[key], levelOptions[key], series.options[key]);
                     return obj;
                 }, {}), color = pick(stateOptions.color, options.color, values.colorByPoint ? point.color : levelOptions.color);
                 // Node attributes
@@ -1044,23 +969,11 @@
              * @private
              */
             translateNode: function (node, column) {
-                var translationFactor = this.translationFactor,
-                    chart = this.chart,
-                    options = this.options,
-                    sum = node.getSum(),
-                    height = Math.max(Math.round(sum * translationFactor),
-                    this.options.minLinkWidth),
-                    crisp = Math.round(options.borderWidth) % 2 / 2,
-                    nodeOffset = column.offset(node,
-                    translationFactor),
-                    fromNodeTop = Math.floor(pick(nodeOffset.absoluteTop, (column.top(translationFactor) +
-                        nodeOffset.relativeTop))) + crisp,
-                    left = Math.floor(this.colDistance * node.column +
-                        options.borderWidth / 2) + crisp,
-                    nodeLeft = chart.inverted ?
-                        chart.plotSizeX - left :
-                        left,
-                    nodeWidth = Math.round(this.nodeWidth);
+                var translationFactor = this.translationFactor, chart = this.chart, options = this.options, sum = node.getSum(), height = Math.max(Math.round(sum * translationFactor), this.options.minLinkWidth), crisp = Math.round(options.borderWidth) % 2 / 2, nodeOffset = column.offset(node, translationFactor), fromNodeTop = Math.floor(pick(nodeOffset.absoluteTop, (column.top(translationFactor) +
+                    nodeOffset.relativeTop))) + crisp, left = Math.floor(this.colDistance * node.column +
+                    options.borderWidth / 2) + crisp, nodeLeft = chart.inverted ?
+                    chart.plotSizeX - left :
+                    left, nodeWidth = Math.round(this.nodeWidth);
                 node.sum = sum;
                 // If node sum is 0, don't render the rect #12453
                 if (sum) {
@@ -1112,19 +1025,17 @@
              * @private
              */
             translateLink: function (point) {
-                var getY = function (node,
-                    fromOrTo) {
-                        var _a;
-                    var linkTop = (node.offset(point,
-                        fromOrTo) *
-                            translationFactor);
+                var getY = function (node, fromOrTo) {
+                    var _a;
+                    var linkTop = (node.offset(point, fromOrTo) *
+                        translationFactor);
                     var y = Math.min(node.nodeY + linkTop, 
-                        // Prevent links from spilling below the node (#12014)
-                        node.nodeY + ((_a = node.shapeArgs) === null || _a === void 0 ? void 0 : _a.height) - linkHeight);
+                    // Prevent links from spilling below the node (#12014)
+                    node.nodeY + ((_a = node.shapeArgs) === null || _a === void 0 ? void 0 : _a.height) - linkHeight);
                     return y;
                 };
                 var fromNode = point.fromNode, toNode = point.toNode, chart = this.chart, translationFactor = this.translationFactor, linkHeight = Math.max(point.weight * translationFactor, this.options.minLinkWidth), options = this.options, curvy = ((chart.inverted ? -this.colDistance : this.colDistance) *
-                        options.curveFactor), fromY = getY(fromNode, 'linksFrom'), toY = getY(toNode, 'linksTo'), nodeLeft = fromNode.nodeX, nodeW = this.nodeWidth, right = toNode.column * this.colDistance, outgoing = point.outgoing, straight = right > nodeLeft;
+                    options.curveFactor), fromY = getY(fromNode, 'linksFrom'), toY = getY(toNode, 'linksTo'), nodeLeft = fromNode.nodeX, nodeW = this.nodeWidth, right = toNode.column * this.colDistance, outgoing = point.outgoing, straight = right > nodeLeft + nodeW;
                 if (chart.inverted) {
                     fromY = chart.plotSizeY - fromY;
                     toY = chart.plotSizeY - toY;
@@ -1170,28 +1081,7 @@
                     //   down.
                 }
                 else {
-                    var bend = 20,
-                        vDist = chart.plotHeight - fromY - linkHeight,
-                        x1 = right - bend - linkHeight,
-                        x2 = right - bend,
-                        x3 = right,
-                        x4 = nodeLeft + nodeW,
-                        x5 = x4 + bend,
-                        x6 = x5 + linkHeight,
-                        fy1 = fromY,
-                        fy2 = fromY + linkHeight,
-                        fy3 = fy2 + bend,
-                        y4 = fy3 + vDist,
-                        y5 = y4 + bend,
-                        y6 = y5 + linkHeight,
-                        ty1 = toY,
-                        ty2 = ty1 + linkHeight,
-                        ty3 = ty2 + bend,
-                        cfy1 = fy2 - linkHeight * 0.7,
-                        cy2 = y5 + linkHeight * 0.7,
-                        cty1 = ty2 - linkHeight * 0.7,
-                        cx1 = x3 - linkHeight * 0.7,
-                        cx2 = x4 + linkHeight * 0.7;
+                    var bend = 20, vDist = chart.plotHeight - fromY - linkHeight, x1 = right - bend - linkHeight, x2 = right - bend, x3 = right, x4 = nodeLeft + nodeW, x5 = x4 + bend, x6 = x5 + linkHeight, fy1 = fromY, fy2 = fromY + linkHeight, fy3 = fy2 + bend, y4 = fy3 + vDist, y5 = y4 + bend, y6 = y5 + linkHeight, ty1 = toY, ty2 = ty1 + linkHeight, ty3 = ty2 + bend, cfy1 = fy2 - linkHeight * 0.7, cy2 = y5 + linkHeight * 0.7, cty1 = ty2 - linkHeight * 0.7, cx1 = x3 - linkHeight * 0.7, cx2 = x4 + linkHeight * 0.7;
                     point.shapeArgs = {
                         d: [
                             'M', x4, fy1,
@@ -1244,13 +1134,13 @@
                 // Get the translation factor needed for each column to fill up the
                 // plot height
                 var getColumnTranslationFactor = function (column) {
-                        var nodes = column.slice();
+                    var nodes = column.slice();
                     var minLinkWidth = _this.options.minLinkWidth || 0;
                     var exceedsMinLinkWidth;
                     var factor = 0;
                     var i;
                     var remainingHeight = chart.plotSizeY -
-                            options.borderWidth - (column.length - 1) * series.nodePadding;
+                        options.borderWidth - (column.length - 1) * series.nodePadding;
                     // Because the minLinkWidth option doesn't obey the direct
                     // translation, we need to run translation iteratively, check
                     // node heights, remove those nodes affected by minLinkWidth,
@@ -1281,11 +1171,7 @@
                 this.generatePoints();
                 this.nodeColumns = this.createNodeColumns();
                 this.nodeWidth = relativeLength(this.options.nodeWidth, this.chart.plotSizeX);
-                var series = this,
-                    chart = this.chart,
-                    options = this.options,
-                    nodeWidth = this.nodeWidth,
-                    nodeColumns = this.nodeColumns;
+                var series = this, chart = this.chart, options = this.options, nodeWidth = this.nodeWidth, nodeColumns = this.nodeColumns;
                 this.nodePadding = this.getNodePadding();
                 // Find out how much space is needed. Base it on the translation
                 // factor of the most spaceous column.

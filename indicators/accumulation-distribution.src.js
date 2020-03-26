@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -35,22 +35,16 @@
          *
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          * */
-        var error = U.error,
-            seriesType = U.seriesType;
+        var error = U.error, seriesType = U.seriesType;
         /* eslint-disable valid-jsdoc */
         // Utils:
         /**
          * @private
          */
         function populateAverage(xVal, yVal, yValVolume, i) {
-            var high = yVal[i][1],
-                low = yVal[i][2],
-                close = yVal[i][3],
-                volume = yValVolume[i],
-                adY = close === high && close === low || high === low ?
-                    0 :
-                    ((2 * close - low - high) / (high - low)) * volume,
-                adX = xVal[i];
+            var high = yVal[i][1], low = yVal[i][2], close = yVal[i][3], volume = yValVolume[i], adY = close === high && close === low || high === low ?
+                0 :
+                ((2 * close - low - high) / (high - low)) * volume, adX = xVal[i];
             return [adX, adY];
         }
         /* eslint-enable valid-jsdoc */
@@ -97,19 +91,7 @@
             nameComponents: false,
             nameBase: 'Accumulation/Distribution',
             getValues: function (series, params) {
-                var period = params.period,
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    volumeSeriesID = params.volumeSeriesID,
-                    volumeSeries = series.chart.get(volumeSeriesID),
-                    yValVolume = volumeSeries && volumeSeries.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    AD = [],
-                    xData = [],
-                    yData = [],
-                    len,
-                    i,
-                    ADPoint;
+                var period = params.period, xVal = series.xData, yVal = series.yData, volumeSeriesID = params.volumeSeriesID, volumeSeries = series.chart.get(volumeSeriesID), yValVolume = volumeSeries && volumeSeries.yData, yValLen = yVal ? yVal.length : 0, AD = [], xData = [], yData = [], len, i, ADPoint;
                 if (xVal.length <= period &&
                     yValLen &&
                     yVal[0].length !== 4) {

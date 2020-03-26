@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Advanced Highstock tools
  *
@@ -29,7 +29,7 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'modules/full-screen.src.js', [_modules['parts/Globals.js']], function (H) {
+    _registerModule(_modules, 'modules/full-screen.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (H, U) {
         /* *
          * (c) 2009-2020 Rafal Sebestjanski
          *
@@ -37,8 +37,8 @@
          *
          * License: www.highcharts.com/license
          */
-        var addEvent = H.addEvent,
-            Chart = H.Chart;
+        var addEvent = U.addEvent;
+        var Chart = H.Chart;
         /**
          * The module allows user to enable display chart in full screen mode.
          * Used in StockTools too.
@@ -55,18 +55,18 @@
          * @requires modules/full-screen
          */
         var Fullscreen = /** @class */ (function () {
-                /* *
-                 *
-                 *  Constructors
-                 *
-                 * */
-                function Fullscreen(chart) {
-                    /**
-                     * Chart managed by the fullscreen controller.
-                     * @name Highcharts.Fullscreen#chart
-                     * @type {Highcharts.Chart}
-                     */
-                    this.chart = chart;
+            /* *
+             *
+             *  Constructors
+             *
+             * */
+            function Fullscreen(chart) {
+                /**
+                 * Chart managed by the fullscreen controller.
+                 * @name Highcharts.Fullscreen#chart
+                 * @type {Highcharts.Chart}
+                 */
+                this.chart = chart;
                 /**
                  * The flag is set to `true` when the chart is displayed in
                  * the fullscreen mode.
@@ -128,8 +128,7 @@
              * @requires    modules/full-screen
              */
             Fullscreen.prototype.close = function () {
-                var fullscreen = this,
-                    chart = fullscreen.chart;
+                var fullscreen = this, chart = fullscreen.chart;
                 // Don't fire exitFullscreen() when user exited using 'Escape' button.
                 if (fullscreen.isOpen &&
                     fullscreen.browserProps &&
@@ -156,11 +155,10 @@
              * @requires    modules/full-screen
              */
             Fullscreen.prototype.open = function () {
-                var fullscreen = this,
-                    chart = fullscreen.chart;
+                var fullscreen = this, chart = fullscreen.chart;
                 // Handle exitFullscreen() method when user clicks 'Escape' button.
                 if (fullscreen.browserProps) {
-                    fullscreen.unbindFullscreenEvent = H.addEvent(chart.container.ownerDocument, // chart's document
+                    fullscreen.unbindFullscreenEvent = addEvent(chart.container.ownerDocument, // chart's document
                     fullscreen.browserProps.fullscreenChange, function () {
                         // Handle lack of async of browser's fullScreenChange event.
                         if (fullscreen.isOpen) {
@@ -181,7 +179,7 @@
                             });
                         }
                     }
-                    H.addEvent(chart, 'destroy', fullscreen.unbindFullscreenEvent);
+                    addEvent(chart, 'destroy', fullscreen.unbindFullscreenEvent);
                 }
             };
             /**
@@ -197,11 +195,7 @@
              */
             Fullscreen.prototype.setButtonText = function () {
                 var _a;
-                var chart = this.chart,
-                    exportDivElements = chart.exportDivElements,
-                    exportingOptions = chart.options.exporting,
-                    menuItems = (_a = exportingOptions === null || exportingOptions === void 0 ? void 0 : exportingOptions.buttons) === null || _a === void 0 ? void 0 : _a.contextButton.menuItems,
-                    lang = chart.options.lang;
+                var chart = this.chart, exportDivElements = chart.exportDivElements, exportingOptions = chart.options.exporting, menuItems = (_a = exportingOptions === null || exportingOptions === void 0 ? void 0 : exportingOptions.buttons) === null || _a === void 0 ? void 0 : _a.contextButton.menuItems, lang = chart.options.lang;
                 if ((exportingOptions === null || exportingOptions === void 0 ? void 0 : exportingOptions.menuItemDefinitions) && (lang === null || lang === void 0 ? void 0 : lang.exitFullscreen) &&
                     lang.viewFullscreen &&
                     menuItems &&

@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Advanced Highstock tools
  *
@@ -39,9 +39,7 @@
          *
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          */
-        var addEvent = U.addEvent,
-            isArray = U.isArray,
-            merge = U.merge;
+        var addEvent = U.addEvent, isArray = U.isArray, merge = U.merge;
         /**
          * The line marks the last price from visible range of points.
          *
@@ -104,26 +102,10 @@
          */
         /* eslint-disable no-invalid-this */
         addEvent(H.Series, 'afterRender', function () {
-            var serie = this,
-                seriesOptions = serie.options,
-                pointRange = seriesOptions.pointRange,
-                lastVisiblePrice = seriesOptions.lastVisiblePrice,
-                lastPrice = seriesOptions.lastPrice;
+            var serie = this, seriesOptions = serie.options, pointRange = seriesOptions.pointRange, lastVisiblePrice = seriesOptions.lastVisiblePrice, lastPrice = seriesOptions.lastPrice;
             if ((lastVisiblePrice || lastPrice) &&
                 seriesOptions.id !== 'highcharts-navigator-series') {
-                var xAxis = serie.xAxis,
-                    yAxis = serie.yAxis,
-                    origOptions = yAxis.crosshair,
-                    origGraphic = yAxis.cross,
-                    origLabel = yAxis.crossLabel,
-                    points = serie.points,
-                    yLength = serie.yData.length,
-                    pLength = points.length,
-                    x = serie.xData[serie.xData.length - 1],
-                    y = serie.yData[yLength - 1],
-                    lastPoint,
-                    yValue,
-                    crop;
+                var xAxis = serie.xAxis, yAxis = serie.yAxis, origOptions = yAxis.crosshair, origGraphic = yAxis.cross, origLabel = yAxis.crossLabel, points = serie.points, yLength = serie.yData.length, pLength = points.length, x = serie.xData[serie.xData.length - 1], y = serie.yData[yLength - 1], lastPoint, yValue, crop;
                 if (lastPrice && lastPrice.enabled) {
                     yAxis.crosshair = yAxis.options.crosshair = seriesOptions.lastPrice;
                     yAxis.cross = serie.lastPrice;

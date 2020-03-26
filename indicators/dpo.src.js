@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -36,17 +36,14 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var correctFloat = U.correctFloat,
-            pick = U.pick,
-            seriesType = U.seriesType;
+        var correctFloat = U.correctFloat, pick = U.pick, seriesType = U.seriesType;
         /* eslint-disable valid-jsdoc */
         // Utils
         /**
          * @private
          */
         function accumulatePoints(sum, yVal, i, index, subtract) {
-            var price = pick(yVal[i][index],
-                yVal[i]);
+            var price = pick(yVal[i][index], yVal[i]);
             if (subtract) {
                 return correctFloat(sum - price);
             }
@@ -99,24 +96,9 @@
         {
             nameBase: 'DPO',
             getValues: function (series, params) {
-                var period = params.period,
-                    index = params.index,
-                    offset = Math.floor(period / 2 + 1),
-                    range = period + offset,
-                    xVal = series.xData || [],
-                    yVal = series.yData || [],
-                    yValLen = yVal.length, 
-                    // 0- date, 1- Detrended Price Oscillator
-                    DPO = [],
-                    xData = [],
-                    yData = [],
-                    sum = 0,
-                    oscillator,
-                    periodIndex,
-                    rangeIndex,
-                    price,
-                    i,
-                    j;
+                var period = params.period, index = params.index, offset = Math.floor(period / 2 + 1), range = period + offset, xVal = series.xData || [], yVal = series.yData || [], yValLen = yVal.length, 
+                // 0- date, 1- Detrended Price Oscillator
+                DPO = [], xData = [], yData = [], sum = 0, oscillator, periodIndex, rangeIndex, price, i, j;
                 if (xVal.length <= range) {
                     return;
                 }

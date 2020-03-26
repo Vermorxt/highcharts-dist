@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * (c) 2009-2019 Sebastian Bochan, Rafal Sebestjanski
  *
@@ -36,14 +36,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var seriesType = U.seriesType;
-        var pick = H.pick,
-            seriesTypes = H.seriesTypes,
-            seriesProto = H.Series.prototype,
-            areaRangeProto = seriesTypes.arearange.prototype,
-            columnRangeProto = seriesTypes.columnrange.prototype,
-            colProto = seriesTypes.column.prototype,
-            areaRangePointProto = areaRangeProto.pointClass.prototype;
+        var extend = U.extend, pick = U.pick, seriesType = U.seriesType;
+        var seriesTypes = H.seriesTypes, seriesProto = H.Series.prototype, areaRangeProto = seriesTypes.arearange.prototype, columnRangeProto = seriesTypes.columnrange.prototype, colProto = seriesTypes.column.prototype, areaRangePointProto = areaRangeProto.pointClass.prototype;
         /**
          * The dumbbell series is a cartesian series with higher and lower values for
          * each point along an X axis, connected with a line between the values.
@@ -161,34 +155,10 @@
              * @return {Highcharts.SVGAttributes} attribs The path and styles.
              */
             getConnectorAttribs: function (point) {
-                var series = this,
-                    chart = series.chart,
-                    pointOptions = point.options,
-                    seriesOptions = series.options,
-                    xAxis = series.xAxis,
-                    yAxis = series.yAxis,
-                    connectorWidth = pick(pointOptions.connectorWidth,
-                    seriesOptions.connectorWidth),
-                    connectorColor = pick(pointOptions.connectorColor,
-                    seriesOptions.connectorColor,
-                    pointOptions.color,
-                    point.zone ? point.zone.color : void 0,
-                    point.color),
-                    connectorWidthPlus = pick(seriesOptions.states &&
-                        seriesOptions.states.hover &&
-                        seriesOptions.states.hover.connectorWidthPlus, 1),
-                    dashStyle = pick(pointOptions.dashStyle,
-                    seriesOptions.dashStyle),
-                    pointTop = pick(point.plotLow,
-                    point.plotY),
-                    pxThreshold = yAxis.toPixels(seriesOptions.threshold || 0,
-                    true),
-                    pointHeight = chart.inverted ?
-                        yAxis.len - pxThreshold : pxThreshold,
-                    pointBottom = pick(point.plotHigh,
-                    pointHeight),
-                    attribs,
-                    origProps;
+                var series = this, chart = series.chart, pointOptions = point.options, seriesOptions = series.options, xAxis = series.xAxis, yAxis = series.yAxis, connectorWidth = pick(pointOptions.connectorWidth, seriesOptions.connectorWidth), connectorColor = pick(pointOptions.connectorColor, seriesOptions.connectorColor, pointOptions.color, point.zone ? point.zone.color : void 0, point.color), connectorWidthPlus = pick(seriesOptions.states &&
+                    seriesOptions.states.hover &&
+                    seriesOptions.states.hover.connectorWidthPlus, 1), dashStyle = pick(pointOptions.dashStyle, seriesOptions.dashStyle), pointTop = pick(point.plotLow, point.plotY), pxThreshold = yAxis.toPixels(seriesOptions.threshold || 0, true), pointHeight = chart.inverted ?
+                    yAxis.len - pxThreshold : pxThreshold, pointBottom = pick(point.plotHigh, pointHeight), attribs, origProps;
                 if (point.state) {
                     connectorWidth = connectorWidth + connectorWidthPlus;
                 }
@@ -216,7 +186,7 @@
                     point.y = point.high;
                     point.zone = point.zone ? point.getZone() : void 0;
                     connectorColor = pick(pointOptions.connectorColor, seriesOptions.connectorColor, pointOptions.color, point.zone ? point.zone.color : void 0, point.color);
-                    H.extend(point, origProps);
+                    extend(point, origProps);
                 }
                 attribs = {
                     d: series.crispConnector([
@@ -247,10 +217,8 @@
              * @return {void}
              */
             drawConnector: function (point) {
-                var series = this,
-                    animationLimit = pick(series.options.animationLimit, 250),
-                    verb = point.connector && series.chart.pointCount < animationLimit ?
-                        'animate' : 'attr';
+                var series = this, animationLimit = pick(series.options.animationLimit, 250), verb = point.connector && series.chart.pointCount < animationLimit ?
+                    'animate' : 'attr';
                 if (!point.connector) {
                     point.connector = series.chart.renderer.path()
                         .addClass('highcharts-lollipop-stem')
@@ -275,8 +243,7 @@
              *
              */
             getColumnMetrics: function () {
-                var metrics = colProto.getColumnMetrics.apply(this,
-                    arguments);
+                var metrics = colProto.getColumnMetrics.apply(this, arguments);
                 metrics.offset = metrics.offset + metrics.width / 2;
                 return metrics;
             },
@@ -301,8 +268,7 @@
                 this.translatePoint.apply(this, arguments);
                 // Correct x position
                 this.points.forEach(function (point) {
-                    var shapeArgs = point.shapeArgs,
-                        pointWidth = point.pointWidth;
+                    var shapeArgs = point.shapeArgs, pointWidth = point.pointWidth;
                     point.plotX = shapeArgs.x;
                     shapeArgs.x = point.plotX - pointWidth / 2;
                     point.tooltipPos = null;
@@ -321,14 +287,7 @@
              * @return {void}
              */
             drawPoints: function () {
-                var series = this,
-                    chart = series.chart,
-                    pointLength = series.points.length,
-                    seriesLowColor = series.lowColor = series.options.lowColor,
-                    i = 0,
-                    lowerGraphicColor,
-                    point,
-                    zoneColor;
+                var series = this, chart = series.chart, pointLength = series.points.length, seriesLowColor = series.lowColor = series.options.lowColor, i = 0, lowerGraphicColor, point, zoneColor;
                 this.seriesDrawPoints.apply(series, arguments);
                 // Draw connectors and color upper markers
                 while (i < pointLength) {
@@ -368,8 +327,7 @@
              *         CSS.
              */
             markerAttribs: function () {
-                var ret = areaRangeProto.markerAttribs.apply(this,
-                    arguments);
+                var ret = areaRangeProto.markerAttribs.apply(this, arguments);
                 ret.x = Math.floor(ret.x);
                 ret.y = Math.floor(ret.y);
                 return ret;
@@ -410,23 +368,7 @@
              * @return {void}
              */
             setState: function () {
-                var point = this,
-                    series = point.series,
-                    chart = series.chart,
-                    seriesLowColor = series.options.lowColor,
-                    seriesMarker = series.options.marker,
-                    pointOptions = point.options,
-                    pointLowColor = pointOptions.lowColor,
-                    zoneColor = point.zone && point.zone.color,
-                    lowerGraphicColor = pick(pointLowColor,
-                    seriesLowColor,
-                    pointOptions.color,
-                    zoneColor,
-                    point.color,
-                    series.color),
-                    verb = 'attr',
-                    upperGraphicColor,
-                    origProps;
+                var point = this, series = point.series, chart = series.chart, seriesLowColor = series.options.lowColor, seriesMarker = series.options.marker, pointOptions = point.options, pointLowColor = pointOptions.lowColor, zoneColor = point.zone && point.zone.color, lowerGraphicColor = pick(pointLowColor, seriesLowColor, pointOptions.color, zoneColor, point.color, series.color), verb = 'attr', upperGraphicColor, origProps;
                 this.pointSetState.apply(this, arguments);
                 if (!point.state) {
                     verb = 'animate';
@@ -445,7 +387,7 @@
                             point.upperGraphic.attr({
                                 fill: upperGraphicColor
                             });
-                            H.extend(point, origProps);
+                            extend(point, origProps);
                         }
                     }
                 }

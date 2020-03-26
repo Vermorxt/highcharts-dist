@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.4 (2020-03-10)
+ * @license Highcharts JS v8.0.4 (2020-03-26)
  *
  * Plugin for displaying a message when there is no data visible in chart.
  *
@@ -43,10 +43,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var addEvent = U.addEvent,
-            extend = U.extend;
-        var chartPrototype = H.Chart.prototype,
-            defaultOptions = H.getOptions();
+        var addEvent = U.addEvent, extend = U.extend;
+        var chartPrototype = H.Chart.prototype, defaultOptions = H.getOptions();
         // Add language option
         extend(defaultOptions.lang, 
         /**
@@ -159,10 +157,7 @@
          * @requires modules/no-data-to-display
          */
         chartPrototype.showNoData = function (str) {
-            var chart = this,
-                options = chart.options,
-                text = str || (options && options.lang.noData),
-                noDataOptions = options && options.noData;
+            var chart = this, options = chart.options, text = str || (options && options.lang.noData), noDataOptions = options && options.noData;
             if (!chart.noDataLabel && chart.renderer) {
                 chart.noDataLabel = chart.renderer
                     .label(text, 0, 0, null, null, null, noDataOptions.useHTML, null, 'no-data');
@@ -199,9 +194,7 @@
          * @requires modules/no-data-to-display
          */
         chartPrototype.hasData = function () {
-            var chart = this,
-                series = chart.series || [],
-                i = series.length;
+            var chart = this, series = chart.series || [], i = series.length;
             while (i--) {
                 if (series[i].hasData() && !series[i].options.isInternal) {
                     return true;

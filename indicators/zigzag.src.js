@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.4 (2020-03-10)
+ * @license Highstock JS v8.0.4 (2020-03-26)
  *
  * Indicator series type for Highstock
  *
@@ -103,28 +103,10 @@
             nameSuffixes: ['%'],
             nameBase: 'Zig Zag',
             getValues: function (series, params) {
-                var lowIndex = params.lowIndex,
-                    highIndex = params.highIndex,
-                    deviation = params.deviation / 100,
-                    deviations = {
-                        'low': 1 + deviation,
-                        'high': 1 - deviation
-                    },
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    zigzag = [],
-                    xData = [],
-                    yData = [],
-                    i,
-                    j,
-                    zigzagPoint,
-                    firstZigzagLow,
-                    firstZigzagHigh,
-                    directionUp,
-                    zigzagLen,
-                    exitLoop = false,
-                    yIndex = false;
+                var lowIndex = params.lowIndex, highIndex = params.highIndex, deviation = params.deviation / 100, deviations = {
+                    'low': 1 + deviation,
+                    'high': 1 - deviation
+                }, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, zigzag = [], xData = [], yData = [], i, j, zigzagPoint, firstZigzagLow, firstZigzagHigh, directionUp, zigzagLen, exitLoop = false, yIndex = false;
                 // Exit if not enught points or no low or high values
                 if (!xVal || xVal.length <= 1 ||
                     (yValLen &&

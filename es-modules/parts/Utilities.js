@@ -365,7 +365,7 @@ var error = H.error = function (code, stop, chart, params) {
         if (isCode) {
             message += '?';
         }
-        H.objectEach(params, function (value, key) {
+        objectEach(params, function (value, key) {
             additionalMessages_1 += ('\n' + key + ': ' + value);
             if (isCode) {
                 message += encodeURI(key) + '=' + encodeURI(value);
@@ -374,7 +374,7 @@ var error = H.error = function (code, stop, chart, params) {
         message += additionalMessages_1;
     }
     if (chart) {
-        H.fireEvent(chart, 'displayError', { code: code, message: message, params: params }, defaultHandler);
+        fireEvent(chart, 'displayError', { code: code, message: message, params: params }, defaultHandler);
     }
     else {
         defaultHandler();
@@ -737,7 +737,7 @@ var Fx = /** @class */ (function () {
      * @return {void}
      */
     Fx.prototype.fillSetter = function () {
-        H.Fx.prototype.strokeSetter.apply(this, arguments);
+        Fx.prototype.strokeSetter.apply(this, arguments);
     };
     /**
      * Handle animation of the color attributes directly.
@@ -901,11 +901,12 @@ var isArray = H.isArray = function isArray(obj) {
  * @return {boolean}
  *         True if the argument is an object.
  */
-var isObject = H.isObject = function isObject(obj, strict) {
+function isObject(obj, strict) {
     return (!!obj &&
         typeof obj === 'object' &&
         (!strict || !isArray(obj))); // eslint-disable-line @typescript-eslint/no-explicit-any
-};
+}
+H.isObject = isObject;
 /**
  * Utility function to check if an Object is a HTML Element.
  *
@@ -2515,7 +2516,7 @@ if (win.jQuery) {
 }
 // TODO use named exports when supported.
 var utilitiesModule = {
-    Fx: Fx,
+    Fx: H.Fx,
     addEvent: addEvent,
     animate: animate,
     animObject: animObject,
